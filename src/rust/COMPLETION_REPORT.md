@@ -226,6 +226,56 @@ issue 2の目標：
 - ✅ トラブルシューティングガイド
 - ✅ 英語/日本語ドキュメント
 
+## エリアシングノイズの修正 (2025-10-18)
+
+### 問題
+Rust版において、高い周波数の音でPython版よりも極端に大きなエリアシングノイズが発生していました。
+
+### 原因
+ハードシンクの位相リセット処理において、Python版とRust版で以下の違いがありました：
+
+**Python版の動作:**
+```python
+# マスター位相がラップした時点で、スレーブ位相を0にリセット
+# その0の値が出力に使用される
+slave_phase[rp:] = (inc_slave * np.arange(frames - rp)) % 1.0
+# rp時点では slave_phase[rp] = 0
+```
+
+**Rust版の動作（修正前）:**
+```rust
+if s.phase_master >= 1.0 {
+    s.phase_master -= 1.0;
+    s.phase_slave = 0.0;  // リセット
+}
+s.phase_slave += inc_slave;  // すぐに増分
+*sample = 2.0 * s.phase_slave - 1.0;  // inc_slave の値が出力される
+```
+
+リセット直後のサンプルで、Rust版は `inc_slave` の値を出力していたのに対し、Python版は `0.0` を出力していました。この差異により、高周波数時（inc_slaveが大きい時）に位相の不連続が生じ、エリアシングノイズが発生していました。
+
+### 解決策
+マスター位相がラップした際、スレーブ位相のインクリメントをスキップするように修正しました：
+
+```rust
+if s.phase_master >= 1.0 {
+    s.phase_master -= 1.0;
+    s.phase_slave = 0.0;
+} else {
+    // マスターがリセットされていない場合のみ、スレーブ位相を進める
+    s.phase_slave += inc_slave;
+    if s.phase_slave >= 1.0 {
+        s.phase_slave -= 1.0;
+    }
+}
+*sample = 2.0 * s.phase_slave - 1.0;  // リセット時は0.0が出力される
+```
+
+これにより、リセット時点での位相値がPython版と一致し、エリアシングノイズが大幅に削減されました。
+
+### 影響範囲
+- `src/rust/src/sync_simple.rs`: オーディオコールバック関数の位相処理ロジック
+
 ## 今後の改善案
 
 ### 短期的
