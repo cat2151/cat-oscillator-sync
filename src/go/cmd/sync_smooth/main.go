@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	sampleRate       = 48000
-	timeConstantMs   = 16  // Time constant for exponential smoothing (ms)
-	pollingIntervalMs = 8   // Mouse polling interval (ms)
+	sampleRate        = 48000
+	timeConstantMs    = 16 // Time constant for exponential smoothing (ms)
+	pollingIntervalMs = 8  // Mouse polling interval (ms)
 )
 
 var (

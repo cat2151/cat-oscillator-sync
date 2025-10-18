@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	user32              = syscall.NewLazyDLL("user32.dll")
-	procGetCursorPos    = user32.NewProc("GetCursorPos")
+	user32               = syscall.NewLazyDLL("user32.dll")
+	procGetCursorPos     = user32.NewProc("GetCursorPos")
 	procGetSystemMetrics = user32.NewProc("GetSystemMetrics")
 )
 

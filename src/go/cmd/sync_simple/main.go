@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	sampleRate       = 48000
+	sampleRate        = 48000
 	pollingIntervalMs = 8
 )
 
