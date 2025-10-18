@@ -1,0 +1,13 @@
+# Binaries
+bin/
+*.exe
+
+# Go build artifacts
+*.test
+*.out
+
+# Go vendor directory
+vendor/
+
+# Go module cache
+go.sum.backup
