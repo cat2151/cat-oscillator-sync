@@ -7,6 +7,8 @@
 1. **[Rust版実装計画書](./rust/IMPLEMENTATION_PLAN.md)**
 2. **[Go版実装計画書](./go/IMPLEMENTATION_PLAN.md)**
 3. **[TypeScript版実装計画書](./typescript/IMPLEMENTATION_PLAN.md)**
+   - **[TypeScript ブラウザ版](./typescript/browser/README.md)** - 実装完了
+   - **[TypeScript Obsidianプラグイン版](./obsidian/IMPLEMENTATION_PLAN.md)** - 計画書完成
 
 ## 要件
 
@@ -86,7 +88,7 @@ go build
 
 ### 3. TypeScript版
 
-#### 3-A. ブラウザ版 ⭐⭐⭐⭐⭐ (最推奨 - ユーザー体験)
+#### 3-A. ブラウザ版 ⭐⭐⭐⭐⭐ (最推奨 - ユーザー体験) ✅ 実装完了
 
 ##### ✅ メリット
 - **環境構築が最もシンプル**: ブラウザだけ
@@ -145,6 +147,37 @@ deno task start
   - node-gypの設定
 - **PortAudioバインディングがメンテナンスされていない**
 - **ビルド失敗のリスクが高い**
+
+#### 3-D. Obsidianプラグイン版 ⭐⭐⭐⭐ (計画中 - Obsidian統合)
+
+##### ✅ メリット
+- **Obsidian環境で音声合成**: ノートテイキングアプリ内で動作
+- **ブラウザ版のコード再利用**: Web Audio APIとAudioWorkletを流用
+- **コマンドベースの制御**: Obsidianのコマンドパレットから操作
+- **デスクトップ統合**: Obsidianの一部として動作
+
+##### ⚠️ 注意点
+- デスクトップ版Obsidianのみ対応（Web Audio API制限）
+- Obsidian Plugin APIの学習が必要
+- AudioWorkletモジュールのバンドル対応が必要
+
+##### 📝 実装計画
+- **[実装計画書](./obsidian/IMPLEMENTATION_PLAN.md)** - 完成
+- コマンド方式（Toggle/Enable/Disable）を採用
+- ブラウザ版からSynthクラスとAudioWorkletを移植
+- obsidian-plugin-abcjsを参考に実装
+
+##### 📝 インストール手順（計画）
+```bash
+# 開発環境
+npm install
+npm run dev
+
+# Obsidianのプラグインフォルダにコピー
+# - Windows: %APPDATA%\Obsidian\plugins\
+# - macOS: ~/Library/Application Support/obsidian/plugins/
+# - Linux: ~/.config/obsidian/plugins/
+```
 
 ---
 
@@ -238,6 +271,11 @@ deno task start
 - **デメリット**: FFI学習コスト、DLL必要
 - **用途**: モダンなTypeScript環境での実験
 
+#### 第5優先: TypeScript Obsidianプラグイン版 ⭐⭐⭐⭐
+- **理由**: Obsidian環境での音声合成を検証
+- **メリット**: ブラウザ版コード再利用、デスクトップ統合
+- **用途**: Obsidianノートテイキングアプリでの音声合成検証
+
 #### 非推奨: Node.js版 ⭐
 - **理由**: 環境構築が非常に複雑、メンテナンスされていない
 
@@ -248,3 +286,5 @@ deno task start
 - [Rust版実装計画書](./rust/IMPLEMENTATION_PLAN.md)
 - [Go版実装計画書](./go/IMPLEMENTATION_PLAN.md)
 - [TypeScript版実装計画書](./typescript/IMPLEMENTATION_PLAN.md)
+  - [TypeScript ブラウザ版 README](./typescript/browser/README.md) - 実装完了
+  - [TypeScript Obsidianプラグイン版 実装計画書](./obsidian/IMPLEMENTATION_PLAN.md) - 計画書完成
