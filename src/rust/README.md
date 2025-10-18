@@ -2,7 +2,91 @@
 
 🎵 Rustで実装したマウス制御型ハードシンク・オシレータ・シンセサイザー
 
-## 概要
+[English](#english-version) | [日本語](#日本語版)
+
+---
+
+## English Version
+
+### Overview
+
+This directory contains the Rust implementation of cat-oscillator-sync.
+It provides the same functionality as the Python version with better performance and lower latency.
+
+### What's Included
+
+This Rust implementation includes two programs:
+
+1. **minimal** - Minimal example: plays a 440Hz saw wave
+2. **sync_simple** - Simple version: hard-sync oscillator with mouse control
+
+### Quick Start for Windows
+
+#### Prerequisites
+
+Check if Rust is installed:
+
+```bash
+rustc --version
+cargo --version
+```
+
+If not installed, download from https://rustup.rs/ and run the installer.
+
+#### Build and Run
+
+```bash
+# Navigate to the Rust directory
+cd src/rust
+
+# Build (first time takes 2-5 minutes)
+cargo build --release
+
+# Run minimal example (440Hz single tone)
+cargo run --release --bin minimal
+
+# Run simple version (mouse control)
+cargo run --release --bin sync_simple
+```
+
+### How to Use
+
+#### Minimal Example
+- Plays a 440Hz (A4 note) saw wave
+- Press Ctrl+C to exit
+
+#### Simple Version
+- Move your mouse to control the sound:
+  - **X-axis (horizontal)**: Master frequency (40Hz - 600Hz)
+  - **Y-axis (vertical)**: Slave frequency (100Hz - 2000Hz)
+- Current frequencies are displayed at the bottom
+- Press Ctrl+C to exit
+
+### Documentation
+
+- [Quick Start Guide (Japanese)](QUICKSTART.md) - Detailed setup instructions for Windows users
+- [Implementation Plan (Japanese)](IMPLEMENTATION_PLAN.md) - Technical details
+
+### Comparison with Python Version
+
+| Feature | Python | Rust |
+|---------|--------|------|
+| Installation | Python + pip + 3 packages | Rust + cargo build |
+| Startup Speed | Moderate | Fast |
+| Execution Speed | Standard | High |
+| CPU Usage | Moderate | Low |
+| Memory Usage | Moderate | Low |
+| Latency | Low | Lower |
+
+### License
+
+This project is licensed under the [MIT License](../../LICENSE).
+
+---
+
+## 日本語版
+
+### 概要
 
 このディレクトリには、cat-oscillator-syncのRust実装が含まれています。
 Python版と同等の機能を持ち、より高速で低レイテンシな動作を実現します。

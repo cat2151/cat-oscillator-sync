@@ -5,7 +5,7 @@
 // Ctrl+C で終了してください
 
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
-use rdev::{display_size, EventType, listen};
+use rdev::{display_size, listen, EventType};
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
@@ -38,8 +38,8 @@ fn main() -> Result<(), anyhow::Error> {
     println!();
 
     // 画面サイズの取得
-    let (screen_width, screen_height) = display_size()
-        .map_err(|e| anyhow::anyhow!("画面サイズの取得に失敗: {:?}", e))?;
+    let (screen_width, screen_height) =
+        display_size().map_err(|e| anyhow::anyhow!("画面サイズの取得に失敗: {:?}", e))?;
     println!("Screen size: {}x{}", screen_width, screen_height);
 
     // オーディオホストとデバイスの取得
@@ -47,7 +47,7 @@ fn main() -> Result<(), anyhow::Error> {
     let device = host
         .default_output_device()
         .ok_or_else(|| anyhow::anyhow!("デフォルトの出力デバイスが見つかりません"))?;
-    
+
     println!("Output device: {}", device.name()?);
 
     // デバイス設定の取得
@@ -57,7 +57,10 @@ fn main() -> Result<(), anyhow::Error> {
 
     // 状態の共有
     let state = Arc::new(Mutex::new(SynthState::new()));
-    let mouse_pos = Arc::new(Mutex::new((screen_width as f64 / 2.0, screen_height as f64 / 2.0)));
+    let mouse_pos = Arc::new(Mutex::new((
+        screen_width as f64 / 2.0,
+        screen_height as f64 / 2.0,
+    )));
 
     // マウスイベントリスナー用の位置共有
     let mouse_pos_listener = Arc::clone(&mouse_pos);
@@ -84,7 +87,8 @@ fn main() -> Result<(), anyhow::Error> {
 
             // 周波数のマッピング
             let freq_master = 40.0 + (x / screen_width as f64) * (600.0 - 40.0);
-            let freq_slave = 100.0 + ((screen_height as f64 - y) / screen_height as f64) * (2000.0 - 100.0);
+            let freq_slave =
+                100.0 + ((screen_height as f64 - y) / screen_height as f64) * (2000.0 - 100.0);
 
             {
                 let mut s = state_updater.lock().unwrap();
@@ -102,7 +106,7 @@ fn main() -> Result<(), anyhow::Error> {
         &config.into(),
         move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
             let mut s = state_audio.lock().unwrap();
-            
+
             let inc_master = s.freq_master / sample_rate;
             let inc_slave = s.freq_slave / sample_rate;
 
@@ -134,13 +138,14 @@ fn main() -> Result<(), anyhow::Error> {
 
     // 周波数表示スレッド
     let state_display = Arc::clone(&state);
-    thread::spawn(move || {
-        loop {
-            thread::sleep(Duration::from_millis(500));
-            let s = state_display.lock().unwrap();
-            print!("\rMaster: {:6.1} Hz | Slave: {:6.1} Hz", s.freq_master, s.freq_slave);
-            std::io::Write::flush(&mut std::io::stdout()).ok();
-        }
+    thread::spawn(move || loop {
+        thread::sleep(Duration::from_millis(500));
+        let s = state_display.lock().unwrap();
+        print!(
+            "\rMaster: {:6.1} Hz | Slave: {:6.1} Hz",
+            s.freq_master, s.freq_slave
+        );
+        std::io::Write::flush(&mut std::io::stdout()).ok();
     });
 
     println!("\nPress Ctrl+C to stop...");

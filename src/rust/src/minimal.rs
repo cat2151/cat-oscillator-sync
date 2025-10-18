@@ -15,7 +15,7 @@ fn main() -> Result<(), anyhow::Error> {
     let device = host
         .default_output_device()
         .ok_or_else(|| anyhow::anyhow!("デフォルトの出力デバイスが見つかりません"))?;
-    
+
     println!("Output device: {}", device.name()?);
 
     // デバイス設定の取得
@@ -41,7 +41,7 @@ fn main() -> Result<(), anyhow::Error> {
             for sample in data.iter_mut() {
                 // ノコギリ波: 位相を -1.0 から 1.0 の範囲に変換
                 *sample = 2.0 * *phase_lock - 1.0;
-                
+
                 // 位相を進める
                 *phase_lock += phase_increment;
                 if *phase_lock >= 1.0 {
