@@ -1,0 +1,22 @@
+[package]
+name = "cat-oscillator-sync"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "minimal"
+path = "src/minimal.rs"
+
+[[bin]]
+name = "sync_simple"
+path = "src/sync_simple.rs"
+
+[dependencies]
+cpal = "0.15"
+anyhow = "1.0"
+
+[target.'cfg(not(target_os = "windows"))'.dependencies]
+rdev = "0.5"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+rdev = "0.5"

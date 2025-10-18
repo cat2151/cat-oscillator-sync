@@ -130,7 +130,7 @@ ruff check --fix src/ tests/
 
 ## 今後の予定
 
-- [ ] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md)
+- [x] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md) | [README](src/rust/README.md) | [クイックスタート](src/rust/QUICKSTART.md)
 - [ ] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md)
 - [ ] TypeScript実装 - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md)
 
@@ -142,9 +142,12 @@ ruff check --fix src/ tests/
   - LLM chatbotでcode生成させ、手軽にinstallして、鳴らすこと
   - が実現できるか？を検証すること
   - 結果、実現できた
-- [ ] Rust, Go, TypeScript:
+- [x] Rust:
   - pythonでLLM chatbotに実装させたこのシンプルなコードが、
-  - Rust, Go, TypeScriptでもagentにより移植可能か？
+  - Rustでもagentにより移植可能か？を検証すること
+  - 結果、実現できた（minimal版とsimple版の両方を実装）
+- [ ] Go, TypeScript:
+  - 同様にGo, TypeScriptでもagentにより移植可能か？
   - を検証し、その結果が出ること
   - 「現時点のagentでは、このuserの使い方では、移植できなかった」という結果でもよい
 
