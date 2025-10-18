@@ -16,7 +16,7 @@ export class SmoothSynth {
 
     // Load and add AudioWorklet module
     try {
-      await this.audioContext.audioWorklet.addModule('/src/audio/smooth-worklet.ts');
+      await this.audioContext.audioWorklet.addModule('/worklets/smooth-worklet.js');
       console.log('Smooth worklet module loaded successfully');
     } catch (error) {
       console.error('Failed to load worklet module:', error);
