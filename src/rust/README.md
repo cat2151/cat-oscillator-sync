@@ -15,10 +15,11 @@ It provides the same functionality as the Python version with better performance
 
 ### What's Included
 
-This Rust implementation includes two programs:
+This Rust implementation includes three programs:
 
 1. **minimal** - Minimal example: plays a 440Hz saw wave
 2. **sync_simple** - Simple version: hard-sync oscillator with mouse control
+3. **sync_smooth** - Smooth version: hard-sync oscillator with exponential smoothing
 
 ### Quick Start for Windows
 
@@ -47,6 +48,9 @@ cargo run --release --bin minimal
 
 # Run simple version (mouse control)
 cargo run --release --bin sync_simple
+
+# Run smooth version (mouse control with exponential smoothing)
+cargo run --release --bin sync_smooth
 ```
 
 ### How to Use
@@ -60,6 +64,12 @@ cargo run --release --bin sync_simple
   - **X-axis (horizontal)**: Master frequency (40Hz - 600Hz)
   - **Y-axis (vertical)**: Slave frequency (100Hz - 2000Hz)
 - Current frequencies are displayed at the bottom
+- Press Ctrl+C to exit
+
+#### Smooth Version
+- Similar to Simple Version, but with exponential smoothing for smoother frequency transitions
+- Time constant: 16ms (about 63% arrival time)
+- Provides more musical and natural sound changes
 - Press Ctrl+C to exit
 
 ### Documentation
@@ -93,10 +103,11 @@ Python版と同等の機能を持ち、より高速で低レイテンシな動�
 
 ## 実装内容
 
-このRust実装には2つのプログラムがあります：
+このRust実装には3つのプログラムがあります：
 
 1. **minimal** - 最小限の例：440Hzのノコギリ波を再生
 2. **sync_simple** - シンプル版：マウス制御によるハードシンク・オシレータ
+3. **sync_smooth** - スムーズ版：指数平滑化によるマウス制御ハードシンク・オシレータ
 
 ## Windows環境でのビルド・実行手順
 
@@ -178,6 +189,18 @@ cargo run --release --bin sync_simple
 - Y軸（縦方向）: スレーブ周波数 (100Hz - 2000Hz)
 - Ctrl+C で終了します
 
+#### スムーズ版（指数平滑化）
+
+```bash
+cargo run --release --bin sync_smooth
+```
+
+実行すると：
+- シンプル版と同様にマウスで音を制御しますが、指数平滑化により滑らかな周波数変化を実現
+- 時定数: 16ms（約63%到達時間）
+- より音楽的で自然な音の変化が得られます
+- Ctrl+C で終了します
+
 ### トラブルシューティング
 
 #### ビルドエラーが発生する場合
@@ -228,7 +251,8 @@ src/rust/
 ├── IMPLEMENTATION_PLAN.md # 実装計画書
 └── src/
     ├── minimal.rs         # 最小限の例
-    └── sync_simple.rs     # シンプル版実装
+    ├── sync_simple.rs     # シンプル版実装
+    └── sync_smooth.rs     # スムーズ版実装
 ```
 
 ### Python版との比較
@@ -244,7 +268,7 @@ src/rust/
 
 ### 次のステップ
 
-- スムーズ版（指数平滑化）の実装
+- ~~スムーズ版（指数平滑化）の実装~~ ✅ 完了
 - パラメータのコマンドライン指定
 - 設定ファイルのサポート
 
