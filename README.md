@@ -130,9 +130,11 @@ ruff check --fix src/ tests/
 
 ## 今後の予定
 
-- [ ] Rust実装
-- [ ] Go実装
-- [ ] TypeScript実装
+- [ ] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md)
+- [ ] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md)
+- [ ] TypeScript実装 - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md)
+
+**実装計画の詳細**: [実装計画書サマリー](src/IMPLEMENTATION_PLAN_SUMMARY.md)をご覧ください。
 
 ## projectのゴール
 - [x] Python:
