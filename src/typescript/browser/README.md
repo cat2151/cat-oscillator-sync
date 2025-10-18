@@ -8,10 +8,9 @@ Web Audio APIとAudioWorkletを使用した、ブラウザ上で動作するオ�
 
 ## 特徴
 
-- **3つのバージョン**:
+- **2つのバージョン**:
   - **Simple版**: 階段状の周波数変化（Python版 sync_simple.py 相当）
   - **Smooth版**: 指数平滑化による滑らかな周波数変化（Python版 sync_smooth.py 相当）
-  - **Tone.js版**: Tone.jsのコンテキスト上で動作するAudioWorklet版
   
 - **低レイテンシ**: AudioWorkletによる高速なオーディオ処理
 - **インストール不要**: ブラウザだけで動作
@@ -25,7 +24,7 @@ Web Audio APIとAudioWorkletを使用した、ブラウザ上で動作するオ�
 ## 使い方（エンドユーザー）
 
 1. ブラウザでページを開く
-2. バージョンを選択（Simple / Smooth / Tone.js）
+2. バージョンを選択（Simple / Smooth）
 3. 「音を開始」ボタンをクリック
 4. マウスを動かして音を制御
    - **X軸（横方向）**: マスター周波数（40-600 Hz）
@@ -81,12 +80,10 @@ src/
 ├── main.ts              # メインアプリケーション（UI制御）
 ├── synth/
 │   ├── simple.ts        # Simple版シンセサイザー
-│   ├── smooth.ts        # Smooth版シンセサイザー
-│   └── tonejs.ts        # Tone.js版シンセサイザー
+│   └── smooth.ts        # Smooth版シンセサイザー
 └── audio/
     ├── simple-worklet.ts   # Simple版AudioWorklet Processor
-    ├── smooth-worklet.ts   # Smooth版AudioWorklet Processor
-    └── tonejs-worklet.ts   # Tone.js版AudioWorklet Processor
+    └── smooth-worklet.ts   # Smooth版AudioWorklet Processor
 ```
 
 ### AudioWorkletについて
@@ -109,11 +106,6 @@ AudioWorkletは、Web Audio APIの低レイテンシなオーディオ処理を�
 - 指数平滑化により1サンプルごとの滑らかな周波数変化
 - 時定数16msで滑らかに追従
 - Python版 `sync_smooth.py` と同等の動作
-
-#### Tone.js版
-- Tone.jsのコンテキスト上でAudioWorkletを使用
-- Tone.jsの各種機能（エフェクト、シーケンサーなど）と組み合わせ可能
-- Smooth版と同様の滑らかな周波数変化
 
 ## ハードシンクとは
 
