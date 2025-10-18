@@ -18,8 +18,7 @@ export class ToneJSSynth {
 
     // Get Tone.js audio context
     const context = Tone.getContext();
-    // @ts-ignore - accessing internal AudioContext
-    const audioContext = context._context as AudioContext;
+    const audioContext = context.rawContext as AudioContext;
 
     // Load and add AudioWorklet module to Tone.js context
     try {
