@@ -140,12 +140,173 @@ src/obsidian/
 
 ## ステータス
 
-**現在のステータス**: 📝 実装計画書作成完了
+**現在のステータス**: ✅ 実装完了
 
-次のステップ:
-1. Phase 1の実装開始
-2. 基本的なプラグイン構造の作成
-3. ブラウザ版コードの移植
+実装済み機能:
+1. ✅ Phase 1: プロジェクト構造の作成
+2. ✅ Phase 2-3: 音声機能の実装（SimpleSynth, SmoothSynth, AudioWorklet）
+3. ✅ Phase 4: メインプラグインクラスの実装
+4. ✅ Phase 5: マウス制御の実装
+5. ✅ Phase 6: コマンドの実装（toggle, enable, disable, version switching）
+
+## インストール方法
+
+### 開発版のインストール
+
+1. **ビルド**
+   ```bash
+   cd src/obsidian
+   npm install
+   npm run build
+   ```
+
+2. **Obsidianプラグインフォルダへコピー**
+   
+   プラグインフォルダの場所:
+   - Windows: `%APPDATA%\Obsidian\YourVaultName\.obsidian\plugins\`
+   - macOS: `~/Library/Application Support/obsidian/YourVaultName/.obsidian/plugins/`
+   - Linux: `~/.config/obsidian/YourVaultName/.obsidian/plugins/`
+
+   ```bash
+   # cat-oscillator-syncフォルダを作成
+   mkdir -p /path/to/your/vault/.obsidian/plugins/cat-oscillator-sync
+   
+   # 必要なファイルをコピー
+   cp main.js /path/to/your/vault/.obsidian/plugins/cat-oscillator-sync/
+   cp manifest.json /path/to/your/vault/.obsidian/plugins/cat-oscillator-sync/
+   ```
+
+3. **Obsidianでプラグインを有効化**
+   - Obsidianを再起動
+   - Settings → Community plugins → Installed plugins
+   - "Cat Oscillator Sync"を有効化
+
+## 使用方法
+
+### 基本操作
+
+1. **コマンドパレットを開く**
+   - Windows/Linux: `Ctrl + P`
+   - macOS: `Cmd + P`
+
+2. **オシレータを起動**
+   - コマンド: "Enable Oscillator Sync" または "Toggle Oscillator Sync"
+   - マウスを動かすと音が鳴り始めます
+
+3. **音のコントロール**
+   - **マウスX座標**: マスター周波数（40-600 Hz）を制御
+     - 左: 低い音
+     - 右: 高い音
+   - **マウスY座標**: スレーブ周波数（100-2000 Hz）を制御
+     - 上: 高い音
+     - 下: 低い音
+
+4. **オシレータを停止**
+   - コマンド: "Disable Oscillator Sync" または "Toggle Oscillator Sync"
+
+### バージョン切り替え
+
+プラグインは2つのバージョンをサポート:
+
+- **Simple版**: 周波数が即座に変わる（デフォルト）
+  - コマンド: "Switch to Simple Version"
+  
+- **Smooth版**: 周波数が滑らかに変わる
+  - コマンド: "Switch to Smooth Version"
+
+### コマンド一覧
+
+| コマンド | 説明 |
+|---------|------|
+| Toggle Oscillator Sync | オシレータのON/OFF切り替え |
+| Enable Oscillator Sync | オシレータを起動 |
+| Disable Oscillator Sync | オシレータを停止 |
+| Switch to Simple Version | Simple版に切り替え |
+| Switch to Smooth Version | Smooth版に切り替え |
+
+## 技術仕様
+
+### 実装されている機能
+
+1. **Web Audio API統合**
+   - AudioWorkletを使用した低レイテンシ音声生成
+   - Blob URLによるworkletコードのインライン化
+
+2. **ハードシンク・オシレータ**
+   - マスターオシレータとスレーブオシレータの同期
+   - ノコギリ波生成
+
+3. **マウストラッキング**
+   - 8msごとの周波数更新（125 Hz）
+   - 画面サイズに応じた周波数マッピング
+
+4. **2つのバージョン**
+   - Simple版: 即座の周波数変更
+   - Smooth版: 指数関数的平滑化（16msタイムコンスタント）
+
+### ファイル構成
+
+```
+src/obsidian/
+├── manifest.json           # プラグイン情報
+├── main.js                # ビルド済みプラグイン（自動生成）
+├── package.json           # npm設定
+├── tsconfig.json          # TypeScript設定
+├── esbuild.config.mjs     # ビルド設定
+└── src/
+    ├── main.ts            # プラグインエントリポイント
+    ├── mouse-handler.ts   # マウストラッキング
+    ├── synth/
+    │   ├── simple.ts      # Simple版シンセサイザー
+    │   └── smooth.ts      # Smooth版シンセサイザー
+    └── audio/
+        ├── simple-worklet.ts  # Simple版AudioWorklet
+        └── smooth-worklet.ts  # Smooth版AudioWorklet
+```
+
+## トラブルシューティング
+
+### 音が鳴らない
+
+1. **ブラウザの音声権限を確認**
+   - Obsidianがデスクトップ版であることを確認（モバイル版は非対応）
+
+2. **コンソールログを確認**
+   - Developer Tools を開く（Ctrl/Cmd + Shift + I）
+   - Console タブでエラーメッセージを確認
+
+3. **プラグインを再起動**
+   - オシレータを無効化してから再度有効化
+
+### 音が途切れる
+
+- CPUリソースが不足している可能性があります
+- 他のCPU負荷の高いアプリケーションを閉じてみてください
+
+### ビルドエラー
+
+```bash
+# 依存関係を再インストール
+rm -rf node_modules package-lock.json
+npm install
+npm run build
+```
+
+## 開発
+
+### 開発モード
+
+ファイル変更を監視して自動ビルド:
+
+```bash
+npm run dev
+```
+
+### ビルドのみ
+
+```bash
+npm run build
+```
 
 ## ライセンス
 
