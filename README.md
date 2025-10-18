@@ -131,7 +131,7 @@ ruff check --fix src/ tests/
 ## 今後の予定
 
 - [x] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md) | [README](src/rust/README.md) | [クイックスタート](src/rust/QUICKSTART.md)
-- [x] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md) | [README](src/go/README.md)
+- [x] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md) | [README](src/go/README.md) | [クイックスタート](src/go/QUICKSTART.md)
 - [x] TypeScript実装（ブラウザ版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/browser/README.md)
 
 **実装計画の詳細**: [実装計画書サマリー](src/IMPLEMENTATION_PLAN_SUMMARY.md)をご覧ください。
