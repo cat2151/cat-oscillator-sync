@@ -18,11 +18,6 @@
    - Python版 `sync_smooth.py` と同等の動作
    - 1サンプルごとの周波数補間
 
-3. **Tone.js版の実装**
-   - Tone.jsのコンテキスト上で動作するAudioWorklet
-   - Tone.jsの各種機能と組み合わせ可能
-   - Smooth版と同様の滑らかな周波数変化
-
 ### 技術仕様
 
 - **開発環境**: Vite + TypeScript 5.3
@@ -51,17 +46,15 @@ src/typescript/browser/
     ├── main.ts            # メインアプリケーション
     ├── synth/
     │   ├── simple.ts      # Simple版シンセサイザー
-    │   ├── smooth.ts      # Smooth版シンセサイザー
-    │   └── tonejs.ts      # Tone.js版シンセサイザー
+    │   └── smooth.ts      # Smooth版シンセサイザー
     └── audio/
         ├── simple-worklet.ts   # Simple版AudioWorklet Processor
-        ├── smooth-worklet.ts   # Smooth版AudioWorklet Processor
-        └── tonejs-worklet.ts   # Tone.js版AudioWorklet Processor
+        └── smooth-worklet.ts   # Smooth版AudioWorklet Processor
 ```
 
 ### UI機能
 
-- 3つのバージョンをラジオボタンで切り替え
+- 2つのバージョンをラジオボタンで切り替え
 - 開始/停止ボタン
 - リアルタイム周波数表示
   - マスター周波数
@@ -120,7 +113,6 @@ current_freq += (target_freq - current_freq) * smoothness_coeff
 |---------|-------------|---------|
 | sync_simple.py | Simple版 | 8msごとの階段状周波数変化 |
 | sync_smooth.py | Smooth版 | 1サンプルごとの指数平滑化 |
-| - | Tone.js版 | Tone.js統合版（追加実装） |
 
 ## 達成した要件
 
@@ -135,10 +127,6 @@ current_freq += (target_freq - current_freq) * smoothness_coeff
 ✅ **Smooth版の実装**:
 - 滑らかな周波数変化
 - 指数平滑化アルゴリズム
-
-✅ **追加実装**:
-- Tone.jsのインスタンスで動くAudioWorklet版
-- Tone.jsの各種機能が使える版
 
 ## インストール・実行方法
 
@@ -173,12 +161,7 @@ npm run build
    - 周波数範囲の調整
    - 音量調整
 
-3. **エフェクト追加 (Tone.js版)**
-   - リバーブ
-   - ディレイ
-   - フィルター
-
-4. **プリセット機能**
+3. **プリセット機能**
    - お気に入りの設定を保存
    - ロード機能
 
@@ -202,7 +185,6 @@ TypeScript ブラウザ版の実装は、要件を満たす形で完了しまし
 
 - ✅ Simple版実装
 - ✅ Smooth版実装
-- ✅ Tone.js版実装（追加）
 - ✅ AudioWorklet使用
 - ✅ マウス制御
 - ✅ ハードシンク実装
