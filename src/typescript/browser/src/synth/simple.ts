@@ -17,35 +17,15 @@ export class SimpleSynth {
     this.audioContext = new AudioContext({ sampleRate: 48000 });
     console.log('[SimpleSynth] AudioContext created, state:', this.audioContext.state);
 
-    // Ensure AudioContext is resumed (required for some browsers)
-    if (this.audioContext.state === 'suspended') {
-      console.log('[SimpleSynth] Resuming suspended AudioContext...');
-      await this.audioContext.resume();
-      console.log('[SimpleSynth] AudioContext resumed, state:', this.audioContext.state);
-    }
-
     // Load and add AudioWorklet module
     try {
-      console.log('[SimpleSynth] Loading worklet module from /worklets/simple-worklet.js');
-      const startTime = Date.now();
-      
-      // Add timeout to catch hanging addModule calls
-      const timeoutMs = 10000; // 10 seconds
-      const addModulePromise = this.audioContext.audioWorklet.addModule('/worklets/simple-worklet.js');
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error(`Worklet loading timed out after ${timeoutMs}ms`)), timeoutMs)
-      );
-      
-      await Promise.race([addModulePromise, timeoutPromise]);
-      const elapsed = Date.now() - startTime;
-      console.log(`[SimpleSynth] Worklet module loaded successfully in ${elapsed}ms`);
+      console.log('[SimpleSynth] Loading worklet module...');
+      const workletUrl = new URL('/src/audio/simple-worklet.ts', window.location.href).href;
+      console.log('[SimpleSynth] Worklet URL:', workletUrl);
+      await this.audioContext.audioWorklet.addModule(workletUrl);
+      console.log('[SimpleSynth] Worklet module loaded successfully');
     } catch (error) {
       console.error('[SimpleSynth] Failed to load worklet module:', error);
-      console.error('[SimpleSynth] Error details:', {
-        name: error instanceof Error ? error.name : 'unknown',
-        message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined
-      });
       throw error;
     }
 
