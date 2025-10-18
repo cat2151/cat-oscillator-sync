@@ -19,12 +19,20 @@ fn main() -> Result<(), anyhow::Error> {
     println!("Output device: {}", device.name()?);
 
     // デバイス設定の取得
-    let config = device.default_output_config()?;
-    println!("Default output config: {:?}", config);
+    let default_config = device.default_output_config()?;
+    println!("Default output config: {:?}", default_config);
 
-    // サンプルレートの取得
-    let sample_rate = config.sample_rate().0 as f32;
-    println!("Sample rate: {} Hz", sample_rate);
+    // モノラル（1チャンネル）で設定を構築
+    let config = cpal::StreamConfig {
+        channels: 1,
+        sample_rate: default_config.sample_rate(),
+        buffer_size: cpal::BufferSize::Default,
+    };
+    let sample_rate = config.sample_rate.0 as f32;
+    println!(
+        "Configured for: {} Hz, {} channel (mono)",
+        sample_rate, config.channels
+    );
 
     // オシレータの状態
     let phase = Arc::new(Mutex::new(0.0f32));
@@ -33,7 +41,7 @@ fn main() -> Result<(), anyhow::Error> {
     // ストリーム構築
     let phase_clone = Arc::clone(&phase);
     let stream = device.build_output_stream(
-        &config.into(),
+        &config,
         move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
             let mut phase_lock = phase_clone.lock().unwrap();
             let phase_increment = frequency / sample_rate;

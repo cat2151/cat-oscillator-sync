@@ -51,9 +51,20 @@ fn main() -> Result<(), anyhow::Error> {
     println!("Output device: {}", device.name()?);
 
     // デバイス設定の取得
-    let config = device.default_output_config()?;
-    let sample_rate = config.sample_rate().0 as f32;
-    println!("Sample rate: {} Hz", sample_rate);
+    let default_config = device.default_output_config()?;
+    println!("Default output config: {:?}", default_config);
+
+    // モノラル（1チャンネル）で設定を構築
+    let config = cpal::StreamConfig {
+        channels: 1,
+        sample_rate: default_config.sample_rate(),
+        buffer_size: cpal::BufferSize::Default,
+    };
+    let sample_rate = config.sample_rate.0 as f32;
+    println!(
+        "Configured for: {} Hz, {} channel (mono)",
+        sample_rate, config.channels
+    );
 
     // 状態の共有
     let state = Arc::new(Mutex::new(SynthState::new()));
@@ -103,7 +114,7 @@ fn main() -> Result<(), anyhow::Error> {
     // オーディオストリーム構築
     let state_audio = Arc::clone(&state);
     let stream = device.build_output_stream(
-        &config.into(),
+        &config,
         move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
             let mut s = state_audio.lock().unwrap();
 
