@@ -113,16 +113,19 @@ fn main() -> Result<(), anyhow::Error> {
             for sample in data.iter_mut() {
                 // マスターオシレータの位相を進める
                 s.phase_master += inc_master;
+
+                // マスター位相のラップアラウンドを検出
                 if s.phase_master >= 1.0 {
                     s.phase_master -= 1.0;
                     // マスターがリセットされたら、スレーブもリセット
+                    // Python版と同じく、リセット時点で位相を0にする
                     s.phase_slave = 0.0;
-                }
-
-                // スレーブオシレータの位相を進める
-                s.phase_slave += inc_slave;
-                if s.phase_slave >= 1.0 {
-                    s.phase_slave -= 1.0;
+                } else {
+                    // マスターがリセットされていない場合のみ、スレーブ位相を進める
+                    s.phase_slave += inc_slave;
+                    if s.phase_slave >= 1.0 {
+                        s.phase_slave -= 1.0;
+                    }
                 }
 
                 // ノコギリ波: 位相を -1.0 から 1.0 の範囲に変換
