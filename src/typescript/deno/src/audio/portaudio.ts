@@ -110,14 +110,15 @@ export function openStream(
   }
 
   // Create callback wrapper
-  const callbackDefinition = {
+  // Note: Using type assertion due to Deno FFI callback type complexity
+  // deno-lint-ignore no-explicit-any
+  const callbackDefinition: any = {
     parameters: ["pointer", "pointer", "u32", "pointer", "u32", "pointer"],
     result: "i32",
   } as const;
 
-  // deno-lint-ignore no-explicit-any
   callbackResource = new Deno.UnsafeCallback(
-    callbackDefinition as any,
+    callbackDefinition,
     (...args: unknown[]) => {
       const output = args[1] as Deno.PointerValue;
       const frameCount = args[2] as number;
@@ -134,6 +135,7 @@ export function openStream(
 
       return 0; // paContinue
     },
+    // deno-lint-ignore no-explicit-any
   ) as any;
 
   // Open stream
