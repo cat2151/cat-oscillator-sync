@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Oscillator Sync - Browser Edition</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      max-width: 90%;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    .controls {
+      margin-top: 2rem;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 1rem 2rem;
+      margin: 0.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .info {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .frequency-display {
+      margin-top: 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: 1.3rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      display: none;
+    }
+
+    .frequency-display.active {
+      display: block;
+    }
+
+    .freq-value {
+      color: #4ade80;
+      font-weight: bold;
+    }
+
+    .instructions {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      opacity: 0.8;
+      line-height: 1.6;
+    }
+
+    .version-selector {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    .version-selector label {
+      margin: 0 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .version-selector input[type="radio"] {
+      cursor: pointer;
+      margin-right: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 Cat Oscillator Sync</h1>
+    <p class="subtitle">マウスで制御するハードシンク・シンセサイザー</p>
+
+    <div class="version-selector">
+      <label>
+        <input type="radio" name="version" value="simple" checked>
+        Simple版 (階段状の周波数変化)
+      </label>
+      <label>
+        <input type="radio" name="version" value="smooth">
+        Smooth版 (滑らかな周波数変化)
+      </label>
+      <label>
+        <input type="radio" name="version" value="tonejs">
+        Tone.js版 (AudioWorklet + Tone.js)
+      </label>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">音を開始</button>
+      <button id="stopBtn" disabled>音を停止</button>
+    </div>
+
+    <div class="frequency-display" id="freqDisplay">
+      <div>Master (X軸): <span class="freq-value" id="masterFreq">0</span> Hz</div>
+      <div>Slave (Y軸): <span class="freq-value" id="slaveFreq">0</span> Hz</div>
+      <div>マウス位置: <span class="freq-value" id="mousePos">0, 0</span></div>
+    </div>
+
+    <div class="info">
+      <strong>操作方法:</strong><br>
+      1. 「音を開始」ボタンをクリック<br>
+      2. マウスを動かして音を制御<br>
+      - <strong>X軸</strong> (横): マスター周波数 (40-600 Hz)<br>
+      - <strong>Y軸</strong> (縦): スレーブ周波数 (100-2000 Hz)
+    </div>
+
+    <div class="instructions">
+      ⚠️ 初回クリック時、ブラウザがオーディオ再生の許可を求める場合があります<br>
+      💡 ハードシンクとは: マスター波形がスレーブ波形の位相をリセットすることで、豊かな倍音を生成する音響合成技術
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
