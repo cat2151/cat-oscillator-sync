@@ -22,7 +22,13 @@ export class ToneJSSynth {
     const audioContext = context._context as AudioContext;
 
     // Load and add AudioWorklet module to Tone.js context
-    await audioContext.audioWorklet.addModule('/src/audio/tonejs-worklet.ts');
+    try {
+      await audioContext.audioWorklet.addModule('/src/audio/tonejs-worklet.ts');
+      console.log('Tone.js worklet module loaded successfully');
+    } catch (error) {
+      console.error('Failed to load worklet module:', error);
+      throw error;
+    }
 
     // Create AudioWorklet node
     this.workletNode = new AudioWorkletNode(audioContext, 'tonejs-worklet-processor', {

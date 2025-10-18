@@ -15,7 +15,13 @@ export class SmoothSynth {
     this.audioContext = new AudioContext({ sampleRate: 48000 });
 
     // Load and add AudioWorklet module
-    await this.audioContext.audioWorklet.addModule('/src/audio/smooth-worklet.ts');
+    try {
+      await this.audioContext.audioWorklet.addModule('/src/audio/smooth-worklet.ts');
+      console.log('Smooth worklet module loaded successfully');
+    } catch (error) {
+      console.error('Failed to load worklet module:', error);
+      throw error;
+    }
 
     // Create AudioWorklet node with options
     this.workletNode = new AudioWorkletNode(this.audioContext, 'smooth-worklet-processor', {
