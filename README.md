@@ -133,7 +133,7 @@ ruff check --fix src/ tests/
 ## 今後の予定
 
 - [x] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md) | [README](src/rust/README.md) | [クイックスタート](src/rust/QUICKSTART.md)
-- [ ] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md)
+- [x] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md) | [README](src/go/README.md) | [クイックスタート](src/go/QUICKSTART.md)
 - [x] TypeScript実装（ブラウザ版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/browser/README.md)
 - [x] TypeScript実装（Deno版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/deno/README.md) | [クイックスタート](src/typescript/deno/QUICKSTART.md)
 - [ ] TypeScript実装（Obsidianプラグイン版） - [実装計画書](src/obsidian/IMPLEMENTATION_PLAN.md) | [README](src/obsidian/README.md)
@@ -150,10 +150,12 @@ ruff check --fix src/ tests/
   - pythonでLLM chatbotに実装させたこのシンプルなコードが、
   - Rustでもagentにより移植可能か？を検証すること
   - 結果、実現できた（minimal版とsimple版の両方を実装）
-- [ ] Go, TypeScript:
-  - 同様にGo, TypeScriptでもagentにより移植可能か？
-  - を検証し、その結果が出ること
-  - 「現時点のagentでは、このuserの使い方では、移植できなかった」という結果でもよい
+- [x] Go:
+  - 同様にGoでもagentにより移植可能か？を検証すること
+  - 結果、実現できた（simple版とsmooth版の両方を実装）
+- [x] TypeScript:
+  - 同様にTypeScriptでもagentにより移植可能か？を検証すること
+  - 結果、実現できた（ブラウザ版として実装）
 
 ## スコープ外
 - MIDI制御
