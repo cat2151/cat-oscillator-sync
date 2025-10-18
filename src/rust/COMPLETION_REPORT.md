@@ -226,6 +226,92 @@ issue 2の目標：
 - ✅ トラブルシューティングガイド
 - ✅ 英語/日本語ドキュメント
 
+## エリアシングノイズの修正 (2025-10-18)
+
+### 問題
+Rust版において、高い周波数の音でPython版よりも極端に大きなエリアシングノイズが発生していました。
+
+### 原因
+エリアシングノイズの根本原因は**チャンネル設定の違い**でした。2つの問題がありました：
+
+#### 問題1: チャンネル設定の違い（主要な原因）
+
+**Python版:**
+```python
+sd.OutputStream(channels=1, ...)  # 明示的にモノラル（1チャンネル）を指定
+```
+
+**Rust版（修正前）:**
+```rust
+let config = device.default_output_config()?;  // デフォルト設定を使用（多くの場合ステレオ）
+let stream = device.build_output_stream(&config.into(), ...);
+```
+
+デフォルト設定がステレオ（2チャンネル）の場合、モノラル音声データがバッファに書き込まれると、サンプルが左右チャンネルに交互に割り当てられてしまいます。これにより：
+- 各チャンネルの実効サンプリングレートが半減
+- 48kHz設定でも、実際には各チャンネルが24kHzで動作
+- ナイキスト周波数が12kHzに低下し、高周波でエリアシングが発生
+
+#### 問題2: 位相リセットのタイミング（副次的な問題）
+
+ハードシンクの位相リセット処理において、Python版とRust版で以下の違いがありました：
+
+**Python版の動作:**
+```python
+# マスター位相がラップした時点で、スレーブ位相を0にリセット
+# その0の値が出力に使用される
+slave_phase[rp:] = (inc_slave * np.arange(frames - rp)) % 1.0
+# rp時点では slave_phase[rp] = 0
+```
+
+**Rust版の動作（最初の修正前）:**
+```rust
+if s.phase_master >= 1.0 {
+    s.phase_master -= 1.0;
+    s.phase_slave = 0.0;  // リセット
+}
+s.phase_slave += inc_slave;  // すぐに増分
+*sample = 2.0 * s.phase_slave - 1.0;  // inc_slave の値が出力される
+```
+
+### 解決策
+
+#### 解決策1: チャンネル設定の明示的指定（コミット f308683）
+
+```rust
+// モノラル（1チャンネル）で設定を構築
+let config = cpal::StreamConfig {
+    channels: 1,  // 明示的にモノラルを指定
+    sample_rate: default_config.sample_rate(),
+    buffer_size: cpal::BufferSize::Default,
+};
+println!("Configured for: {} Hz, {} channel (mono)", sample_rate, config.channels);
+```
+
+起動時に以下の情報を表示：
+- デフォルトのデバイス設定
+- 実際に使用される設定（チャンネル数を含む）
+
+#### 解決策2: 位相リセットタイミングの修正（コミット 90758a5）
+
+```rust
+if s.phase_master >= 1.0 {
+    s.phase_master -= 1.0;
+    s.phase_slave = 0.0;
+} else {
+    // マスターがリセットされていない場合のみ、スレーブ位相を進める
+    s.phase_slave += inc_slave;
+    if s.phase_slave >= 1.0 {
+        s.phase_slave -= 1.0;
+    }
+}
+*sample = 2.0 * s.phase_slave - 1.0;  // リセット時は0.0が出力される
+```
+
+### 影響範囲
+- `src/rust/src/sync_simple.rs`: チャンネル設定の明示化と位相処理ロジックの修正
+- `src/rust/src/minimal.rs`: チャンネル設定の明示化（一貫性のため）
+
 ## 今後の改善案
 
 ### 短期的
