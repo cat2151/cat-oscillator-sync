@@ -5,10 +5,9 @@
 
 import { SimpleSynth } from './synth/simple';
 import { SmoothSynth } from './synth/smooth';
-import { ToneJSSynth } from './synth/tonejs';
 
-type SynthVersion = 'simple' | 'smooth' | 'tonejs';
-type Synth = SimpleSynth | SmoothSynth | ToneJSSynth;
+type SynthVersion = 'simple' | 'smooth';
+type Synth = SimpleSynth | SmoothSynth;
 
 class App {
   private synth: Synth | null = null;
@@ -66,9 +65,6 @@ class App {
           break;
         case 'smooth':
           this.synth = new SmoothSynth();
-          break;
-        case 'tonejs':
-          this.synth = new ToneJSSynth();
           break;
       }
 

@@ -45,14 +45,6 @@ http://localhost:5173
 4. Move your mouse around
 5. The frequency changes should be smoother compared to Simple version
 
-### 5. Test Tone.js Version
-
-1. Click "音を停止" button
-2. Select "Tone.js版" radio button
-3. Click "音を開始" button again
-4. Move your mouse around
-5. Should work similar to Smooth version, but using Tone.js context
-
 ### Expected Results
 
 - ✅ Frequency display should appear and update with mouse movement
@@ -92,12 +84,11 @@ Even if AudioWorklet testing fails in Playwright, the implementation is complete
 
 1. ✅ **Simple version** with step-wise frequency changes
 2. ✅ **Smooth version** with exponential smoothing
-3. ✅ **Tone.js version** with AudioWorklet integration
-4. ✅ Proper hard sync implementation in all AudioWorklet processors
-5. ✅ Mouse tracking with 8ms polling interval
-6. ✅ Frequency mapping (X: 40-600 Hz, Y: 100-2000 Hz)
-7. ✅ UI with version selection and real-time frequency display
-8. ✅ Proper error handling and logging
+3. ✅ Proper hard sync implementation in all AudioWorklet processors
+4. ✅ Mouse tracking with 8ms polling interval
+5. ✅ Frequency mapping (X: 40-600 Hz, Y: 100-2000 Hz)
+6. ✅ UI with version selection and real-time frequency display
+7. ✅ Proper error handling and logging
 
 ## Notes
 
