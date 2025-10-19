@@ -1,0 +1,28 @@
+{
+  "name": "cat-oscillator-sync-obsidian",
+  "version": "0.1.0",
+  "description": "マウスで制御するハードシンク・オシレータ・シンセサイザー（Obsidianプラグイン）",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production"
+  },
+  "keywords": [
+    "obsidian",
+    "plugin",
+    "synthesizer",
+    "audio"
+  ],
+  "author": "cat2151",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "builtin-modules": "^3.3.0",
+    "esbuild": "^0.19.11",
+    "obsidian": "latest",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3"
+  }
+}

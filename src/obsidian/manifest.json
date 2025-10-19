@@ -1,0 +1,10 @@
+{
+  "id": "cat-oscillator-sync",
+  "name": "Cat Oscillator Sync",
+  "version": "0.1.0",
+  "minAppVersion": "0.15.0",
+  "description": "マウスで制御するハードシンク・オシレータ・シンセサイザー",
+  "author": "cat2151",
+  "authorUrl": "https://github.com/cat2151",
+  "isDesktopOnly": true
+}
