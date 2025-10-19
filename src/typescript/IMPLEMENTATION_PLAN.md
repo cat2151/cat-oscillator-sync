@@ -2,20 +2,18 @@
 
 ## 概要
 Python版のcat-oscillator-syncをTypeScriptで実装する計画書です。
-**ブラウザ版**と**ローカル版**の2つのアプローチを検討し、それぞれのメリット・デメリットを評価します。
+**ブラウザ版**と**CLI版（Node.js）**の2つのアプローチで実装します。
 
 ## 目標
 - Python版と同等の機能（マウス制御によるハードシンク・オシレータ）を実装
-- Windows環境での動作を優先
+- **Windows環境での動作に特化**
 - 低レイテンシな音声出力
 - シンプルなインストールと実行手順
 
-## アプローチ比較
+## 実装アプローチ
 
 ### 1. ブラウザ版
-### 2. ローカル版（Node.js）
-### 3. ローカル版（Deno）
-### 4. ローカル版（Bun）
+### 2. CLI版（Node.js・Windows専用）
 
 ---
 
@@ -141,66 +139,57 @@ npm run build
 
 ---
 
-## 2. ローカル版（Node.js）実装計画
+## 2. CLI版（Node.js・Windows専用）実装計画
 
 ### 概要
-Node.jsランタイムでPortAudioバインディングを使用する実装。
+Node.jsランタイムで`speaker`パッケージを使用したWindows専用のCLI実装。
 
 ### ライブラリ選定
 
 #### オーディオ出力
 
-**選択肢A: node-portaudio**
+**選択: speaker**
 - **メリット:**
-  - PortAudioのNode.jsバインディング
-  - Python版と同じPortAudioを使用
+  - リアルタイムオーディオ出力が可能
+  - 低レイテンシ
+  - Windows環境で動作確認済み
+  - アクティブにメンテナンスされている
 - **デメリット:**
-  - **開発停滞:** 最終更新が古い（メンテナンスされていない）
-  - **ビルドが困難:** ネイティブモジュールのビルドが必要
-  - **Windows環境で複雑:**
-    1. Python 2.7のインストールが必要（node-gypのため）
-    2. Visual Studio Build Toolsのインストール
-    3. PortAudioのソースからビルド
-  - **非推奨:** メンテナンスされていない
-- **GitHub:** https://github.com/joeferner/node-portaudio (archived)
-
-**選択肢B: node-speaker + node-portaudio**
-- 同様にネイティブモジュールのビルドが必要
-- Windows環境で複雑
-
-**選択肢C: Web Audio API (Electron経由)**
-- Electronを使用してブラウザ版をデスクトップアプリ化
-- PortAudioではないが、シンプル
-- **推奨アプローチ**
+  - ネイティブモジュール（ビルドが必要）
+  - Visual Studio Build Toolsが必要
+- **GitHub:** https://github.com/TooTallNate/node-speaker
+- **npm:** https://www.npmjs.com/package/speaker
 
 #### マウス位置取得
 
 **選択: robotjs**
 - **メリット:**
-  - クロスプラットフォーム対応
-  - マウス位置取得が簡単
+  - Windows環境で動作確認済み
+  - シンプルなAPI
+  - マウス位置とスクリーンサイズを取得可能
 - **デメリット:**
   - ネイティブモジュール（ビルドが必要）
-  - Windows環境でVisual Studio Build Toolsが必要
+  - Visual Studio Build Toolsが必要
 - **GitHub:** https://github.com/octalmage/robotjs
-
-**代替: node-ffi + Windows API**
-- より複雑だが、外部依存が少ない
 
 ### プロジェクト構成
 
 ```
-src/typescript/local-nodejs/
+src/typescript/cli/
 ├── package.json           # npm設定
 ├── tsconfig.json          # TypeScript設定
 ├── README.md             # 実装後のREADME
+├── QUICKSTART.md         # クイックスタート
+├── .gitignore            # Git除外設定
 ├── src/
 │   ├── main.ts           # エントリポイント
-│   ├── synth/
-│   │   ├── simple.ts     # シンプル版実装
-│   │   └── smooth.ts     # スムーズ版実装
-│   └── mouse/
-│       └── position.ts   # マウス位置取得
+│   ├── audio/
+│   │   └── output.ts     # speaker を使用したオーディオ出力
+│   ├── mouse/
+│   │   └── position.ts   # robotjs を使用したマウス位置取得
+│   └── synth/
+│       ├── simple.ts     # シンプル版シンセサイザー
+│       └── smooth.ts     # スムーズ版シンセサイザー
 └── dist/                 # ビルド出力
 ```
 
@@ -208,15 +197,17 @@ src/typescript/local-nodejs/
 
 ```json
 {
-  "name": "cat-oscillator-sync-nodejs",
-  "version": "0.1.0",
+  "name": "cat-oscillator-sync-cli",
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "dev": "tsc && node dist/main.js"
   },
   "dependencies": {
+    "speaker": "^0.5.4",
     "robotjs": "^0.6.0"
-    // PortAudioバインディングは現実的ではない
   },
   "devDependencies": {
     "typescript": "^5.3.0",
@@ -225,37 +216,67 @@ src/typescript/local-nodejs/
 }
 ```
 
-### インストール手順
+### インストール手順（Windows）
 
-```bash
-# 前提条件（非常に複雑）
-1. Node.jsのインストール
-2. Python 2.7のインストール（node-gyp用）
-3. Visual Studio Build Toolsのインストール
-4. Windows SDKのインストール
+```powershell
+# 1. Node.jsのインストール
+# https://nodejs.org/ からLTS版をダウンロードしてインストール
 
-# ビルド
-npm install  # ネイティブモジュールのビルドで失敗する可能性が高い
+# 2. ビルドツールのインストール（管理者権限で実行）
+npm install --global windows-build-tools
 
-# 実行
+# 3. リポジトリのクローンと移動
+git clone https://github.com/cat2151/cat-oscillator-sync.git
+cd cat-oscillator-sync\src\typescript\cli
+
+# 4. 依存パッケージのインストール
+npm install
+
+# 5. ビルド
+npm run build
+
+# 6. 実行
 npm start
+```
+
+### 使用方法
+
+```powershell
+# シンプル版
+npm start
+
+# スムーズ版
+node dist/main.js smooth
 ```
 
 ### 開発環境構築の複雑度評価
 
-**⭐ (非常に複雑 - 推奨しない)**
+**⭐⭐⭐⭐ (簡単 - Windows専用として推奨)**
 
 **理由:**
-1. **ネイティブモジュールのビルド:** Python 2.7 + Visual Studio Build Tools
-2. **PortAudioバインディングが古い:** メンテナンスされていない
-3. **ビルド失敗のリスク:** Windows環境で特に高い
-4. **手作業でのDLL配置:** 必要になる可能性
+1. **Node.jsのインストール:** 公式インストーラーで簡単
+2. **ビルドツール:** 1コマンドでインストール可能
+3. **依存関係:** `npm install`で自動解決
+4. **動作確認済み:** speakerパッケージはWindows環境で確認済み
 
-**優先度: ⭐ (最低 - 推奨しない)**
+**優先度: ⭐⭐⭐⭐ (高 - Windows専用として推奨)**
+
+### 実装済みの機能
+
+- ✅ シンプル版シンセサイザー（8msごとの周波数更新）
+- ✅ スムーズ版シンセサイザー（指数平滑化）
+- ✅ リアルタイムマウス位置取得
+- ✅ 低レイテンシオーディオ出力
+- ✅ Windows最適化
+- ✅ 詳細なREADMEとクイックスタート
 
 ---
 
-## 3. ローカル版（Deno）実装計画
+## アーカイブ: その他の検討したアプローチ
+
+以下のアプローチも検討しましたが、Windows環境での複雑さや動作保証の観点から採用しませんでした。
+
+### 3. ローカル版（Deno）- アーカイブ
 
 ### 概要
 DenoランタイムでFFI（Foreign Function Interface）を使用する実装。
@@ -358,7 +379,7 @@ deno task start
 
 ---
 
-## 4. ローカル版（Bun）実装計画
+### 4. ローカル版（Bun）- アーカイブ
 
 ### 概要
 Bunランタイムを使用する実装。Node.jsの代替として注目されている。
@@ -392,42 +413,37 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 
 ## アプローチ別総合評価
 
-| アプローチ | 優先度 | 複雑度 | PortAudio使用 | DLL手動配置 | 推奨度 |
-|---------|-------|-------|-------------|-----------|-------|
-| **ブラウザ版** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ❌ | 不要 | **最推奨** |
-| **Node.js + Electron** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ❌ | 不要 | 推奨 |
-| **Node.js (ネイティブ)** | ⭐ | ⭐ | ✅ | 必要 | **非推奨** |
-| **Deno + FFI** | ⭐⭐⭐ | ⭐⭐⭐ | ✅ | 必要 | 検討可 |
-| **Bun** | ⭐ | - | - | - | 非推奨 |
+| アプローチ | 優先度 | 複雑度 | Windows対応 | ビルド必要 | 推奨度 |
+|---------|-------|-------|-----------|----------|-------|
+| **ブラウザ版** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ✅ | 必要 | **最推奨（Web）** |
+| **CLI版 (Node.js + speaker)** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ✅ | 必要 | **推奨（Windows）** |
 
 ---
 
 ## 推奨実装戦略
 
-### 最優先: ブラウザ版
+### Windows環境向けの推奨実装
+
+**実装の優先順位:**
+1. **CLI版（Node.js + speaker）** - Windows専用、CUIで動作
+2. **ブラウザ版** - クロスプラットフォーム、Webで動作
+
+### CLI版（Node.js + speaker）の利点
 
 **理由:**
-1. **最もシンプルな環境構築:** ブラウザのみ
+1. **Windows環境で動作確認済み:** `speaker`パッケージはWindows環境で確認済み
+2. **低レイテンシ:** リアルタイムオーディオ出力
+3. **シンプルなAPI:** `speaker`と`robotjs`で実装がシンプル
+4. **CUIで動作:** コマンドプロンプトから即座に起動
+5. **TypeScript:** 型安全な開発環境
+
+### ブラウザ版の利点
+
+**理由:**
+1. **環境構築が不要:** ブラウザのみ
 2. **クロスプラットフォーム:** Windows以外でも動作
 3. **即座に体験可能:** URLアクセスのみ
 4. **Web Audio APIは低レイテンシ:** AudioWorklet使用時
-
-**実装の優先順位:**
-1. ブラウザ版（必須）
-2. Electron版（オプション - デスクトップアプリとして配布したい場合）
-3. Deno版（実験的 - PortAudio要件を満たしたい場合）
-
-### PortAudio要件について
-
-**重要な考察:**
-- **要件:** 「PortAudio系ライブラリを使用」
-- **ブラウザ版:** Web Audio APIを使用（PortAudioではない）
-- **しかし:** Web Audio APIは低レイテンシで、目的は達成可能
-
-**提案:**
-1. **ブラウザ版を主実装として推奨**（最もシンプル）
-2. **Deno + FFI版を補助実装**（PortAudio要件を満たす）
-3. **Node.js + ネイティブは避ける**（複雑すぎる）
 
 ---
 
@@ -464,15 +480,31 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 
 ---
 
-## Deno版実装計画（補助）
+## 実装計画（CLI版・Node.js）
 
-### Phase 1: FFIラッパーの実装
-1. PortAudio FFI定義
-2. Windows API FFI定義（マウス位置）
+### Phase 1: プロジェクト構造の構築
+1. Node.jsプロジェクトの初期化
+2. TypeScript設定
+3. 依存パッケージのインストール（speaker、robotjs）
+
+### Phase 2: オーディオ出力とマウス制御の実装
+1. speakerパッケージを使用したオーディオ出力モジュール
+2. robotjsを使用したマウス位置取得モジュール
 3. 基本動作確認
 
-### Phase 2-3: シンプル版・スムーズ版の実装
-（ブラウザ版と同様のロジック）
+### Phase 3: シンプル版シンセサイザーの実装
+1. ハードシンク・オシレータのロジック実装
+2. マウス位置から周波数へのマッピング
+3. リアルタイムオーディオ生成
+
+### Phase 4: スムーズ版シンセサイザーの実装
+1. 指数平滑化アルゴリズムの実装
+2. サンプルごとの周波数補間
+
+### Phase 5: ドキュメント整備
+1. README.mdの作成（Windows専用手順）
+2. QUICKSTART.mdの作成
+3. トラブルシューティング情報の追加
 
 ---
 
@@ -495,40 +527,56 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 - AudioWorkletを使用（ScriptProcessorNodeより低レイテンシ）
 - 適切なバッファサイズの設定
 
-### Deno版
+### CLI版（Node.js）
 
-#### 課題1: FFI APIの複雑さ
+#### 課題1: ネイティブモジュールのビルド
 **対策:**
-- シンプルなラッパー関数を作成
-- 型定義を明確に
+- Visual Studio Build Toolsのインストール手順を明確化
+- windows-build-toolsパッケージの活用
+- 詳細なトラブルシューティングガイドの提供
 
-#### 課題2: PortAudio DLLの配布
+#### 課題2: Windows専用の動作保証
 **対策:**
-- DLLを実行ファイルと同梱
-- または、インストールスクリプトの提供
+- Windows 10/11での動作確認
+- Windows専用であることをドキュメントに明記
+- 他のOS向けにはPython版やRust版を推奨
 
 ---
 
-## タイムライン（想定）
+## タイムライン（実績）
 
 ### ブラウザ版
-- Phase 1: 2-3時間
-- Phase 2: 3-4時間
-- Phase 3: 2-3時間
-- Phase 4: 2-3時間（オプション）
-- Phase 5: 1-2時間
-- **合計:** 10-15時間
+- Phase 1-5: 完了
+- **ステータス:** ✅ 実装完了
 
-### Deno版
-- Phase 1: 4-6時間（FFI学習含む）
-- Phase 2-3: 4-6時間
-- **合計:** 8-12時間
+### CLI版（Node.js）
+- Phase 1-5: 完了
+- **ステータス:** ✅ 実装完了
 
 ---
 
 ## まとめ
 
-### ブラウザ版（最推奨）
+### CLI版（Node.js + speaker）- Windows専用推奨
+
+**優先度: ⭐⭐⭐⭐**
+
+**メリット:**
+- ✅ Windows環境で動作確認済み
+- ✅ `speaker`パッケージによる低レイテンシ
+- ✅ リアルタイムオーディオ出力
+- ✅ TypeScriptによる型安全な開発
+- ✅ CUIで動作（コマンドプロンプトから起動）
+- ✅ シンプルなAPIと実装
+
+**デメリット:**
+- ❌ ネイティブモジュールのビルドが必要
+- ⚠️ Visual Studio Build Toolsが必要
+- ⚠️ Windows専用（他のOS では動作保証なし）
+
+**結論:** Windows環境でCUIアプリケーションとして動作させたい場合に最適。
+
+### ブラウザ版（Web向け推奨）
 
 **優先度: ⭐⭐⭐⭐⭐**
 
@@ -537,51 +585,24 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 - ✅ クロスプラットフォーム
 - ✅ 即座に体験可能
 - ✅ Web Audio APIは低レイテンシ
-- ✅ 外部DLL不要
+- ✅ 外部依存不要
 
 **デメリット:**
-- ❌ PortAudioではない（要件から外れる）
 - ⚠️ ブラウザ依存
 
-**結論:** エンドユーザー体験を最優先する場合、ブラウザ版が最適。
-
-### Deno版（補助的選択肢）
-
-**優先度: ⭐⭐⭐**
-
-**メリット:**
-- ✅ PortAudio使用可能（要件を満たす）
-- ✅ モダンなTypeScript環境
-- ✅ ビルド不要
-
-**デメリット:**
-- ❌ PortAudio DLLの手動配置が必要
-- ⚠️ FFI APIの学習コストが高い
-
-**結論:** PortAudio要件を満たしたい場合の選択肢。ただし、DLL配置が必要。
-
-### Node.js版（非推奨）
-
-**優先度: ⭐**
-
-**理由:**
-- ❌ ネイティブモジュールのビルドが非常に複雑
-- ❌ PortAudioバインディングがメンテナンスされていない
-- ❌ Python 2.7 + Visual Studio Build Tools が必要
-
-**結論:** 実装は推奨しない。
+**結論:** Webで広く公開したい場合や、クロスプラットフォーム対応が必要な場合に最適。
 
 ---
 
-## 最終推奨
+## 最終推奨（Windows環境向け）
 
-**実装優先順位:**
-1. **ブラウザ版（必須）** - 最もシンプルで実用的
-2. **Deno版（オプション）** - PortAudio要件を満たしたい場合
-3. Node.js版は避ける
+**実装済み:**
+1. ✅ **CLI版（Node.js + speaker）** - Windows専用、CUIアプリケーション
+2. ✅ **ブラウザ版** - クロスプラットフォーム、Webアプリケーション
 
-**二段構えのアプローチ:**
-- **メイン:** ブラウザ版で広く使えるバージョンを提供
-- **サブ:** Deno版でPortAudio要件も満たす
+**Windows環境での選択基準:**
+- **CUIで使いたい:** → CLI版
+- **Webで公開したい:** → ブラウザ版
+- **両方使いたい:** → 両方とも利用可能
 
-これにより、**シンプルさ**と**要件適合**の両立が可能です。
+これにより、**Windows環境に最適化されたCLI版**と**クロスプラットフォームなブラウザ版**の両方を提供できます。
