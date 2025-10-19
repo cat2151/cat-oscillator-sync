@@ -34,7 +34,6 @@ export class AudioOutput {
             channels: config.channels,
             bitDepth: config.bitDepth,
             sampleRate: config.sampleRate,
-            signed: true,
         });
 
         this.speaker.on("error", (err) => {
