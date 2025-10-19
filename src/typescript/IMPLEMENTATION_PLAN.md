@@ -223,7 +223,7 @@ src/typescript/cli/
 # https://nodejs.org/ からLTS版をダウンロードしてインストール
 
 # 2. ビルドツールのインストール（管理者権限で実行）
-npm install --global windows-build-tools
+winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 
 # 3. リポジトリのクローンと移動
 git clone https://github.com/cat2151/cat-oscillator-sync.git
@@ -532,7 +532,8 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 #### 課題1: ネイティブモジュールのビルド
 **対策:**
 - Visual Studio Build Toolsのインストール手順を明確化
-- windows-build-toolsパッケージの活用
+- winget（Windows Package Manager）を使用した簡単インストール方法を推奨
+- Visual Studio Build Tools 2022の使用を推奨
 - 詳細なトラブルシューティングガイドの提供
 
 #### 課題2: Windows専用の動作保証
