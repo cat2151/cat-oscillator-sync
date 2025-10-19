@@ -32,17 +32,17 @@ npm --version
 
 ネイティブモジュールのビルドに必要です。以下のいずれかの方法でインストールしてください：
 
-**方法1: Visual Studio Build Tools をインストール（推奨）**
+**方法1: winget を使用（推奨）**
+PowerShellを**管理者権限**で開き、以下を実行：
+```powershell
+winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+```
+
+**方法2: Visual Studio Build Tools を手動インストール**
 1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) にアクセス
 2. "Build Tools for Visual Studio 2022" をダウンロード
 3. インストーラーを実行し、「C++ によるデスクトップ開発」ワークロードを選択
 4. インストール（10-15分程度かかります）
-
-**方法2: Chocolatey を使用（自動化）**
-PowerShellを**管理者権限**で開き、以下を実行：
-```powershell
-choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
-```
 
 **注意**: インストール完了後、コマンドプロンプトまたはPowerShellを再起動してください。
 
@@ -97,11 +97,11 @@ node dist/main.js smooth
 **原因**: C++ビルドツールがインストールされていません
 
 **解決方法**:
-1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) にアクセス
-2. "Build Tools for Visual Studio 2022" をダウンロード
-3. インストーラーを実行し、「C++ によるデスクトップ開発」ワークロードを選択
-4. インストール完了後、コマンドプロンプトまたはPowerShellを再起動
-5. 再度 `npm install` を実行
+PowerShellを**管理者権限**で開き、以下を実行：
+```powershell
+winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+```
+インストール完了後、コマンドプロンプトまたはPowerShellを再起動し、再度 `npm install` を実行
 
 ### エラー: "Cannot find module"
 
