@@ -31,10 +31,11 @@ npm install
 
 **トラブルシューティング:**
 - ビルドエラーが発生した場合:
-  ```powershell
-  npm install --global windows-build-tools
-  ```
-  を実行後、再度 `npm install` を実行
+  1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) から
+     "Build Tools for Visual Studio 2022" をダウンロードしてインストール
+  2. インストーラーで「C++ によるデスクトップ開発」ワークロードを選択
+  3. インストール完了後、コマンドプロンプトまたはPowerShellを再起動
+  4. 再度 `npm install` を実行
 
 ### 3. TypeScriptのビルド
 
@@ -129,9 +130,17 @@ node dist/main.js smooth
 **問題:** node-gypまたはネイティブモジュールのビルドに失敗
 
 **解決方法:**
-1. PowerShellを管理者権限で開く
-2. `npm install --global windows-build-tools` を実行
-3. 完了後、再度 `npm install` を実行
+1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) にアクセス
+2. "Build Tools for Visual Studio 2022" をダウンロード
+3. インストーラーを実行し、「C++ によるデスクトップ開発」ワークロードを選択
+4. インストール完了後、コマンドプロンプトまたはPowerShellを再起動
+5. 再度 `npm install` を実行
+
+**代替方法（Chocolatey使用）:**
+PowerShellを管理者権限で開き、以下を実行:
+```powershell
+choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
+```
 
 ### 音が出ない
 

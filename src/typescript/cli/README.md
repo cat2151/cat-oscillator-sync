@@ -59,12 +59,18 @@ npm install
 以下のツールが必要になる場合があります：
 
 - **Visual Studio Build Tools** (C++ビルドツール)
-- インストール方法:
+- インストール方法（以下のいずれか）:
+  
+  **方法1: Visual Studio Installerを使用（推奨）**
+  1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) にアクセス
+  2. "Build Tools for Visual Studio 2022" をダウンロード
+  3. インストーラーを実行し、「C++ によるデスクトップ開発」ワークロードを選択してインストール
+  
+  **方法2: Chocolateyを使用（自動化）**
+  PowerShellを管理者権限で開き、以下を実行:
   ```powershell
-  npm install --global windows-build-tools
+  choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
   ```
-  または [Visual Studio](https://visualstudio.microsoft.com/ja/downloads/) から
-  「Build Tools for Visual Studio」をインストール
 
 ### 4. TypeScriptのコンパイル
 
@@ -184,12 +190,19 @@ if (phaseMaster >= 1.0) {
 **原因**: C++コンパイラやビルドツールが不足しています
 
 **解決方法**:
-```powershell
-npm install --global windows-build-tools
-```
 
-または、Visual Studio Build Toolsをインストール：
-https://visualstudio.microsoft.com/ja/downloads/
+**方法1: Visual Studio Build Tools をインストール（推奨）**
+1. [Visual Studio Downloads](https://visualstudio.microsoft.com/ja/downloads/) にアクセス
+2. "Build Tools for Visual Studio 2022" をダウンロード
+3. インストーラーを実行し、「C++ によるデスクトップ開発」ワークロードを選択
+4. インストール完了後、コマンドプロンプトまたはPowerShellを再起動
+5. 再度 `npm install` を実行
+
+**方法2: Chocolatey を使用**
+PowerShellを管理者権限で開き、以下を実行:
+```powershell
+choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional --passive"
+```
 
 ### エラー: "Cannot find module 'speaker'"
 

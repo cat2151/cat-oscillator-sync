@@ -222,8 +222,10 @@ src/typescript/cli/
 # 1. Node.jsのインストール
 # https://nodejs.org/ からLTS版をダウンロードしてインストール
 
-# 2. ビルドツールのインストール（管理者権限で実行）
-npm install --global windows-build-tools
+# 2. ビルドツールのインストール
+# https://visualstudio.microsoft.com/ja/downloads/ から
+# "Build Tools for Visual Studio 2022" をダウンロードしてインストール
+# インストーラーで「C++ によるデスクトップ開発」ワークロードを選択
 
 # 3. リポジトリのクローンと移動
 git clone https://github.com/cat2151/cat-oscillator-sync.git
@@ -532,7 +534,8 @@ Bunランタイムを使用する実装。Node.jsの代替として注目され�
 #### 課題1: ネイティブモジュールのビルド
 **対策:**
 - Visual Studio Build Toolsのインストール手順を明確化
-- windows-build-toolsパッケージの活用
+- Visual Studio Build Tools 2022の使用を推奨
+- Chocolateyを使用した自動インストール方法の提供
 - 詳細なトラブルシューティングガイドの提供
 
 #### 課題2: Windows専用の動作保証
