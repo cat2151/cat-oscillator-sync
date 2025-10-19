@@ -103,7 +103,7 @@ cat-oscillator-sync/
     ├── rust/              # Rust実装（完了）
     └── typescript/        # TypeScript実装
         ├── browser/       # ブラウザ版（完了）
-        └── deno/          # Deno版（完了）
+        └── cli/           # CLI版（Node.js・Windows専用）
 ```
 
 ## 開発
@@ -135,7 +135,7 @@ ruff check --fix src/ tests/
 - [x] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md) | [README](src/rust/README.md) | [クイックスタート](src/rust/QUICKSTART.md)
 - [x] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md) | [README](src/go/README.md) | [クイックスタート](src/go/QUICKSTART.md)
 - [x] TypeScript実装（ブラウザ版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/browser/README.md)
-- [x] TypeScript実装（Deno版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/deno/README.md) | [クイックスタート](src/typescript/deno/QUICKSTART.md)
+- [x] TypeScript実装（CLI版・Windows専用） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/cli/README.md) | [クイックスタート](src/typescript/cli/QUICKSTART.md)
 - [ ] TypeScript実装（Obsidianプラグイン版） - [実装計画書](src/obsidian/IMPLEMENTATION_PLAN.md) | [README](src/obsidian/README.md)
 
 **実装計画の詳細**: [実装計画書サマリー](src/IMPLEMENTATION_PLAN_SUMMARY.md)をご覧ください。
