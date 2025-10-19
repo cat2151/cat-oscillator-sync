@@ -4,10 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [[bin]]
-name = "minimal"
-path = "src/minimal.rs"
-
-[[bin]]
 name = "sync_simple"
 path = "src/sync_simple.rs"
 

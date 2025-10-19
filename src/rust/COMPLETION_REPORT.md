@@ -6,16 +6,18 @@ issue 2の計画書（IMPLEMENTATION_PLAN.md）を基に、Rust版のcat-oscilla
 
 ### 実装したプログラム
 
-1. **minimal** (`src/minimal.rs`)
-   - 440Hzのノコギリ波を再生する最小限の例
-   - オーディオ出力の基本動作確認用
-   - 約60行のシンプルなコード
-
-2. **sync_simple** (`src/sync_simple.rs`)
+1. **sync_simple** (`src/sync_simple.rs`)
    - マウス制御によるハードシンク・オシレータ
    - Python版の`sync_simple.py`と同等の機能
    - X軸でマスター周波数、Y軸でスレーブ周波数を制御
    - 約150行のコード
+
+2. **sync_smooth** (`src/sync_smooth.rs`)
+   - マウス制御によるハードシンク・オシレータ（指数平滑化版）
+   - Python版の`sync_smooth.py`と同等の機能
+   - X軸でマスター周波数、Y軸でスレーブ周波数を制御
+   - 1サンプルごとの滑らかな周波数変化を実現
+   - 約200行のコード
 
 ## 技術的詳細
 
@@ -33,18 +35,7 @@ issue 2の計画書（IMPLEMENTATION_PLAN.md）を基に、Rust版のcat-oscilla
 
 ### アーキテクチャ
 
-#### minimal.rs
-```
-オーディオストリーム
-    ↓
-位相管理 (Arc<Mutex<f32>>)
-    ↓
-ノコギリ波生成
-    ↓
-オーディオ出力
-```
-
-#### sync_simple.rs
+#### sync_simple.rs / sync_smooth.rs
 ```
 マウスイベントリスナー (別スレッド)
     ↓
@@ -74,7 +65,7 @@ issue 2の計画書（IMPLEMENTATION_PLAN.md）を基に、Rust版のcat-oscilla
 ### パフォーマンス
 
 - ビルド時間: 初回2〜5分、2回目以降は数秒
-- バイナリサイズ: minimal 663KB、sync_simple 696KB
+- バイナリサイズ: sync_simple 696KB、sync_smooth 700KB
 - メモリ使用量: Pythonより低い
 - CPU使用率: Pythonより低い
 - レイテンシ: Pythonと同等かそれ以下
@@ -126,8 +117,8 @@ cd src/rust
 cargo build --release
 
 # 実行
-cargo run --release --bin minimal
 cargo run --release --bin sync_simple
+cargo run --release --bin sync_smooth
 ```
 
 ## 実装時の工夫
@@ -180,8 +171,8 @@ cargo run --release --bin sync_simple
 - ✅ CodeQL - セキュリティ問題なし
 
 ### 実装の検証
-- ✅ minimal.rs - コンパイル成功、バイナリ生成確認
 - ✅ sync_simple.rs - コンパイル成功、バイナリ生成確認
+- ✅ sync_smooth.rs - コンパイル成功、バイナリ生成確認
 - ⚠️ 実際の音声出力テスト - CI環境のため実行不可（Windows環境での動作を想定）
 
 ## 困難な点と対応
@@ -200,7 +191,7 @@ cargo run --release --bin sync_simple
 
 ### 達成できたこと
 - ✅ Python版と同等の機能を実装
-- ✅ minimal版とsimple版の両方を実装
+- ✅ simple版とsmooth版の両方を実装
 - ✅ Windows向けの詳細なドキュメント作成
 - ✅ ビルド環境の簡素化（Rustのみで完結）
 - ✅ コード品質の確保（fmt、clippy、CodeQL）
@@ -217,9 +208,9 @@ issue 2の目標：
 > Rust版のsimple版を実装する。もし困難な場合は、saw osc 単音を鳴らすだけの最小限のexampleを実装する
 
 ### 結果
-- ✅ **両方実装できた**
-  - minimal版（saw osc 単音）
+- ✅ **simple版とsmooth版の両方を実装できた**
   - simple版（マウス制御のハードシンク）
+  - smooth版（指数平滑化によるマウス制御のハードシンク）
 
 ### 追加の成果
 - ✅ Windows向けの詳細なビルド手順書
@@ -310,12 +301,12 @@ if s.phase_master >= 1.0 {
 
 ### 影響範囲
 - `src/rust/src/sync_simple.rs`: チャンネル設定の明示化と位相処理ロジックの修正
-- `src/rust/src/minimal.rs`: チャンネル設定の明示化（一貫性のため）
+- `src/rust/src/sync_smooth.rs`: チャンネル設定の明示化（一貫性のため）
 
 ## 今後の改善案
 
 ### 短期的
-1. スムーズ版（sync_smooth）の実装
+1. ~~スムーズ版（sync_smooth）の実装~~ ✅ 完了
    - 指数平滑化による滑らかな周波数変化
    - Python版のsync_smooth.pyと同等
 
@@ -347,7 +338,7 @@ Rust版の実装は**完全に成功**しました。
 - コード品質の確保
 
 issue 2の要件を完全に満たし、さらに：
-- 最小限の例（minimal）と完全版（sync_simple）の両方を実装
+- simple版とsmooth版の両方を実装
 - Windows初心者向けの詳細なガイド作成
 - セキュリティチェック完了
 

@@ -15,11 +15,10 @@ It provides the same functionality as the Python version with better performance
 
 ### What's Included
 
-This Rust implementation includes three programs:
+This Rust implementation includes two programs:
 
-1. **minimal** - Minimal example: plays a 440Hz saw wave
-2. **sync_simple** - Simple version: hard-sync oscillator with mouse control
-3. **sync_smooth** - Smooth version: hard-sync oscillator with exponential smoothing
+1. **sync_simple** - Simple version: hard-sync oscillator with mouse control
+2. **sync_smooth** - Smooth version: hard-sync oscillator with exponential smoothing
 
 ### Quick Start for Windows
 
@@ -43,9 +42,6 @@ cd src/rust
 # Build (first time takes 2-5 minutes)
 cargo build --release
 
-# Run minimal example (440Hz single tone)
-cargo run --release --bin minimal
-
 # Run simple version (mouse control)
 cargo run --release --bin sync_simple
 
@@ -54,10 +50,6 @@ cargo run --release --bin sync_smooth
 ```
 
 ### How to Use
-
-#### Minimal Example
-- Plays a 440Hz (A4 note) saw wave
-- Press Ctrl+C to exit
 
 #### Simple Version
 - Move your mouse to control the sound:
@@ -103,11 +95,10 @@ Python版と同等の機能を持ち、より高速で低レイテンシな動�
 
 ## 実装内容
 
-このRust実装には3つのプログラムがあります：
+このRust実装には2つのプログラムがあります：
 
-1. **minimal** - 最小限の例：440Hzのノコギリ波を再生
-2. **sync_simple** - シンプル版：マウス制御によるハードシンク・オシレータ
-3. **sync_smooth** - スムーズ版：指数平滑化によるマウス制御ハードシンク・オシレータ
+1. **sync_simple** - シンプル版：マウス制御によるハードシンク・オシレータ
+2. **sync_smooth** - スムーズ版：指数平滑化によるマウス制御ハードシンク・オシレータ
 
 ## Windows環境でのビルド・実行手順
 
@@ -166,16 +157,6 @@ cargo build --release
 ```
 
 ### 実行手順
-
-#### 最小限の例（440Hz単音）
-
-```bash
-cargo run --release --bin minimal
-```
-
-実行すると：
-- 440Hz（A4音）のノコギリ波が再生されます
-- Ctrl+C で終了します
 
 #### シンプル版（マウス制御）
 
@@ -250,7 +231,6 @@ src/rust/
 ├── README.md              # このファイル
 ├── IMPLEMENTATION_PLAN.md # 実装計画書
 └── src/
-    ├── minimal.rs         # 最小限の例
     ├── sync_simple.rs     # シンプル版実装
     └── sync_smooth.rs     # スムーズ版実装
 ```
