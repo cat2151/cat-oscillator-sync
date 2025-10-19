@@ -11,6 +11,10 @@ path = "src/minimal.rs"
 name = "sync_simple"
 path = "src/sync_simple.rs"
 
+[[bin]]
+name = "sync_smooth"
+path = "src/sync_smooth.rs"
+
 [dependencies]
 cpal = "0.15"
 anyhow = "1.0"
