@@ -78,17 +78,6 @@ cargo build --release
 
 ### 3. 実行
 
-#### 最小限の例（440Hz単音）を実行
-
-```bash
-cargo run --release --bin minimal
-```
-
-実行すると：
-- 「🎵 Minimal Saw Oscillator Example」と表示されます
-- 440Hz（A4音）のノコギリ波が鳴ります
-- **Ctrl+C** で終了します
-
 #### シンプル版（マウス制御）を実行
 
 ```bash
@@ -163,7 +152,7 @@ rustup update
 
 ### コードの変更
 
-`src/minimal.rs` や `src/sync_simple.rs` を編集した場合：
+`src/sync_simple.rs` や `src/sync_smooth.rs` を編集した場合：
 1. ファイルを保存
 2. `cargo build --release` でビルド
 3. `cargo run --release --bin <プログラム名>` で実行
