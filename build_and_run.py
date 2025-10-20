@@ -45,12 +45,18 @@ def command_exists(command: str) -> bool:
     try:
         subprocess.run(
             [command, "--version"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             check=False,
+            text=True,
         )
+        # Command found if it executed (even if exit code is non-zero)
         return True
     except FileNotFoundError:
+        return False
+    except Exception as e:
+        # Log unexpected errors for debugging
+        log_warning(f"{command}のチェック中に予期しないエラー: {e}")
         return False
 
 
@@ -141,6 +147,32 @@ def build_typescript_cli(script_dir: Path) -> None:
 
     if not command_exists("npm"):
         log_warning("npmが見つかりません。TypeScript CLI版はスキップします。")
+        # Diagnostic information
+        path_env = os.environ.get("PATH", "")
+        log_info(f"診断情報: PATH環境変数の長さ = {len(path_env)} 文字")
+        log_info(f"診断情報: PATHに含まれるディレクトリ数 = {len(path_env.split(os.pathsep))}")
+        # Try to find npm/npm.cmd/npm.exe in PATH
+        for path_dir in path_env.split(os.pathsep):
+            if path_dir and os.path.isdir(path_dir):
+                npm_variants = ["npm", "npm.cmd", "npm.exe"]
+                for variant in npm_variants:
+                    npm_path = Path(path_dir) / variant
+                    if npm_path.exists():
+                        log_info(f"診断情報: npm発見 - {npm_path}")
+                        try:
+                            test_result = subprocess.run(
+                                [str(npm_path), "--version"],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                text=True,
+                                check=False,
+                            )
+                            log_info(
+                                f"診断情報: npm実行テスト - 終了コード={test_result.returncode}, "
+                                f"出力={test_result.stdout.strip()[:50]}"
+                            )
+                        except Exception as e:
+                            log_info(f"診断情報: npm実行エラー - {e}")
         return
 
     ts_cli_dir = script_dir / "src" / "typescript" / "cli"
@@ -164,6 +196,32 @@ def build_typescript_browser(script_dir: Path) -> None:
 
     if not command_exists("npm"):
         log_warning("npmが見つかりません。TypeScript Browser版はスキップします。")
+        # Diagnostic information
+        path_env = os.environ.get("PATH", "")
+        log_info(f"診断情報: PATH環境変数の長さ = {len(path_env)} 文字")
+        log_info(f"診断情報: PATHに含まれるディレクトリ数 = {len(path_env.split(os.pathsep))}")
+        # Try to find npm/npm.cmd/npm.exe in PATH
+        for path_dir in path_env.split(os.pathsep):
+            if path_dir and os.path.isdir(path_dir):
+                npm_variants = ["npm", "npm.cmd", "npm.exe"]
+                for variant in npm_variants:
+                    npm_path = Path(path_dir) / variant
+                    if npm_path.exists():
+                        log_info(f"診断情報: npm発見 - {npm_path}")
+                        try:
+                            test_result = subprocess.run(
+                                [str(npm_path), "--version"],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                text=True,
+                                check=False,
+                            )
+                            log_info(
+                                f"診断情報: npm実行テスト - 終了コード={test_result.returncode}, "
+                                f"出力={test_result.stdout.strip()[:50]}"
+                            )
+                        except Exception as e:
+                            log_info(f"診断情報: npm実行エラー - {e}")
         return
 
     ts_browser_dir = script_dir / "src" / "typescript" / "browser"
