@@ -55,17 +55,9 @@ python src/python/sync_smooth.py
 2. マウスを画面上で動かして音を制御してください
 3. `Ctrl + C` で終了
 
-## 全アプリケーションの一括ビルド＆実行
+## 全アプリケーションの一括ビルド＆実行（Windows専用）
 
 すべての言語版（Python、Rust、Go、TypeScript）を一度にビルドし、メニューから選んで実行できるスクリプトを用意しています。物理スピーカーでの人力テストに便利です。
-
-### Linux/macOS
-
-```bash
-./build_and_run.sh
-```
-
-### Windows
 
 ```batch
 build_and_run.bat

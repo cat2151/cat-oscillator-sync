@@ -1,6 +1,6 @@
-# ビルド＆実行スクリプト
+# ビルド＆実行スクリプト（Windows専用）
 
-このディレクトリには、すべてのcat-oscillator-syncアプリケーションを一括でビルドし、個別に実行できるスクリプトが含まれています。
+すべてのcat-oscillator-syncアプリケーションを一括でビルドし、個別に実行できるWindowsバッチファイルです。
 
 ## 目的
 
@@ -10,29 +10,17 @@
 - ✅ メニューから実行したいアプリを選択
 - ✅ コンテキストスイッチの削減
 
-## スクリプト
+## 使い方
 
-### Linux/macOS: `build_and_run.sh`
-
-Bash用のスクリプトです。
-
-#### 使い方
-
-```bash
-./build_and_run.sh
-```
-
-### Windows: `build_and_run.bat`
-
-Windows用のバッチファイルです。
-
-#### 使い方
+### コマンドプロンプトから実行
 
 ```batch
 build_and_run.bat
 ```
 
-または、エクスプローラーでダブルクリックして実行できます。
+### エクスプローラーから実行
+
+エクスプローラーで `build_and_run.bat` をダブルクリックして実行できます。
 
 ## 動作
 
@@ -94,7 +82,7 @@ TypeScript版:
 
 ### Go版
 - Go 1.21+
-- Linux: portaudio19-dev、xdotool、x11-utils
+- Windows: MinGW-w64またはTDM-GCC、PortAudio DLL
 - 詳細は [src/go/QUICKSTART.md](src/go/QUICKSTART.md) を参照
 
 ### TypeScript CLI版（Windows専用）
@@ -128,35 +116,34 @@ TypeScript版:
 
 ### 実行時にエラーが発生する
 
-- **Python版**: pyaudioのインストール確認。Linux/macOSでは `portaudio` が必要
+- **Python版**: pyaudioのインストール確認
 - **Rust版**: オーディオデバイスの設定確認
-- **Go版**: PortAudioとxdotoolのインストール確認（Linux）
-- **TypeScript CLI版**: Windows専用。ネイティブモジュールのビルド確認
+- **Go版**: PortAudio DLLとマウスライブラリの確認
+- **TypeScript CLI版**: ネイティブモジュールのビルド確認
 - **TypeScript Browser版**: ブラウザが http://localhost:5173 にアクセスできるか確認
 
 ## 使用例
 
 ### すべてをビルドして、Python版とRust版を比較したい場合
 
-```bash
-# Linuxの場合
-./build_and_run.sh
+```batch
+build_and_run.bat
 
-# メニューで1を選択してPython sync_simple.pyを実行
-# Ctrl+Cで終了
-# メニューで3を選択してRust sync_simpleを実行
-# Ctrl+Cで終了
-# メニューで0を選択して終了
+REM メニューで1を選択してPython sync_simple.pyを実行
+REM Ctrl+Cで終了
+REM メニューで3を選択してRust sync_simpleを実行
+REM Ctrl+Cで終了
+REM メニューで0を選択して終了
 ```
 
 ### ブラウザ版の開発サーバーを起動したい場合
 
-```bash
-./build_and_run.sh
+```batch
+build_and_run.bat
 
-# メニューで9を選択
-# ブラウザで http://localhost:5173 にアクセス
-# Ctrl+Cで終了
+REM メニューで9を選択
+REM ブラウザで http://localhost:5173 にアクセス
+REM Ctrl+Cで終了
 ```
 
 ## 注意事項
@@ -164,7 +151,7 @@ TypeScript版:
 - スクリプトはリポジトリのルートディレクトリから実行する必要があります
 - ビルドには時間がかかることがあります（特に初回）
 - 各アプリは `Ctrl+C` で終了できます
-- TypeScript CLI版はWindows専用です
+- Windows 10以降で動作確認済み
 
 ## ライセンス
 
