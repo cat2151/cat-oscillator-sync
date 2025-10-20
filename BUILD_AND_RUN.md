@@ -1,6 +1,6 @@
 # ビルド＆実行スクリプト（Windows専用）
 
-すべてのcat-oscillator-syncアプリケーションを一括でビルドし、個別に実行できるWindowsバッチファイルです。
+すべてのcat-oscillator-syncアプリケーションを一括でビルドし、個別に実行できるPythonスクリプトです。
 
 ## 目的
 
@@ -12,15 +12,15 @@
 
 ## 使い方
 
-### コマンドプロンプトから実行
-
-```batch
-build_and_run.bat
+```bash
+python build_and_run.py
 ```
 
-### エクスプローラーから実行
+または
 
-エクスプローラーで `build_and_run.bat` をダブルクリックして実行できます。
+```bash
+python3 build_and_run.py
+```
 
 ## 動作
 
@@ -126,24 +126,24 @@ TypeScript版:
 
 ### すべてをビルドして、Python版とRust版を比較したい場合
 
-```batch
-build_and_run.bat
+```bash
+python build_and_run.py
 
-REM メニューで1を選択してPython sync_simple.pyを実行
-REM Ctrl+Cで終了
-REM メニューで3を選択してRust sync_simpleを実行
-REM Ctrl+Cで終了
-REM メニューで0を選択して終了
+# メニューで1を選択してPython sync_simple.pyを実行
+# Ctrl+Cで終了
+# メニューで3を選択してRust sync_simpleを実行
+# Ctrl+Cで終了
+# メニューで0を選択して終了
 ```
 
 ### ブラウザ版の開発サーバーを起動したい場合
 
-```batch
-build_and_run.bat
+```bash
+python build_and_run.py
 
-REM メニューで9を選択
-REM ブラウザで http://localhost:5173 にアクセス
-REM Ctrl+Cで終了
+# メニューで9を選択
+# ブラウザで http://localhost:5173 にアクセス
+# Ctrl+Cで終了
 ```
 
 ## 注意事項

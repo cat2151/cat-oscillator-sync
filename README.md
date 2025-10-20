@@ -59,8 +59,8 @@ python src/python/sync_smooth.py
 
 すべての言語版（Python、Rust、Go、TypeScript）を一度にビルドし、メニューから選んで実行できるスクリプトを用意しています。物理スピーカーでの人力テストに便利です。
 
-```batch
-build_and_run.bat
+```bash
+python build_and_run.py
 ```
 
 詳細は [BUILD_AND_RUN.md](BUILD_AND_RUN.md) を参照してください。
