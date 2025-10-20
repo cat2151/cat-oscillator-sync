@@ -55,6 +55,16 @@ python src/python/sync_smooth.py
 2. マウスを画面上で動かして音を制御してください
 3. `Ctrl + C` で終了
 
+## 全アプリケーションの一括ビルド＆実行（Windows専用）
+
+すべての言語版（Python、Rust、Go、TypeScript）を一度にビルドし、メニューから選んで実行できるスクリプトを用意しています。物理スピーカーでの人力テストに便利です。
+
+```bash
+python build_and_run.py
+```
+
+詳細は [BUILD_AND_RUN.md](BUILD_AND_RUN.md) を参照してください。
+
 ## 技術詳細
 
 ### ハードシンク（オシレータ同期）とは
