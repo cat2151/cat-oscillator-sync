@@ -11,3 +11,6 @@ vendor/
 
 # Go module cache
 go.sum.backup
+
+# Downloaded DLL files
+*.dll

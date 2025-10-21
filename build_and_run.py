@@ -153,6 +153,15 @@ def build_go(script_dir: Path) -> None:
     bin_dir = go_dir / "bin"
     bin_dir.mkdir(exist_ok=True)
 
+    # Download PortAudio DLL if not exists (Windows only)
+    dll_path = bin_dir / "libportaudio64bit.dll"
+    if not dll_path.exists():
+        log_info("PortAudio DLLをダウンロード中...")
+        download_script = go_dir / "download_portaudio.py"
+        result = subprocess.run(["python", str(download_script)], cwd=go_dir, check=False)
+        if result.returncode != 0:
+            log_warning("PortAudio DLLのダウンロードに失敗しました。手動でダウンロードしてください。")
+
     # Build sync_simple
     result1 = subprocess.run(
         ["go", "build", "-o", "bin/sync_simple.exe", "./cmd/sync_simple"],

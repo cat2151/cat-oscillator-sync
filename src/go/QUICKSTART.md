@@ -129,11 +129,16 @@ Windows版の詳細なインストール手順は [README.md](README.md) を参�
 
 1. Go 1.21以上をインストール
 2. MinGW-w64またはTDM-GCCをインストール
-3. PortAudio DLLをダウンロードして配置
-4. ビルドして実行
+3. PortAudio DLLをダウンロード
 
 ```powershell
 cd src\go
+python download_portaudio.py
+```
+
+4. ビルドして実行
+
+```powershell
 go build -o bin\sync_simple.exe .\cmd\sync_simple
 go build -o bin\sync_smooth.exe .\cmd\sync_smooth
 .\bin\sync_simple.exe
