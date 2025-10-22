@@ -123,26 +123,78 @@ go mod tidy
 
 ## Windows版
 
-Windows版の詳細なインストール手順は [README.md](README.md) を参照してください。
+### Windows版の詳細手順
 
-### Windows版の簡易手順
+**重要**: Windows版はCGOを使用するため、GCCコンパイラが必須です。
 
-1. Go 1.21以上をインストール
-2. MinGW-w64またはTDM-GCCをインストール
-3. PortAudio DLLをダウンロード
+#### ステップ1: GCCのインストール（必須）
 
-```powershell
+**TDM-GCC（推奨・簡単）**:
+1. [TDM-GCC ダウンロードページ](https://jmeubank.github.io/tdm-gcc/) を開く
+2. 最新の64bit版（例: tdm64-gcc-10.3.0-2.exe）をダウンロード
+3. インストーラーを実行し、デフォルト設定でインストール
+4. コマンドプロンプトを開き、確認:
+   ```cmd
+   gcc --version
+   ```
+   バージョン情報が表示されればOK
+
+#### ステップ2: PortAudio DLLのダウンロード
+
+```cmd
 cd src\go
 python download_portaudio.py
 ```
 
-4. ビルドして実行
+#### ステップ3: ビルド
 
-```powershell
+```cmd
+# CGOを有効化（通常は自動だが念のため）
+set CGO_ENABLED=1
+
+# Simple版のビルド
 go build -o bin\sync_simple.exe .\cmd\sync_simple
+
+# Smooth版のビルド
 go build -o bin\sync_smooth.exe .\cmd\sync_smooth
-.\bin\sync_simple.exe
 ```
+
+#### ステップ4: 実行
+
+```cmd
+# Simple版
+.\bin\sync_simple.exe
+
+# Smooth版
+.\bin\sync_smooth.exe
+```
+
+### ビルドエラーが出る場合
+
+**「build constraints exclude all Go files」エラー**:
+
+このエラーはGCCが見つからない場合に発生します。
+
+1. GCCがインストールされているか確認:
+   ```cmd
+   gcc --version
+   ```
+
+2. GCCのパスが通っているか確認:
+   - スタートメニュー → 「環境変数」で検索
+   - 「システム環境変数の編集」を開く
+   - 「環境変数」ボタンをクリック
+   - 「Path」を選択して「編集」
+   - `C:\TDM-GCC-64\bin` が含まれているか確認
+   - 含まれていない場合は追加して、コマンドプロンプトを再起動
+
+3. CGOが有効か確認:
+   ```cmd
+   go env CGO_ENABLED
+   ```
+   `0` の場合は `set CGO_ENABLED=1` を実行
+
+より詳しいトラブルシューティングは [README.md](README.md) の「トラブルシューティング」セクションを参照してください。
 
 ## テストの実行
 

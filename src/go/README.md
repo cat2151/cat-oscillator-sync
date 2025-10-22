@@ -40,7 +40,36 @@ sudo pacman -S portaudio xdotool xorg-xdpyinfo
 
 ### Windows
 
-1. **PortAudio DLLのインストール**:
+**重要**: Go版はCGO（C言語バインディング）を使用するため、以下の両方が必要です。
+
+1. **GCC (CGO用コンパイラ) - 必須**:
+   
+   以下のいずれかをインストールしてください：
+   
+   - **TDM-GCC** (推奨・簡単):
+     1. [TDM-GCC ダウンロードページ](https://jmeubank.github.io/tdm-gcc/) から最新版をダウンロード
+     2. インストーラーを実行し、デフォルト設定でインストール
+     3. コマンドプロンプトで `gcc --version` を実行して確認
+   
+   - **MSYS2** (より高度):
+     1. [MSYS2](https://www.msys2.org/) をダウンロードしてインストール
+     2. MSYS2ターミナルで以下を実行:
+        ```bash
+        pacman -S mingw-w64-x86_64-gcc
+        ```
+     3. システム環境変数PATHに `C:\msys64\mingw64\bin` を追加
+   
+   **確認方法**:
+   ```bash
+   gcc --version
+   ```
+   
+   GCCが見つからない場合、ビルド時に以下のエラーが発生します:
+   ```
+   build constraints exclude all Go files
+   ```
+
+2. **PortAudio DLLのインストール**:
    
    自動ダウンロード（推奨）:
    ```bash
@@ -53,10 +82,6 @@ sudo pacman -S portaudio xdotool xorg-xdpyinfo
    - `libportaudio64bit.dll` を `src/go/bin/` ディレクトリに配置
    
    注: python-sounddeviceも同じソースから入手しており、安全性と可用性が高いと判断しています。
-
-2. **GCC (CGO用)**:
-   - [TDM-GCC](https://jmeubank.github.io/tdm-gcc/)
-   - または [MSYS2](https://www.msys2.org/)
 
 ## ビルド
 
@@ -77,11 +102,16 @@ go build -o bin/sync_smooth ./cmd/sync_smooth
 
 ### Windows
 
+**注意**: CGOを使用するため、必ずGCCがインストールされている必要があります。
+
 ```bash
 cd src\go
 
 # 依存関係のダウンロード
 go mod download
+
+# CGOを明示的に有効化（通常は自動だが念のため）
+set CGO_ENABLED=1
 
 # Simple版のビルド
 go build -o bin\sync_simple.exe .\cmd\sync_simple
@@ -89,6 +119,27 @@ go build -o bin\sync_simple.exe .\cmd\sync_simple
 # Smooth版のビルド
 go build -o bin\sync_smooth.exe .\cmd\sync_smooth
 ```
+
+**ビルドエラーが発生する場合**:
+
+1. GCCがインストールされているか確認:
+   ```bash
+   gcc --version
+   ```
+
+2. CGOが有効になっているか確認:
+   ```bash
+   go env CGO_ENABLED
+   ```
+   `1` と表示されればOK。`0` の場合は以下を実行:
+   ```bash
+   set CGO_ENABLED=1
+   ```
+
+3. それでもエラーが出る場合は、詳細なエラーメッセージを確認:
+   ```bash
+   go build -v -x -o bin\sync_simple.exe .\cmd\sync_simple
+   ```
 
 ## 実行
 
@@ -226,14 +277,52 @@ Windowsの場合:
 - DLLが実行ファイルと同じディレクトリにあるか確認
 - または、システムのPATHにDLLの場所を追加
 
-### CGOエラー
+### "build constraints exclude all Go files" エラー
 
-GCCがインストールされているか確認:
+このエラーは通常、以下の原因で発生します:
+
+1. **GCCがインストールされていない** (最も一般的):
+   ```bash
+   # 確認
+   gcc --version
+   ```
+   GCCが見つからない場合、TDM-GCCまたはMSYS2をインストールしてください（上記参照）。
+
+2. **CGOが無効になっている**:
+   ```bash
+   # 確認
+   go env CGO_ENABLED
+   ```
+   `0` の場合は有効化:
+   ```bash
+   # Windows (cmd)
+   set CGO_ENABLED=1
+   
+   # Windows (PowerShell)
+   $env:CGO_ENABLED = "1"
+   
+   # Linux/Mac
+   export CGO_ENABLED=1
+   ```
+
+3. **GCCのパスが通っていない**:
+   - システム環境変数のPATHにGCCのbinディレクトリが含まれているか確認
+   - TDM-GCC: `C:\TDM-GCC-64\bin`
+   - MSYS2: `C:\msys64\mingw64\bin`
+
+### その他のCGOエラー
+
+pkg-configエラーが出る場合:
 ```bash
-gcc --version
+# Windowsの場合、PortAudio DLLをダウンロード
+python download_portaudio.py
 ```
 
-Windowsの場合、TDM-GCCまたはMSYS2のMinGW-w64をインストールしてください。
+Linuxの場合:
+```bash
+# PortAudioの開発ライブラリをインストール
+sudo apt-get install portaudio19-dev
+```
 
 ## Python版との比較
 
