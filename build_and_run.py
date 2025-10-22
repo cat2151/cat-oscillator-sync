@@ -149,17 +149,17 @@ def build_go(script_dir: Path) -> None:
         log_warning("goが見つかりません。Go版はスキップします。")
         return
 
-    # Check for GCC (required for CGO on Windows)
-    if not command_exists("gcc"):
-        log_warning("GCC (CGO用コンパイラ) が見つかりません。")
-        log_warning("Windows: TDM-GCC または MSYS2 をインストールしてください。")
-        log_warning("詳細: src/go/README.md を参照")
-        log_warning("Go版のビルドをスキップします。")
-        return
-
     go_dir = script_dir / "src" / "go"
     bin_dir = go_dir / "bin"
     bin_dir.mkdir(exist_ok=True)
+
+    # Check if binaries already exist
+    simple_exe = bin_dir / "sync_simple.exe"
+    smooth_exe = bin_dir / "sync_smooth.exe"
+
+    if simple_exe.exists() and smooth_exe.exists():
+        log_success("Go版: ビルド済みバイナリが見つかりました")
+        return
 
     # Download PortAudio DLL if not exists (Windows only)
     dll_path = bin_dir / "libportaudio64bit.dll"
@@ -170,31 +170,10 @@ def build_go(script_dir: Path) -> None:
         if result.returncode != 0:
             log_warning("PortAudio DLLのダウンロードに失敗しました。手動でダウンロードしてください。")
 
-    # Prepare environment with CGO enabled
-    build_env = os.environ.copy()
-    build_env["CGO_ENABLED"] = "1"
-
-    # Build sync_simple
-    result1 = subprocess.run(
-        ["go", "build", "-o", "bin/sync_simple.exe", "./cmd/sync_simple"],
-        cwd=go_dir,
-        env=build_env,
-        check=False,
-    )
-
-    # Build sync_smooth
-    result2 = subprocess.run(
-        ["go", "build", "-o", "bin/sync_smooth.exe", "./cmd/sync_smooth"],
-        cwd=go_dir,
-        env=build_env,
-        check=False,
-    )
-
-    if result1.returncode == 0 and result2.returncode == 0:
-        log_success("Go版: ビルド完了")
-    else:
-        log_error("Go版のビルドに失敗しました")
-        log_error("CGO_ENABLED=1 が設定されているか、GCCが正しくインストールされているか確認してください。")
+    log_warning("Go版のビルドにはC言語コンパイラ（GCC/MinGW）が必要です。")
+    log_warning("プリコンパイル済みバイナリの配布を検討中です。")
+    log_warning("詳細は src/go/README.md および src/go/INVESTIGATION_CGO_ALTERNATIVES.md を参照してください。")
+    log_warning("Go版のビルドをスキップします。")
 
 
 def build_typescript_cli(script_dir: Path) -> None:
