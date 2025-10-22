@@ -23,8 +23,9 @@ Windows環境でのローカル実行を前提とし、PortAudio系のライブ�
 - **デメリット:**
   - Windows環境ではPortAudioのDLLが必要
   - **DLLインストール方法:**
-    1. PortAudioバイナリをダウンロード
-    2. `portaudio_x64.dll` をシステムパスまたは実行ファイルと同じディレクトリに配置
+    1. 自動ダウンロード（推奨）: `python download_portaudio.py`
+    2. または手動で [GitHub spatialaudio/portaudio-binaries](https://github.com/spatialaudio/portaudio-binaries) から `libportaudio64bit.dll` をダウンロード
+    3. DLLを `bin/` ディレクトリに配置
   - または、MSYS2/MinGWでビルド環境を整える必要がある
 - **GitHub:** https://github.com/gordonklaus/portaudio
 - **ドキュメント:** GoDoc参照
@@ -162,10 +163,13 @@ require (
    - https://golang.org/dl/ からインストール
    
 2. **PortAudio DLL (Windows)**
-   - **方法A: プリビルドDLLの使用**
-     1. PortAudioのプリビルドDLLをダウンロード
-        - http://files.portaudio.com/download.html
-     2. `portaudio_x64.dll`を実行ファイルのディレクトリまたはSystem32に配置
+   - **方法A: 自動ダウンロード（推奨）**
+     ```bash
+     cd src/go
+     python download_portaudio.py
+     ```
+     このスクリプトは [GitHub spatialaudio/portaudio-binaries](https://github.com/spatialaudio/portaudio-binaries) から `libportaudio64bit.dll` を自動ダウンロードします。
+     python-sounddeviceも同じソースから入手しており、安全性と可用性が高いと判断しています。
    
    - **方法B: MSYS2でビルド**
      1. MSYS2をインストール: https://www.msys2.org/

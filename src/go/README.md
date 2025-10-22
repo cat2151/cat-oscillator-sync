@@ -41,13 +41,18 @@ sudo pacman -S portaudio xdotool xorg-xdpyinfo
 ### Windows
 
 1. **PortAudio DLLのインストール**:
-   - [PortAudio公式サイト](http://files.portaudio.com/download.html)からプリビルドDLLをダウンロード
-   - `portaudio_x64.dll` を実行ファイルと同じディレクトリに配置
    
-   または、MSYS2でインストール:
+   自動ダウンロード（推奨）:
    ```bash
-   pacman -S mingw-w64-x86_64-portaudio
+   cd src/go
+   python download_portaudio.py
    ```
+   
+   または手動でダウンロード:
+   - [GitHub spatialaudio/portaudio-binaries](https://github.com/spatialaudio/portaudio-binaries) から `libportaudio64bit.dll` をダウンロード
+   - `libportaudio64bit.dll` を `src/go/bin/` ディレクトリに配置
+   
+   注: python-sounddeviceも同じソースから入手しており、安全性と可用性が高いと判断しています。
 
 2. **GCC (CGO用)**:
    - [TDM-GCC](https://jmeubank.github.io/tdm-gcc/)
