@@ -162,9 +162,9 @@ def build_typescript_cli(script_dir: Path) -> None:
 
     if not node_modules.exists():
         log_info("依存関係をインストール中...")
-        subprocess.run(["npm", "install"], cwd=ts_cli_dir, check=False)
+        subprocess.run("npm install", cwd=ts_cli_dir, shell=True, check=False)
 
-    result = subprocess.run(["npm", "run", "build"], cwd=ts_cli_dir, check=False)
+    result = subprocess.run("npm run build", cwd=ts_cli_dir, shell=True, check=False)
 
     if result.returncode == 0:
         log_success("TypeScript CLI版: ビルド完了")
@@ -185,9 +185,9 @@ def build_typescript_browser(script_dir: Path) -> None:
 
     if not node_modules.exists():
         log_info("依存関係をインストール中...")
-        subprocess.run(["npm", "install"], cwd=ts_browser_dir, check=False)
+        subprocess.run("npm install", cwd=ts_browser_dir, shell=True, check=False)
 
-    result = subprocess.run(["npm", "run", "build"], cwd=ts_browser_dir, check=False)
+    result = subprocess.run("npm run build", cwd=ts_browser_dir, shell=True, check=False)
 
     if result.returncode == 0:
         log_success("TypeScript Browser版: ビルド完了")
@@ -323,7 +323,7 @@ def run_application(choice: str, script_dir: Path) -> bool:
             log_info("ブラウザで http://localhost:5173 にアクセスしてください。")
             print("Ctrl+Cで終了します。")
             ts_browser_dir = script_dir / "src" / "typescript" / "browser"
-            subprocess.run(["npm", "run", "dev"], cwd=ts_browser_dir, check=False)
+            subprocess.run("npm run dev", cwd=ts_browser_dir, shell=True, check=False)
 
         elif choice == "0":
             log_info("終了します。")
