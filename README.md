@@ -8,7 +8,8 @@ Python : 音が鳴ります。
 
 Rust : 音が鳴ります。
 
-Go : ビルドにはCGO対応のC言語コンパイラが必要です。プリコンパイル版バイナリの配布を検討中です。詳細は [src/go/INVESTIGATION_CGO_ALTERNATIVES.md](src/go/INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
+Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [src/go/README_OTO.md](src/go/README_OTO.md) を参照してください。
+     ※PortAudio版も利用可能ですが、C言語コンパイラが必要です。詳細は [src/go/README.md](src/go/README.md) を参照してください。
 
 TypeScript(Node.js) : 音が鳴りません。ビルドエラーです。作業中です。
 
