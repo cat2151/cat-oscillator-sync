@@ -13,7 +13,26 @@ extern PaStreamCallback* paStreamCallback;
 import "C"
 ```
 
-これは、Goコードがネイティブなオーディオ機能にアクセスするために、C言語で書かれたPortAudioライブラリと連携する必要があるためです。
+### CGOとは何か
+
+**重要**: CGOは「Goのexeをビルドする際に、C言語コンパイラを内部的に使用する仕組み」です。
+
+**ビルド時の流れ**:
+1. `go build` コマンドを実行
+2. Goコンパイラが `gordonklaus/portaudio` パッケージ内のCGOコードを発見
+3. **C言語コンパイラ（GCC/Clang/MSVC）を呼び出してCGOコードをコンパイル**
+4. コンパイルされたCコードとGoコードをリンク
+5. PortAudio DLL（`libportaudio64bit.dll`）と動的リンク
+6. 最終的なexe（`sync_simple.exe`）を生成
+
+### なぜC言語コンパイラ（GCC）が必要なのか
+
+- **PortAudio DLLは既に完成したバイナリとして存在**（事前ビルド不要）
+- しかし、`gordonklaus/portaudio`パッケージ**内部**にCGOコードが含まれている
+- このCGOコードは**Goのexeをビルドする際にコンパイルされる**
+- そのため、**ビルド時にC言語コンパイラ（GCC）が必須**
+
+つまり、「C言語のソースからDLLを作る」のではなく、「Goのexeをビルドする際に、パッケージ内のCGOコードをコンパイルするためにGCCが必要」ということです。
 
 ## なぜCGOが必要なのか
 
@@ -48,6 +67,29 @@ import "C"
   - PortAudio DLLへの依存が残る（現状と変わらない）
   - Go言語のクロスコンパイル特性を失う
   - ユーザー環境での柔軟なビルドができなくなる
+
+### 3. 外部リポジトリでstaticライブラリを生成してリンクする案
+
+**結論**: 解決策にならない
+
+**理由**:
+1. **PortAudio DLLは既に完成したバイナリとして存在**
+   - `download_portaudio.py` で取得可能
+   - 新たにビルドする必要はない
+
+2. **問題はCGOコードのコンパイル**
+   - `gordonklaus/portaudio` パッケージ**内部**にCGOコードがある
+   - このCGOコードは `go build` 時に自動的にコンパイルされる
+   - **CGOコードのコンパイルにGCCが必須**
+
+3. **回避不可能**
+   - staticライブラリを事前に作っても、CGOコード自体は残る
+   - `gordonklaus/portaudio` を使う限り、ビルド時のGCC要件は変わらない
+   - Pure Goのパッケージに移行しない限り回避不可能
+
+**補足**:
+- 動的リンク（DLL使用）でも静的リンク（.aファイル使用）でも、**ビルド時にGCCが必要**
+- リンク方法を変えても、CGOコードのコンパイル要件は変わらない
 
 **現在のアプローチ**:
 - PortAudio DLLは既にプリコンパイル版を使用（`download_portaudio.py`で取得）
