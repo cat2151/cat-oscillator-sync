@@ -193,19 +193,6 @@ winget install --id Microsoft.VisualStudio.2022.BuildTools --override "--wait --
 - マウスを動かしてから音が変化するまでの遅延を体感
 - 期待値: ほぼリアルタイム（～50ms以下）
 
-## 比較検証（オプション）
-
-Python版との比較を行う場合:
-
-1. Python版をインストール: `pip install -r requirements.txt`
-2. Python版を実行: `python src/python/sync_simple.py`
-3. 以下の点を比較:
-   - 音質
-   - レイテンシ
-   - CPU使用率
-   - メモリ使用量
-   - インストールの容易さ
-
 ## レポート
 
 検証完了後、以下の情報を記録してください:
