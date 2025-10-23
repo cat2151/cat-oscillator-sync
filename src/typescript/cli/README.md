@@ -257,16 +257,9 @@ npm run dev
 2. `npm run build` でコンパイル
 3. `npm start` で実行
 
-## 他の実装との比較
+## Node.js CLI版の特徴
 
-| 実装 | ランタイム | オーディオ | マウス | ビルド | 対応OS |
-|-----|-----------|----------|--------|-------|--------|
-| Python | Python 3 | sounddevice | pyautogui | 不要 | 全て |
-| Rust | Native | cpal | rdev | 必要 | 全て |
-| **Node.js CLI** | Node.js | **speaker** | **robotjs** | 必要 | **Windows** |
-| Browser | Browser | Web Audio API | DOM Events | 必要 | 全て |
-
-### Node.js CLI版の利点
+### 利点
 
 - ✅ Windows環境に最適化
 - ✅ 安定したNode.jsランタイム
@@ -274,10 +267,9 @@ npm run dev
 - ✅ TypeScriptによる型安全な開発
 - ✅ npmエコシステムの活用
 
-### Node.js CLI版の欠点
+### 注意点
 
-- ❌ ネイティブモジュールのビルドが必要
-- ❌ Windows専用（他のOSでは動作保証なし）
+- ⚠️ ネイティブモジュールのビルドが必要
 - ⚠️ 初回インストールがやや複雑
 
 ## パフォーマンスチューニング
