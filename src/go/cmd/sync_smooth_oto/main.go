@@ -18,7 +18,7 @@ const (
 	timeConstantMs    = 16 // Time constant for exponential smoothing (ms)
 	pollingIntervalMs = 8  // Mouse polling interval (ms)
 	channelCount      = 1
-	bufferSizeMs      = 20 // Buffer size in milliseconds
+	bufferSizeMs      = 8 // Buffer size in milliseconds (matches polling interval)
 )
 
 var (
