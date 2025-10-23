@@ -108,6 +108,14 @@ def build_go(script_dir: Path) -> None:
     bin_dir = go_dir / "bin"
     bin_dir.mkdir(exist_ok=True)
 
+    # Check if binaries already exist
+    simple_exe = bin_dir / "sync_simple.exe"
+    smooth_exe = bin_dir / "sync_smooth.exe"
+
+    if simple_exe.exists() and smooth_exe.exists():
+        log_success("Go版: ビルド済みバイナリが見つかりました")
+        return
+
     # Download PortAudio DLL if not exists (Windows only)
     dll_path = bin_dir / "libportaudio64bit.dll"
     if not dll_path.exists():
@@ -117,24 +125,10 @@ def build_go(script_dir: Path) -> None:
         if result.returncode != 0:
             log_warning("PortAudio DLLのダウンロードに失敗しました。手動でダウンロードしてください。")
 
-    # Build sync_simple
-    result1 = subprocess.run(
-        ["go", "build", "-o", "bin/sync_simple.exe", "./cmd/sync_simple"],
-        cwd=go_dir,
-        check=False,
-    )
-
-    # Build sync_smooth
-    result2 = subprocess.run(
-        ["go", "build", "-o", "bin/sync_smooth.exe", "./cmd/sync_smooth"],
-        cwd=go_dir,
-        check=False,
-    )
-
-    if result1.returncode == 0 and result2.returncode == 0:
-        log_success("Go版: ビルド完了")
-    else:
-        log_error("Go版のビルドに失敗しました")
+    log_warning("Go版のビルドにはC言語コンパイラ（GCC/MinGW）が必要です。")
+    log_warning("プリコンパイル済みバイナリの配布を検討中です。")
+    log_warning("詳細は src/go/README.md および src/go/INVESTIGATION_CGO_ALTERNATIVES.md を参照してください。")
+    log_warning("Go版のビルドをスキップします。")
 
 
 def build_typescript_cli(script_dir: Path) -> None:

@@ -1,64 +1,81 @@
-# Go版 クイックスタートガイド
+# Go版 クイックスタートガイド (Windows)
 
-このガイドでは、Go版cat-oscillator-syncを最速で動かす方法を説明します。
+このガイドでは、Windows環境でGo版cat-oscillator-syncを動かす方法を説明します。
 
-## 前提条件
+## ⚠️ 重要: プリコンパイル版の利用を推奨
 
+現在、Go版のビルドにはC言語コンパイラ（GCC/MinGW）のインストールが必要です。
+プリコンパイル済みバイナリの配布を検討中です。実装され次第、こちらのドキュメントを更新します。
+
+## 開発者向け: ローカルビルド手順
+
+### 前提条件
+
+- Windows 10/11
 - Go 1.21以上がインストールされていること
-- Linux環境（Ubuntu/Debianを想定）
+- Python（PortAudio DLLのダウンロードに使用）
 
-## インストール手順
+### ステップ1: GCCのインストール（必須）
 
-### 1. 必要なパッケージのインストール
+#### TDM-GCC（推奨・簡単）
 
-```bash
-sudo apt-get update
-sudo apt-get install -y portaudio19-dev xdotool x11-utils
+1. [TDM-GCC ダウンロードページ](https://jmeubank.github.io/tdm-gcc/) を開く
+2. 最新の64bit版（例: tdm64-gcc-10.3.0-2.exe）をダウンロード
+3. インストーラーを実行し、デフォルト設定でインストール
+4. コマンドプロンプトを**新しく開いて**確認:
+   ```cmd
+   gcc --version
+   ```
+   以下のように表示されればOK:
+   ```
+   gcc.exe (tdm64-1) 10.3.0
+   Copyright (C) 2020 Free Software Foundation, Inc.
+   ```
+
+#### MSYS2（より高度）
+
+1. [MSYS2](https://www.msys2.org/) をダウンロードしてインストール
+2. MSYS2ターミナルで以下を実行:
+   ```bash
+   pacman -S mingw-w64-x86_64-gcc
+   ```
+3. システム環境変数のPATHに `C:\msys64\mingw64\bin` を追加
+4. コマンドプロンプトを**新しく開いて**確認:
+   ```cmd
+   gcc --version
+   ```
+
+### ステップ2: PortAudio DLLのダウンロード
+
+```cmd
+cd src\go
+python download_portaudio.py
 ```
 
-### 2. リポジトリのクローン（まだの場合）
+### ステップ3: ビルド
 
-```bash
-git clone https://github.com/cat2151/cat-oscillator-sync.git
-cd cat-oscillator-sync/src/go
+```cmd
+# CGOを有効化（通常は自動だが念のため）
+set CGO_ENABLED=1
+
+# Simple版のビルド
+go build -o bin\sync_simple.exe .\cmd\sync_simple
+
+# Smooth版のビルド
+go build -o bin\sync_smooth.exe .\cmd\sync_smooth
 ```
 
-### 3. 依存関係のダウンロード
+### ステップ4: 実行
 
-```bash
-go mod download
-```
+```cmd
+# bin ディレクトリに移動
+cd bin
 
-### 4. ビルド
-
-```bash
 # Simple版
-go build -o bin/sync_simple ./cmd/sync_simple
+.\sync_simple.exe
 
 # Smooth版
-go build -o bin/sync_smooth ./cmd/sync_smooth
-```
-
-### 5. 実行
-
-```bash
-# Simple版を実行
-./bin/sync_simple
-
-# または Smooth版を実行
-./bin/sync_smooth
-```
-
-## ビルドせずに直接実行
-
-開発中は`go run`を使うと便利です：
-
-```bash
-# Simple版
-go run ./cmd/sync_simple
-
-# Smooth版
-go run ./cmd/sync_smooth
+.\sync_smooth.exe
 ```
 
 ## 終了方法
@@ -88,91 +105,48 @@ go run ./cmd/sync_smooth
 
 ## トラブルシューティング
 
-### PortAudioが見つからない
+### ビルドエラー: "build constraints exclude all Go files"
 
-```bash
-sudo apt-get install portaudio19-dev
+このエラーはGCCが見つからない場合に発生します。
+
+**解決方法**:
+1. GCCが正しくインストールされているか確認
+2. システム環境変数のPATHにGCCのbinディレクトリが含まれているか確認:
+   - スタートメニュー → 「環境変数」で検索
+   - 「システム環境変数の編集」を開く
+   - 「環境変数」ボタンをクリック
+   - 「Path」を選択して「編集」
+   - TDM-GCCの場合: `C:\TDM-GCC-64\bin` が含まれているか確認
+   - MSYS2の場合: `C:\msys64\mingw64\bin` が含まれているか確認
+3. コマンドプロンプトを**閉じて新しく開く**（環境変数の変更を反映）
+
+### CGOが無効になっている
+
+**確認方法**:
+```cmd
+go env CGO_ENABLED
 ```
 
-### xdotoolが見つからない
+**解決方法**:
+- `0` と表示される場合は有効化:
+  ```cmd
+  set CGO_ENABLED=1
+  ```
 
-```bash
-sudo apt-get install xdotool
+### それでも解決しない場合
+
+詳細なエラーメッセージを確認:
+```cmd
+go build -v -x -o bin\sync_simple.exe .\cmd\sync_simple
 ```
 
-### xdpyinfoが見つからない
-
-```bash
-sudo apt-get install x11-utils
-```
-
-### 音が出ない
-
-1. オーディオデバイスが正しく接続されているか確認
-2. 音量がミュートになっていないか確認
-3. 他のアプリケーションでオーディオが使用されていないか確認
-
-### ビルドエラー
-
-```bash
-# 依存関係を再取得
-go clean -modcache
-go mod download
-go mod tidy
-```
-
-## Windows版
-
-Windows版の詳細なインストール手順は [README.md](README.md) を参照してください。
-
-### Windows版の簡易手順
-
-1. Go 1.21以上をインストール
-2. MinGW-w64またはTDM-GCCをインストール
-3. PortAudio DLLをダウンロード
-
-```powershell
-cd src\go
-python download_portaudio.py
-```
-
-4. ビルドして実行
-
-```powershell
-go build -o bin\sync_simple.exe .\cmd\sync_simple
-go build -o bin\sync_smooth.exe .\cmd\sync_smooth
-.\bin\sync_simple.exe
-```
-
-## テストの実行
-
-```bash
-# すべてのテストを実行
-go test ./...
-
-# 詳細な出力付き
-go test -v ./...
-
-# 特定のパッケージのみ
-go test -v ./internal/synth
-go test -v ./internal/mouse
-```
-
-## コードのフォーマット
-
-```bash
-# すべてのGoファイルをフォーマット
-go fmt ./...
-
-# コードの静的解析
-go vet ./...
-```
+このコマンドは詳細なビルドログを出力し、問題の特定に役立ちます。
 
 ## より詳しい情報
 
 - [README.md](README.md): 詳細なドキュメント
+- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md): CGO要件の調査報告
 - [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md): 実装計画書
-- [COMPLETION_REPORT.md](COMPLETION_REPORT.md): 実装完了報告
 
 ## ライセンス
 

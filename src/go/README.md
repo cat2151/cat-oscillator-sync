@@ -1,121 +1,106 @@
-# Go Implementation - Cat Oscillator Sync
+# Go Implementation - Cat Oscillator Sync (Windows版)
 
 🎵 Go版 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
-## 概要
+## ⚠️ 重要な注意事項
 
-Python版のcat-oscillator-syncをGoで実装したものです。
-PortAudioを使用した低レイテンシなオーディオ出力と、クロスプラットフォーム対応のマウス位置取得を実現しています。
+このGo版はCGO（C言語バインディング）を使用しているため、ビルドには**C言語コンパイラが必要**です。
 
-## 特徴
+### なぜC言語コンパイラが必要なのか
 
-- **PortAudio使用**: Python版と同じPortAudioライブラリを使用し、一貫した音質を実現
-- **クロスプラットフォーム**: Windows/Linux両対応
-  - Windows: Win32 API (syscall) でマウス位置取得
-  - Linux: xdotool でマウス位置取得
-- **Pure Go + CGO**: 外部のGo依存関係を最小限に抑え、PortAudioのみ使用
-- **2つのバージョン**:
-  - **Simple版**: 8msごとに階段状に周波数が変化
-  - **Smooth版**: サンプルごとの指数平滑化で滑らかな周波数変化
+Go版は `gordonklaus/portaudio` パッケージを使用しており、このパッケージはC言語で書かれたPortAudioライブラリを呼び出すためにCGOを使用します。これは、以下の理由によるものです：
 
-## 必要な環境
+1. **PortAudioはC言語ライブラリ**: 低レベルなオーディオ制御のため、C言語で実装されている
+2. **Pure Go実装は存在しない**: オーディオの低レベル制御には各OS固有のAPIアクセスが必要
+3. **すべてのGo PortAudioバインディングがCGOを使用**: 技術的な制約により回避不可能
 
-### 共通
+詳細は [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
 
+## 推奨アプローチ
+
+### オプション1: プリコンパイル済みバイナリを使用（計画中）
+
+**状況**: 現在、別プロジェクトでのプリコンパイル済みバイナリ配布を検討中です。
+実装されれば、C言語コンパイラのインストールが不要になります。
+
+### オプション2: ローカルでビルド（開発者向け）
+
+C言語コンパイラをインストールしてローカルでビルドすることも可能です。
+ただし、以下の理由から一般ユーザーには推奨しません：
+
+- セットアップが複雑
+- MinGW等のツールチェインが必要
+- 環境を汚す可能性がある
+
+開発者向けの詳細な手順は、この後のセクションを参照してください。
+
+## 開発者向け: ローカルビルド手順（Windows）
+
+### 必要な環境
+
+- Windows 10/11
 - Go 1.21以上
-- PortAudio ライブラリ
+- **C言語コンパイラ（以下のいずれか）**:
+  - TDM-GCC（推奨・軽量）
+  - MSYS2（より本格的な環境）
+  - ⚠️ Visual Studio（MSVC）は現在サポート外（pkg-config依存のため）
 
-### Linux
+### ステップ1: PortAudio DLLのダウンロード
 
-```bash
-# Ubuntu/Debian
-sudo apt-get install portaudio19-dev xdotool x11-utils
-
-# Fedora/RHEL
-sudo dnf install portaudio-devel xdotool xorg-x11-utils
-
-# Arch Linux
-sudo pacman -S portaudio xdotool xorg-xdpyinfo
+```cmd
+cd src\go
+python download_portaudio.py
 ```
 
-### Windows
+このスクリプトは `libportaudio64bit.dll` を `bin/` ディレクトリにダウンロードします。
 
-1. **PortAudio DLLのインストール**:
-   
-   自動ダウンロード（推奨）:
-   ```bash
-   cd src/go
-   python download_portaudio.py
+### ステップ2: C言語コンパイラのインストール
+
+#### TDM-GCC（推奨）
+
+1. [TDM-GCC ダウンロードページ](https://jmeubank.github.io/tdm-gcc/) から最新の64bit版をダウンロード
+2. インストーラーを実行（デフォルト設定でOK）
+3. 確認:
+   ```cmd
+   gcc --version
    ```
-   
-   または手動でダウンロード:
-   - [GitHub spatialaudio/portaudio-binaries](https://github.com/spatialaudio/portaudio-binaries) から `libportaudio64bit.dll` をダウンロード
-   - `libportaudio64bit.dll` を `src/go/bin/` ディレクトリに配置
-   
-   注: python-sounddeviceも同じソースから入手しており、安全性と可用性が高いと判断しています。
 
-2. **GCC (CGO用)**:
-   - [TDM-GCC](https://jmeubank.github.io/tdm-gcc/)
-   - または [MSYS2](https://www.msys2.org/)
+#### MSYS2
 
-## ビルド
+1. [MSYS2](https://www.msys2.org/) をダウンロードしてインストール
+2. MSYS2ターミナルで実行:
+   ```bash
+   pacman -S mingw-w64-x86_64-gcc
+   ```
+3. システムPATHに `C:\msys64\mingw64\bin` を追加
+4. 確認:
+   ```cmd
+   gcc --version
+   ```
 
-### Linux
+### ステップ3: ビルド
 
-```bash
-cd src/go
-
-# 依存関係のダウンロード
-go mod download
-
-# Simple版のビルド
-go build -o bin/sync_simple ./cmd/sync_simple
-
-# Smooth版のビルド
-go build -o bin/sync_smooth ./cmd/sync_smooth
-```
-
-### Windows
-
-```bash
+```cmd
 cd src\go
 
-# 依存関係のダウンロード
-go mod download
+# CGOを有効化
+set CGO_ENABLED=1
 
-# Simple版のビルド
+# ビルド
 go build -o bin\sync_simple.exe .\cmd\sync_simple
-
-# Smooth版のビルド
 go build -o bin\sync_smooth.exe .\cmd\sync_smooth
 ```
 
-## 実行
+### ステップ4: 実行
 
-### Simple版
+```cmd
+# bin ディレクトリに移動（DLLが同じディレクトリにある必要がある）
+cd bin
 
-```bash
-# Linux
-./bin/sync_simple
-
-# Windows
-.\bin\sync_simple.exe
-
-# または直接実行
-go run ./cmd/sync_simple
-```
-
-### Smooth版
-
-```bash
-# Linux
-./bin/sync_smooth
-
-# Windows
-.\bin\sync_smooth.exe
-
-# または直接実行
-go run ./cmd/sync_smooth
+# 実行
+.\sync_simple.exe
+# または
+.\sync_smooth.exe
 ```
 
 ## 使い方
@@ -126,32 +111,87 @@ go run ./cmd/sync_smooth
    - **Y軸 (縦方向)**: スレーブ周波数 (100Hz - 2000Hz)
 3. `Ctrl+C` で終了
 
+## バージョンの違い
+
+### Simple版
+- 8msごとに周波数が階段状に変化
+- マウスを素早く動かすと、音が段階的に変化する
+- シンプルな実装で理解しやすい
+
+### Smooth版
+- サンプルごとに滑らかに周波数が変化
+- 指数平滑化により自然な音の遷移
+- より音楽的で実用的
+
+## トラブルシューティング
+
+### ビルドエラー: "build constraints exclude all Go files"
+
+このエラーは、CGOが無効になっているか、C言語コンパイラが見つからない場合に発生します。
+
+**解決方法**:
+1. C言語コンパイラ（GCC）がインストールされているか確認:
+   ```cmd
+   gcc --version
+   ```
+2. CGOが有効になっているか確認:
+   ```cmd
+   go env CGO_ENABLED
+   ```
+   `0` の場合は有効化:
+   ```cmd
+   set CGO_ENABLED=1
+   ```
+
+### その他のエラー
+
+詳細な調査レポートは [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
+
 ## プロジェクト構成
 
 ```
 src/go/
-├── go.mod                      # Go モジュール定義
-├── go.sum                      # 依存関係のチェックサム
-├── .gitignore                  # Git除外設定
-├── README.md                   # このファイル
-├── IMPLEMENTATION_PLAN.md      # 実装計画書
+├── go.mod                           # Go モジュール定義
+├── go.sum                           # 依存関係のチェックサム
+├── .gitignore                       # Git除外設定
+├── README.md                        # このファイル
+├── INVESTIGATION_CGO_ALTERNATIVES.md # CGO要件の調査報告
+├── download_portaudio.py            # PortAudio DLLダウンロードスクリプト
 ├── cmd/
 │   ├── sync_simple/
-│   │   └── main.go            # Simple版エントリポイント
+│   │   └── main.go                 # Simple版エントリポイント
 │   └── sync_smooth/
-│       └── main.go            # Smooth版エントリポイント
+│       └── main.go                 # Smooth版エントリポイント
 ├── internal/
 │   ├── mouse/
-│   │   ├── position.go        # マウス位置取得 (共通インターフェース)
-│   │   ├── position_linux.go  # Linux実装
-│   │   └── position_windows.go # Windows実装
+│   │   ├── position.go             # マウス位置取得 (共通インターフェース)
+│   │   ├── position_linux.go       # Linux実装
+│   │   └── position_windows.go     # Windows実装
 │   └── synth/
-│       ├── simple.go          # Simple版シンセサイザー
-│       └── smooth.go          # Smooth版シンセサイザー
-└── bin/                       # ビルド出力 (gitignore)
+│       ├── simple.go               # Simple版シンセサイザー
+│       └── smooth.go               # Smooth版シンセサイザー
+└── bin/                            # ビルド出力 (gitignore)
+    ├── sync_simple.exe             # Simple版実行ファイル
+    ├── sync_smooth.exe             # Smooth版実行ファイル
+    └── libportaudio64bit.dll       # PortAudio DLL
 ```
 
 ## 技術詳細
+
+### CGO使用の理由
+
+`gordonklaus/portaudio` パッケージは以下のようにCGOを使用してC言語のPortAudioライブラリを呼び出します:
+
+```go
+/*
+#cgo pkg-config: portaudio-2.0
+#include <portaudio.h>
+extern PaStreamCallback* paStreamCallback;
+*/
+import "C"
+```
+
+これにより、低レベルなオーディオ制御が可能になりますが、ビルド時にC言語コンパイラが必要になります。
 
 ### オーディオライブラリ
 
@@ -161,7 +201,6 @@ src/go/
 
 ### マウス位置取得
 
-- **Linux**: xdotoolを使用してマウス座標を取得
 - **Windows**: user32.dllの`GetCursorPos` APIを直接呼び出し (syscall)
 - ポーリング間隔: 8ms (125Hz)
 
@@ -185,74 +224,12 @@ tempFreqMaster += (targetFreqMaster - tempFreqMaster) * smoothnessCoeff
 tempFreqSlave += (targetFreqSlave - tempFreqSlave) * smoothnessCoeff
 ```
 
-### パラメータ設定
+## 関連ドキュメント
 
-#### Smooth版のパラメータ
-
-```go
-const (
-    sampleRate       = 48000  // サンプリングレート (Hz)
-    timeConstantMs   = 16     // 時定数 (ms) - 約63%到達時間
-    pollingIntervalMs = 8     // マウスポーリング間隔 (ms)
-)
-```
-
-## トラブルシューティング
-
-### Linux: xdotoolが見つからない
-
-```bash
-sudo apt-get install xdotool
-```
-
-### Linux: xdpyinfoが見つからない
-
-```bash
-sudo apt-get install x11-utils
-```
-
-### PortAudioが見つからない
-
-Linuxの場合:
-```bash
-# pkg-configでPortAudioが見つかるか確認
-pkg-config --modversion portaudio-2.0
-
-# 見つからない場合はインストール
-sudo apt-get install portaudio19-dev
-```
-
-Windowsの場合:
-- DLLが実行ファイルと同じディレクトリにあるか確認
-- または、システムのPATHにDLLの場所を追加
-
-### CGOエラー
-
-GCCがインストールされているか確認:
-```bash
-gcc --version
-```
-
-Windowsの場合、TDM-GCCまたはMSYS2のMinGW-w64をインストールしてください。
-
-## Python版との比較
-
-| 項目 | Python | Go |
-|------|--------|-----|
-| 起動速度 | 遅い | 速い (コンパイル済み) |
-| 実行速度 | 普通 | 速い |
-| メモリ使用量 | 多い | 少ない |
-| バイナリサイズ | - | 約2.8MB |
-| インストール | pip (簡単) | ビルド必要 (やや複雑) |
-| 依存関係管理 | requirements.txt | go.mod (自動) |
+- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の詳細な調査報告
+- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - 実装計画書
+- [COMPLETION_REPORT.md](COMPLETION_REPORT.md) - 実装完了報告
 
 ## ライセンス
 
 このプロジェクトは [MIT License](../../LICENSE) の下で公開されています。
-
-## 参考資料
-
-- [gordonklaus/portaudio](https://github.com/gordonklaus/portaudio) - PortAudio Go bindings
-- [PortAudio公式サイト](http://www.portaudio.com/)
-- [実装計画書](IMPLEMENTATION_PLAN.md)
-
