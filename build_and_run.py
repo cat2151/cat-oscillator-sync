@@ -6,6 +6,7 @@ build_and_run.py
 """
 
 import os
+import platform
 import shutil
 import subprocess
 from pathlib import Path
@@ -45,6 +46,37 @@ def command_exists(command: str) -> bool:
     """Check if a command exists in PATH"""
     # Use shutil.which() which properly handles .cmd/.bat extensions on Windows
     return shutil.which(command) is not None
+
+
+def run_npm_command(args: list[str], cwd: Path, check: bool = False) -> subprocess.CompletedProcess:
+    """
+    Run npm command with proper Windows support.
+
+    On Windows, npm is actually npm.cmd, and subprocess.run() needs special handling:
+    - Option 1: Use shell=True to let the shell find npm.cmd
+    - Option 2: Explicitly call npm.cmd instead of npm
+
+    This function uses shell=True which is the most reliable method on Windows
+    while still working correctly on Unix-like systems.
+
+    Args:
+        args: List of npm command arguments (e.g., ["run", "build"])
+        cwd: Working directory for the command
+        check: If True, raise CalledProcessError on non-zero exit
+
+    Returns:
+        CompletedProcess instance with the result
+    """
+    is_windows = platform.system() == "Windows"
+
+    if is_windows:
+        # On Windows, use shell=True to properly find npm.cmd
+        # Join the arguments into a single command string
+        cmd = "npm " + " ".join(args)
+        return subprocess.run(cmd, shell=True, cwd=cwd, check=check)
+    else:
+        # On Unix-like systems, use the list form without shell
+        return subprocess.run(["npm"] + args, shell=False, cwd=cwd, check=check)
 
 
 def build_python(script_dir: Path) -> None:
@@ -162,9 +194,9 @@ def build_typescript_cli(script_dir: Path) -> None:
 
     if not node_modules.exists():
         log_info("依存関係をインストール中...")
-        subprocess.run(["npm", "install"], cwd=ts_cli_dir, check=False)
+        run_npm_command(["install"], cwd=ts_cli_dir, check=False)
 
-    result = subprocess.run(["npm", "run", "build"], cwd=ts_cli_dir, check=False)
+    result = run_npm_command(["run", "build"], cwd=ts_cli_dir, check=False)
 
     if result.returncode == 0:
         log_success("TypeScript CLI版: ビルド完了")
@@ -185,9 +217,9 @@ def build_typescript_browser(script_dir: Path) -> None:
 
     if not node_modules.exists():
         log_info("依存関係をインストール中...")
-        subprocess.run(["npm", "install"], cwd=ts_browser_dir, check=False)
+        run_npm_command(["install"], cwd=ts_browser_dir, check=False)
 
-    result = subprocess.run(["npm", "run", "build"], cwd=ts_browser_dir, check=False)
+    result = run_npm_command(["run", "build"], cwd=ts_browser_dir, check=False)
 
     if result.returncode == 0:
         log_success("TypeScript Browser版: ビルド完了")
@@ -323,7 +355,7 @@ def run_application(choice: str, script_dir: Path) -> bool:
             log_info("ブラウザで http://localhost:5173 にアクセスしてください。")
             print("Ctrl+Cで終了します。")
             ts_browser_dir = script_dir / "src" / "typescript" / "browser"
-            subprocess.run(["npm", "run", "dev"], cwd=ts_browser_dir, check=False)
+            run_npm_command(["run", "dev"], cwd=ts_browser_dir, check=False)
 
         elif choice == "0":
             log_info("終了します。")
