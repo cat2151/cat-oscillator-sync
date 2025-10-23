@@ -108,27 +108,45 @@ def build_go(script_dir: Path) -> None:
     bin_dir = go_dir / "bin"
     bin_dir.mkdir(exist_ok=True)
 
-    # Check if binaries already exist
+    # Try to build Pure Go (Oto) versions first
+    simple_oto_exe = bin_dir / "sync_simple_oto.exe"
+    smooth_oto_exe = bin_dir / "sync_smooth_oto.exe"
+
+    if not simple_oto_exe.exists() or not smooth_oto_exe.exists():
+        log_info("Pure Go版（Oto）をビルド中... (CGO不要)")
+
+        # Build simple oto version
+        result_simple = subprocess.run(
+            ["go", "build", "-o", str(simple_oto_exe), "./cmd/sync_simple_oto"],
+            cwd=go_dir,
+            env={**os.environ, "CGO_ENABLED": "0"},
+            check=False,
+        )
+
+        # Build smooth oto version
+        result_smooth = subprocess.run(
+            ["go", "build", "-o", str(smooth_oto_exe), "./cmd/sync_smooth_oto"],
+            cwd=go_dir,
+            env={**os.environ, "CGO_ENABLED": "0"},
+            check=False,
+        )
+
+        if result_simple.returncode == 0 and result_smooth.returncode == 0:
+            log_success("Go版（Oto - Pure Go）: ビルド完了")
+        else:
+            log_error("Go版（Oto）のビルドに失敗しました")
+    else:
+        log_success("Go版（Oto - Pure Go）: ビルド済みバイナリが見つかりました")
+
+    # Check for PortAudio versions (CGO required)
     simple_exe = bin_dir / "sync_simple.exe"
     smooth_exe = bin_dir / "sync_smooth.exe"
 
     if simple_exe.exists() and smooth_exe.exists():
-        log_success("Go版: ビルド済みバイナリが見つかりました")
-        return
-
-    # Download PortAudio DLL if not exists (Windows only)
-    dll_path = bin_dir / "libportaudio64bit.dll"
-    if not dll_path.exists():
-        log_info("PortAudio DLLをダウンロード中...")
-        download_script = go_dir / "download_portaudio.py"
-        result = subprocess.run(["python", str(download_script)], cwd=go_dir, check=False)
-        if result.returncode != 0:
-            log_warning("PortAudio DLLのダウンロードに失敗しました。手動でダウンロードしてください。")
-
-    log_warning("Go版のビルドにはC言語コンパイラ（GCC/MinGW）が必要です。")
-    log_warning("プリコンパイル済みバイナリの配布を検討中です。")
-    log_warning("詳細は src/go/README.md および src/go/INVESTIGATION_CGO_ALTERNATIVES.md を参照してください。")
-    log_warning("Go版のビルドをスキップします。")
+        log_success("Go版（PortAudio）: ビルド済みバイナリが見つかりました")
+    else:
+        log_info("Go版（PortAudio）のビルドにはC言語コンパイラ（GCC/MinGW）が必要です。")
+        log_info("Pure Go版（Oto）を使用することをお勧めします。")
 
 
 def build_typescript_cli(script_dir: Path) -> None:
@@ -208,9 +226,9 @@ def build_all(script_dir: Path) -> None:
 
 def show_menu() -> None:
     """Display the application selection menu"""
-    print("=" * 42)
+    print("=" * 50)
     print("  実行するアプリを選択してください")
-    print("=" * 42)
+    print("=" * 50)
     print()
     print("Python版:")
     print("  1) sync_simple.py  - シンプル版（8msごとに階段状に周波数変化）")
@@ -220,14 +238,18 @@ def show_menu() -> None:
     print("  3) sync_simple     - シンプル版")
     print("  4) sync_smooth     - スムーズ版")
     print()
-    print("Go版:")
-    print("  5) sync_simple     - シンプル版")
-    print("  6) sync_smooth     - スムーズ版")
+    print("Go版 (Pure Go - Oto):")
+    print("  5) sync_simple_oto - シンプル版 ⭐推奨 (CGO不要)")
+    print("  6) sync_smooth_oto - スムーズ版 ⭐推奨 (CGO不要)")
+    print()
+    print("Go版 (PortAudio - CGO必要):")
+    print("  7) sync_simple     - シンプル版")
+    print("  8) sync_smooth     - スムーズ版")
     print()
     print("TypeScript版:")
-    print("  7) CLI Simple      - CLIシンプル版（Windows専用）")
-    print("  8) CLI Smooth      - CLIスムーズ版（Windows専用）")
-    print("  9) Browser         - ブラウザ版開発サーバー起動")
+    print("  11) CLI Simple     - CLIシンプル版（Windows専用）")
+    print("  12) CLI Smooth     - CLIスムーズ版（Windows専用）")
+    print("  13) Browser        - ブラウザ版開発サーバー起動")
     print()
     print("  0) 終了")
     print()
@@ -265,28 +287,38 @@ def run_application(choice: str, script_dir: Path) -> bool:
             )
 
         elif choice == "5":
-            log_info("Go sync_simple を起動します...")
+            log_info("Go sync_simple_oto (Pure Go版) を起動します...")
+            print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
+            subprocess.run(["src/go/bin/sync_simple_oto.exe"], cwd=script_dir, check=False)
+
+        elif choice == "6":
+            log_info("Go sync_smooth_oto (Pure Go版) を起動します...")
+            print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
+            subprocess.run(["src/go/bin/sync_smooth_oto.exe"], cwd=script_dir, check=False)
+
+        elif choice == "7":
+            log_info("Go sync_simple (PortAudio版) を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
             subprocess.run(["src/go/bin/sync_simple.exe"], cwd=script_dir, check=False)
 
-        elif choice == "6":
-            log_info("Go sync_smooth を起動します...")
+        elif choice == "8":
+            log_info("Go sync_smooth (PortAudio版) を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
             subprocess.run(["src/go/bin/sync_smooth.exe"], cwd=script_dir, check=False)
 
-        elif choice == "7":
+        elif choice == "11":
             log_info("TypeScript CLI Simple を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
             ts_cli_dir = script_dir / "src" / "typescript" / "cli"
             subprocess.run(["node", "dist/main.js", "simple"], cwd=ts_cli_dir, check=False)
 
-        elif choice == "8":
+        elif choice == "12":
             log_info("TypeScript CLI Smooth を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
             ts_cli_dir = script_dir / "src" / "typescript" / "cli"
             subprocess.run(["node", "dist/main.js", "smooth"], cwd=ts_cli_dir, check=False)
 
-        elif choice == "9":
+        elif choice == "13":
             log_info("TypeScript Browser版の開発サーバーを起動します...")
             log_info("ブラウザで http://localhost:5173 にアクセスしてください。")
             print("Ctrl+Cで終了します。")
