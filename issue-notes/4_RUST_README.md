@@ -66,8 +66,8 @@ cargo run --release --bin sync_smooth
 
 ### Documentation
 
-- [Quick Start Guide (Japanese)](QUICKSTART.md) - Detailed setup instructions for Windows users
-- [Implementation Plan (Japanese)](IMPLEMENTATION_PLAN.md) - Technical details
+- [Quick Start Guide (Japanese)](4_RUST_QUICKSTART.md) - Detailed setup instructions for Windows users
+- [Implementation Plan (Japanese)](2_RUST_IMPLEMENTATION_PLAN.md) - Technical details
 
 ### Comparison with Python Version
 
@@ -261,4 +261,4 @@ src/rust/
 - [Rust公式サイト](https://www.rust-lang.org/)
 - [cpalドキュメント](https://docs.rs/cpal/)
 - [rdevドキュメント](https://docs.rs/rdev/)
-- [実装計画書](IMPLEMENTATION_PLAN.md)
+- [実装計画書](2_RUST_IMPLEMENTATION_PLAN.md)

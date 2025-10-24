@@ -302,7 +302,7 @@ MIT License - 詳細は [LICENSE](../../../LICENSE) を参照
 
 ## 関連ドキュメント
 
-- [TypeScript 実装計画書](../IMPLEMENTATION_PLAN.md)
+- [TypeScript 実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)
 - [Python 実装](../../python/)
 - [Rust 実装](../../rust/)
-- [メインREADME](../../../README.md)
+- [メインREADME](../README.md)

@@ -12,7 +12,7 @@ obsidian-plugin-abcjsのように、Obsidianで音を鳴らすことができる
 
 ## ドキュメント
 
-- **[実装計画書](IMPLEMENTATION_PLAN.md)** - 詳細な実装計画とアーキテクチャ設計
+- **[実装計画書](20_OBSIDIAN_IMPLEMENTATION_PLAN.md)** - 詳細な実装計画とアーキテクチャ設計
 
 ## 参考実装
 
@@ -131,7 +131,7 @@ src/obsidian/
 
 ### 本プロジェクト関連
 - [TypeScript ブラウザ版](../typescript/browser/)
-- [TypeScript ブラウザ版 実装計画書](../typescript/IMPLEMENTATION_PLAN.md)
+- [TypeScript ブラウザ版 実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)
 - [Python版実装](../python/)
 
 ### Web Audio API

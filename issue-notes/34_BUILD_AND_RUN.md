@@ -78,25 +78,25 @@ TypeScript版:
 
 ### Rust版
 - Rust（rustc、cargo）
-- 詳細は [src/rust/QUICKSTART.md](src/rust/QUICKSTART.md) を参照
+- 詳細は [4_RUST_QUICKSTART.md](4_RUST_QUICKSTART.md) を参照
 
 ### Go版
 - Go 1.21+
 - Windows: MinGW-w64またはTDM-GCC、PortAudio DLL
-- 詳細は [src/go/QUICKSTART.md](src/go/QUICKSTART.md) を参照
+- 詳細は [22_GO_QUICKSTART.md](22_GO_QUICKSTART.md) を参照
 
 ### TypeScript CLI版（Windows専用）
 - Node.js 18+
 - npm
 - Windows 10以降
 - Visual Studio Build Tools（ネイティブモジュールのビルド用）
-- 詳細は [src/typescript/cli/QUICKSTART.md](src/typescript/cli/QUICKSTART.md) を参照
+- 詳細は [32_TYPESCRIPT_CLI_QUICKSTART.md](32_TYPESCRIPT_CLI_QUICKSTART.md) を参照
 
 ### TypeScript Browser版
 - Node.js 18+
 - npm
 - モダンなWebブラウザ
-- 詳細は [src/typescript/browser/README.md](src/typescript/browser/README.md) を参照
+- 詳細は [6_TYPESCRIPT_BROWSER_README.md](6_TYPESCRIPT_BROWSER_README.md) を参照
 
 ## トラブルシューティング
 
@@ -105,10 +105,10 @@ TypeScript版:
 各言語版の個別のREADMEやQUICKSTARTドキュメントを参照してください：
 
 - Python: [README.md](README.md) の「インストール」セクション
-- Rust: [src/rust/QUICKSTART.md](src/rust/QUICKSTART.md)
-- Go: [src/go/QUICKSTART.md](src/go/QUICKSTART.md)
-- TypeScript CLI: [src/typescript/cli/QUICKSTART.md](src/typescript/cli/QUICKSTART.md)
-- TypeScript Browser: [src/typescript/browser/README.md](src/typescript/browser/README.md)
+- Rust: [4_RUST_QUICKSTART.md](4_RUST_QUICKSTART.md)
+- Go: [22_GO_QUICKSTART.md](22_GO_QUICKSTART.md)
+- TypeScript CLI: [32_TYPESCRIPT_CLI_QUICKSTART.md](32_TYPESCRIPT_CLI_QUICKSTART.md)
+- TypeScript Browser: [6_TYPESCRIPT_BROWSER_README.md](6_TYPESCRIPT_BROWSER_README.md)
 
 ### 特定の言語版がスキップされる
 

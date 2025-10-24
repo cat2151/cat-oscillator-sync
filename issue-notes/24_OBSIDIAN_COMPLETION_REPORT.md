@@ -221,7 +221,7 @@ cp main.js manifest.json /path/to/vault/.obsidian/plugins/cat-oscillator-sync/
 3. マウスを動かして音を確認
 4. "Disable Oscillator Sync"で停止
 
-詳細は[README.md](README.md)を参照。
+詳細は[README.md](24_OBSIDIAN_README.md)を参照。
 
 ## 今後の拡張可能性
 
@@ -292,8 +292,8 @@ cp main.js manifest.json /path/to/vault/.obsidian/plugins/cat-oscillator-sync/
 
 ## 参考資料
 
-- [実装計画書](IMPLEMENTATION_PLAN.md)
-- [README.md](README.md)
+- [実装計画書](20_OBSIDIAN_IMPLEMENTATION_PLAN.md)
+- [README.md](24_OBSIDIAN_README.md)
 - [TypeScript ブラウザ版](../typescript/browser/)
 - [Obsidian Plugin API](https://docs.obsidian.md/Plugins/Getting+started/Build+a+plugin)
 - [obsidian-plugin-abcjs](https://github.com/abcjs-music/obsidian-plugin-abcjs)
