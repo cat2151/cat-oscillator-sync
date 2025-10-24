@@ -17,7 +17,7 @@ const (
 	sampleRate        = 48000
 	pollingIntervalMs = 8
 	channelCount      = 1
-	bufferSizeMs      = 20 // Buffer size in milliseconds
+	bufferSizeMs      = 8 // Buffer size in milliseconds (matches polling interval)
 )
 
 var (
