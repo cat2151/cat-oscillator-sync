@@ -13,7 +13,7 @@
 - ✅ **環境を汚さない** - 追加のツールチェイン不要
 - ✅ モノフォニックシンセには十分な性能
 
-👉 **[README_OTO.md](README_OTO.md) を参照してください**
+👉 **[README_OTO.md](44_GO_README_OTO.md) を参照してください**
 
 ### PortAudio版 - プロフェッショナル向け
 
@@ -38,7 +38,7 @@ PortAudio版は `gordonklaus/portaudio` パッケージを使用しており、�
 2. **最高のパフォーマンスを実現**: プロフェッショナルなオーディオアプリケーションで使用される
 3. **すべてのGo PortAudioバインディングがCGOを使用**: 技術的な制約により回避不可能
 
-詳細は [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
+詳細は [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
 
 ## 推奨アプローチ
 
@@ -46,7 +46,7 @@ PortAudio版は `gordonklaus/portaudio` パッケージを使用しており、�
 
 **ほとんどのユーザーに推奨**
 
-Pure Go実装のOto版を使用してください。詳細は [README_OTO.md](README_OTO.md) を参照してください。
+Pure Go実装のOto版を使用してください。詳細は [README_OTO.md](44_GO_README_OTO.md) を参照してください。
 
 ### オプション2: プリコンパイル済みバイナリを使用（計画中）
 
@@ -175,7 +175,7 @@ cd bin
 
 ### その他のエラー
 
-詳細な調査レポートは [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
+詳細な調査レポートは [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) を参照してください。
 
 ## プロジェクト構成
 
@@ -256,9 +256,9 @@ tempFreqSlave += (targetFreqSlave - tempFreqSlave) * smoothnessCoeff
 
 ## 関連ドキュメント
 
-- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の詳細な調査報告
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) - 実装計画書
-- [COMPLETION_REPORT.md](COMPLETION_REPORT.md) - 実装完了報告
+- [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の詳細な調査報告
+- [IMPLEMENTATION_PLAN.md](2_GO_IMPLEMENTATION_PLAN.md) - 実装計画書
+- [COMPLETION_REPORT.md](22_GO_COMPLETION_REPORT.md) - 実装完了報告
 
 ## ライセンス
 

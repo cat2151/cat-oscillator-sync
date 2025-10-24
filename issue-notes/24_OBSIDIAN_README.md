@@ -131,7 +131,7 @@ src/obsidian/
 
 ### 本プロジェクト関連
 - [TypeScript ブラウザ版](../typescript/browser/)
-- [TypeScript ブラウザ版 実装計画書](../typescript/IMPLEMENTATION_PLAN.md)
+- [TypeScript ブラウザ版 実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)
 - [Python版実装](../python/)
 
 ### Web Audio API

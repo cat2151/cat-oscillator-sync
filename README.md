@@ -8,8 +8,8 @@ Python : 音が鳴ります。
 
 Rust : 音が鳴ります。
 
-Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [src/go/README_OTO.md](src/go/README_OTO.md) を参照してください。
-     ※PortAudio版も利用可能ですが、C言語コンパイラが必要です。詳細は [src/go/README.md](src/go/README.md) を参照してください。
+Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [issue-notes/44_GO_README_OTO.md](issue-notes/44_GO_README_OTO.md) を参照してください。
+     ※PortAudio版も利用可能ですが、C言語コンパイラが必要です。詳細は [issue-notes/22_GO_README.md](issue-notes/22_GO_README.md) を参照してください。
 
 TypeScript(Node.js) : 音が鳴りません。ビルドエラーです。作業中です。
 
@@ -74,7 +74,7 @@ python src/python/sync_smooth.py
 python build_and_run.py
 ```
 
-詳細は [BUILD_AND_RUN.md](BUILD_AND_RUN.md) を参照してください。
+詳細は [issue-notes/34_BUILD_AND_RUN.md](issue-notes/34_BUILD_AND_RUN.md) を参照してください。
 
 ## 技術詳細
 
@@ -153,13 +153,13 @@ ruff check --fix src/ tests/
 
 ## 今後の予定
 
-- [x] Rust実装 - [実装計画書](src/rust/IMPLEMENTATION_PLAN.md) | [README](src/rust/README.md) | [クイックスタート](src/rust/QUICKSTART.md)
-- [x] Go実装 - [実装計画書](src/go/IMPLEMENTATION_PLAN.md) | [README](src/go/README.md) | [クイックスタート](src/go/QUICKSTART.md)
-- [x] TypeScript実装（ブラウザ版） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/browser/README.md)
-- [x] TypeScript実装（CLI版・Windows専用） - [実装計画書](src/typescript/IMPLEMENTATION_PLAN.md) | [README](src/typescript/cli/README.md) | [クイックスタート](src/typescript/cli/QUICKSTART.md)
-- [ ] TypeScript実装（Obsidianプラグイン版） - [実装計画書](src/obsidian/IMPLEMENTATION_PLAN.md) | [README](src/obsidian/README.md)
+- [x] Rust実装 - [実装計画書](issue-notes/2_RUST_IMPLEMENTATION_PLAN.md) | [README](issue-notes/4_RUST_README.md) | [クイックスタート](issue-notes/4_RUST_QUICKSTART.md)
+- [x] Go実装 - [実装計画書](issue-notes/2_GO_IMPLEMENTATION_PLAN.md) | [README](issue-notes/22_GO_README.md) | [クイックスタート](issue-notes/22_GO_QUICKSTART.md)
+- [x] TypeScript実装（ブラウザ版） - [実装計画書](issue-notes/2_TYPESCRIPT_IMPLEMENTATION_PLAN.md) | [README](issue-notes/6_TYPESCRIPT_BROWSER_README.md)
+- [x] TypeScript実装（CLI版・Windows専用） - [実装計画書](issue-notes/2_TYPESCRIPT_IMPLEMENTATION_PLAN.md) | [README](issue-notes/32_TYPESCRIPT_CLI_README.md) | [クイックスタート](issue-notes/32_TYPESCRIPT_CLI_QUICKSTART.md)
+- [ ] TypeScript実装（Obsidianプラグイン版） - [実装計画書](issue-notes/20_OBSIDIAN_IMPLEMENTATION_PLAN.md) | [README](issue-notes/24_OBSIDIAN_README.md)
 
-**実装計画の詳細**: [実装計画書サマリー](src/IMPLEMENTATION_PLAN_SUMMARY.md)をご覧ください。
+**実装計画の詳細**: [実装計画書サマリー](issue-notes/2_IMPLEMENTATION_PLAN_SUMMARY.md)をご覧ください。
 
 ## projectのゴール
 - [x] Python:

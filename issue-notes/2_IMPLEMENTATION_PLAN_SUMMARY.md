@@ -4,11 +4,11 @@
 
 ## 各言語の実装計画書
 
-1. **[Rust版実装計画書](./rust/IMPLEMENTATION_PLAN.md)**
-2. **[Go版実装計画書](./go/IMPLEMENTATION_PLAN.md)**
-3. **[TypeScript版実装計画書](./typescript/IMPLEMENTATION_PLAN.md)**
-   - **[TypeScript ブラウザ版](./typescript/browser/README.md)** - 実装完了
-   - **[TypeScript Obsidianプラグイン版](./obsidian/IMPLEMENTATION_PLAN.md)** - 計画書完成
+1. **[Rust版実装計画書](2_RUST_IMPLEMENTATION_PLAN.md)**
+2. **[Go版実装計画書](2_GO_IMPLEMENTATION_PLAN.md)**
+3. **[TypeScript版実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)**
+   - **[TypeScript ブラウザ版](6_TYPESCRIPT_BROWSER_README.md)** - 実装完了
+   - **[TypeScript Obsidianプラグイン版](20_OBSIDIAN_IMPLEMENTATION_PLAN.md)** - 計画書完成
 
 ## 要件
 
@@ -162,7 +162,7 @@ deno task start
 - AudioWorkletモジュールのバンドル対応が必要
 
 ##### 📝 実装計画
-- **[実装計画書](./obsidian/IMPLEMENTATION_PLAN.md)** - 完成
+- **[実装計画書](20_OBSIDIAN_IMPLEMENTATION_PLAN.md)** - 完成
 - コマンド方式（Toggle/Enable/Disable）を採用
 - ブラウザ版からSynthクラスとAudioWorkletを移植
 - obsidian-plugin-abcjsを参考に実装
@@ -283,8 +283,8 @@ npm run dev
 
 ## 各言語の詳細は個別の計画書を参照
 
-- [Rust版実装計画書](./rust/IMPLEMENTATION_PLAN.md)
-- [Go版実装計画書](./go/IMPLEMENTATION_PLAN.md)
-- [TypeScript版実装計画書](./typescript/IMPLEMENTATION_PLAN.md)
-  - [TypeScript ブラウザ版 README](./typescript/browser/README.md) - 実装完了
-  - [TypeScript Obsidianプラグイン版 実装計画書](./obsidian/IMPLEMENTATION_PLAN.md) - 計画書完成
+- [Rust版実装計画書](2_RUST_IMPLEMENTATION_PLAN.md)
+- [Go版実装計画書](2_GO_IMPLEMENTATION_PLAN.md)
+- [TypeScript版実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)
+  - [TypeScript ブラウザ版 README](6_TYPESCRIPT_BROWSER_README.md) - 実装完了
+  - [TypeScript Obsidianプラグイン版 実装計画書](20_OBSIDIAN_IMPLEMENTATION_PLAN.md) - 計画書完成

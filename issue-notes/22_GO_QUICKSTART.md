@@ -144,9 +144,9 @@ go build -v -x -o bin\sync_simple.exe .\cmd\sync_simple
 
 ## より詳しい情報
 
-- [README.md](README.md): 詳細なドキュメント
-- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md): CGO要件の調査報告
-- [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md): 実装計画書
+- [README.md](22_GO_README.md): 詳細なドキュメント
+- [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md): CGO要件の調査報告
+- [IMPLEMENTATION_PLAN.md](2_GO_IMPLEMENTATION_PLAN.md): 実装計画書
 
 ## ライセンス
 
