@@ -151,6 +151,6 @@ AudioWorkletは、Web Audio APIの低レイテンシなオーディオ処理を�
 ## 関連リンク
 
 - [Python版実装](../../python/)
-- [実装計画書](../IMPLEMENTATION_PLAN.md)
+- [実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md)
 - [Web Audio API ドキュメント](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 - [AudioWorklet ドキュメント](https://developer.mozilla.org/en-US/docs/Web/API/AudioWorklet)

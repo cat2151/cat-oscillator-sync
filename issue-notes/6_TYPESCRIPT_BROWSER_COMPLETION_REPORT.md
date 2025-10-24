@@ -96,7 +96,7 @@ current_freq += (target_freq - current_freq) * smoothness_coeff
 
 ### 手動テスト
 - 📋 実ブラウザでの手動テストが必要
-- [MANUAL_TEST.md](./MANUAL_TEST.md) に詳細な手順を記載
+- [MANUAL_TEST.md](6_TYPESCRIPT_BROWSER_MANUAL_TEST.md) に詳細な手順を記載
 
 ## ブラウザ互換性
 

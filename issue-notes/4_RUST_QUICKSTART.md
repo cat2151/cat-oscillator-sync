@@ -161,5 +161,5 @@ rustup update
 
 - [Rust公式サイト](https://www.rust-lang.org/)
 - [Cargo Book（日本語）](https://doc.rust-jp.rs/book-ja/ch01-00-getting-started.html)
-- [実装計画書](IMPLEMENTATION_PLAN.md)
+- [実装計画書](2_RUST_IMPLEMENTATION_PLAN.md)
 - [詳細README](README.md)

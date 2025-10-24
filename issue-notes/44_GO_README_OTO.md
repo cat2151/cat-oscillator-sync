@@ -175,8 +175,8 @@ const (
 ## 関連ドキュメント
 
 - [README.md](README.md) - PortAudio版の詳細
-- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の調査報告
-- [QUICKSTART.md](QUICKSTART.md) - クイックスタートガイド
+- [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の調査報告
+- [QUICKSTART.md](44_GO_QUICKSTART_OTO.md) - クイックスタートガイド
 
 ## ライセンス
 

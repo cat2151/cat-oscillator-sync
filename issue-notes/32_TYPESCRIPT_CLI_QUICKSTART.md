@@ -134,8 +134,8 @@ npm run build
 ## 次のステップ
 
 - [README.md](README.md) - 詳細なドキュメント
-- [実装計画書](../IMPLEMENTATION_PLAN.md) - TypeScript全体の実装計画
-- [メインREADME](../../../README.md) - プロジェクト全体の説明
+- [実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md) - TypeScript全体の実装計画
+- [メインREADME](../README.md) - プロジェクト全体の説明
 
 ## よくある質問
 

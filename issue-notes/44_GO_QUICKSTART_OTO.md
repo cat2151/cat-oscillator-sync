@@ -87,9 +87,9 @@ Audio stream started
 
 詳しい情報は以下を参照してください：
 
-- [README_OTO.md](README_OTO.md) - Oto版の詳細な説明
+- [README_OTO.md](44_GO_README_OTO.md) - Oto版の詳細な説明
 - [README.md](README.md) - PortAudio版の説明
-- [INVESTIGATION_CGO_ALTERNATIVES.md](INVESTIGATION_CGO_ALTERNATIVES.md) - CGOについての調査
+- [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) - CGOについての調査
 
 ## 🐛 トラブルシューティング
 

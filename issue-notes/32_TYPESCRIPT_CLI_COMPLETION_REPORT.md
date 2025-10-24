@@ -285,5 +285,5 @@ TypeScript Node.js CLI版（Windows専用）の実装は成功しました。
 - [QUICKSTART.md](32_TYPESCRIPT_CLI_QUICKSTART.md) - クイックスタートガイド
 - [VERIFICATION.md](32_TYPESCRIPT_CLI_VERIFICATION.md) - テスト手順
 - [MIGRATION_NOTES.md](32_TYPESCRIPT_CLI_MIGRATION_NOTES.md) - 技術的変更点
-- [TypeScript実装計画書](../IMPLEMENTATION_PLAN.md) - 全体の実装計画
-- [メインREADME](../../../README.md) - プロジェクト概要
+- [TypeScript実装計画書](2_TYPESCRIPT_IMPLEMENTATION_PLAN.md) - 全体の実装計画
+- [メインREADME](../README.md) - プロジェクト概要

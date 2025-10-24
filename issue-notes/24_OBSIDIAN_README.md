@@ -12,7 +12,7 @@ obsidian-plugin-abcjsのように、Obsidianで音を鳴らすことができる
 
 ## ドキュメント
 
-- **[実装計画書](IMPLEMENTATION_PLAN.md)** - 詳細な実装計画とアーキテクチャ設計
+- **[実装計画書](20_OBSIDIAN_IMPLEMENTATION_PLAN.md)** - 詳細な実装計画とアーキテクチャ設計
 
 ## 参考実装
 
