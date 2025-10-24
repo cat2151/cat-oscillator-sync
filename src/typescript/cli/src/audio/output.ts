@@ -26,7 +26,7 @@ export class AudioOutput {
     private config: AudioConfig;
     private callback: AudioCallback | null = null;
     private running = false;
-    private intervalId: NodeJS.Timeout | null = null;
+    private framesPerBuffer = 0;
 
     constructor(config: AudioConfig) {
         this.config = config;
@@ -42,29 +42,42 @@ export class AudioOutput {
     }
 
     /**
+     * Write next audio buffer to the stream
+     */
+    private writeNextBuffer(): void {
+        if (!this.running || !this.callback) return;
+
+        // Create buffer for audio samples
+        const samples = new Int16Array(this.framesPerBuffer * this.config.channels);
+
+        // Call user callback to generate audio
+        this.callback(samples, this.framesPerBuffer);
+
+        // Convert Int16Array to Buffer and write to speaker
+        const buffer = Buffer.from(samples.buffer);
+        const canContinue = this.speaker.write(buffer);
+
+        // If the write buffer is full, wait for drain event
+        if (!canContinue) {
+            this.speaker.once("drain", () => {
+                this.writeNextBuffer();
+            });
+        } else {
+            // Continue writing immediately if buffer has space
+            setImmediate(() => this.writeNextBuffer());
+        }
+    }
+
+    /**
      * Start the audio stream
      */
     start(callback: AudioCallback, framesPerBuffer: number): void {
         this.callback = callback;
+        this.framesPerBuffer = framesPerBuffer;
         this.running = true;
 
-        // Calculate buffer interval in milliseconds
-        const intervalMs = (framesPerBuffer / this.config.sampleRate) * 1000;
-
-        // Generate and write audio buffers at regular intervals
-        this.intervalId = setInterval(() => {
-            if (!this.running || !this.callback) return;
-
-            // Create buffer for audio samples
-            const samples = new Int16Array(framesPerBuffer * this.config.channels);
-
-            // Call user callback to generate audio
-            this.callback(samples, framesPerBuffer);
-
-            // Convert Int16Array to Buffer and write to speaker
-            const buffer = Buffer.from(samples.buffer);
-            this.speaker.write(buffer);
-        }, intervalMs);
+        // Start the audio generation loop
+        this.writeNextBuffer();
     }
 
     /**
@@ -72,10 +85,6 @@ export class AudioOutput {
      */
     stop(): void {
         this.running = false;
-        if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = null;
-        }
         this.speaker.end();
     }
 
