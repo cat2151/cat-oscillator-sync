@@ -215,12 +215,26 @@ def build_typescript_cli(script_dir: Path) -> None:
             log_error("npm installに失敗しました")
             return
 
+        # Verify naudiodon was installed
+        if not naudiodon_path.exists():
+            log_error("naudiodonのインストールに失敗しました")
+            log_error("Windows環境でnative modulesのビルドが必要です")
+            return
+
+        log_success("依存関係のインストール: 完了")
+
     # Always rebuild to ensure TypeScript is compiled
     log_info("TypeScriptをビルド中...")
     result = subprocess.run("npm run build", cwd=ts_cli_dir, shell=True, check=False)
 
     if result.returncode == 0:
-        log_success("TypeScript CLI版: ビルド完了")
+        # Verify dist directory was created
+        dist_dir = ts_cli_dir / "dist"
+        main_js = dist_dir / "main.js"
+        if main_js.exists():
+            log_success("TypeScript CLI版: ビルド完了")
+        else:
+            log_error("TypeScript CLI版のビルドに失敗しました（dist/main.jsが見つかりません）")
     else:
         log_error("TypeScript CLI版のビルドに失敗しました")
 
