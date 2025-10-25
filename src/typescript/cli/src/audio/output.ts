@@ -10,6 +10,7 @@ export interface AudioConfig {
     sampleRate: number;
     channels: number;
     bitDepth: number;
+    bufferSizeMs?: number; // Optional buffer size in milliseconds
 }
 
 /**
@@ -30,10 +31,18 @@ export class AudioOutput {
 
     constructor(config: AudioConfig) {
         this.config = config;
+
+        // Calculate optimal highWaterMark based on buffer size
+        // Default to 8ms if not specified (matches polling interval)
+        const bufferSizeMs = config.bufferSizeMs ?? 8;
+        const bytesPerMs = (config.sampleRate * config.channels * (config.bitDepth / 8)) / 1000;
+        const highWaterMark = Math.floor(bytesPerMs * bufferSizeMs);
+
         this.speaker = new Speaker({
             channels: config.channels,
             bitDepth: config.bitDepth,
             sampleRate: config.sampleRate,
+            highWaterMark: highWaterMark, // Set internal buffer size
         });
 
         this.speaker.on("error", (err) => {
@@ -102,11 +111,13 @@ export class AudioOutput {
 export function createAudioOutput(
     sampleRate: number = 48000,
     channels: number = 1,
-    bitDepth: number = 16
+    bitDepth: number = 16,
+    bufferSizeMs: number = 8 // Default to 8ms buffer (matches Go Oto version)
 ): AudioOutput {
     return new AudioOutput({
         sampleRate,
         channels,
         bitDepth,
+        bufferSizeMs,
     });
 }

@@ -11,6 +11,7 @@ import { SmoothSynth } from "./synth/smooth.js";
 const SAMPLE_RATE = 48000;
 const POLLING_INTERVAL_MS = 8;
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * POLLING_INTERVAL_MS) / 1000);
+const BUFFER_SIZE_MS = 8; // Audio output buffer size (matches polling interval and Go Oto version)
 
 // Frequency ranges
 const MASTER_FREQ_MIN = 40;
@@ -54,7 +55,8 @@ async function main(): Promise<void> {
     const screen = getScreenSize();
     console.log(`Screen size: ${screen.width}x${screen.height}`);
     console.log(`Sample rate: ${SAMPLE_RATE} Hz`);
-    console.log(`Buffer size: ${FRAMES_PER_BUFFER} frames`);
+    console.log(`Buffer size: ${FRAMES_PER_BUFFER} frames (${POLLING_INTERVAL_MS} ms)`);
+    console.log(`Audio buffer: ${BUFFER_SIZE_MS} ms (low latency)`);
     console.log(`Polling interval: ${POLLING_INTERVAL_MS} ms`);
     console.log();
 
@@ -65,7 +67,7 @@ async function main(): Promise<void> {
             : new SimpleSynth(SAMPLE_RATE);
 
     // Create audio output
-    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16);
+    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_SIZE_MS);
 
     // Start audio stream
     audioOutput.start((buffer, frameCount) => {

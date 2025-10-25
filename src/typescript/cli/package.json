@@ -7,7 +7,11 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
-    "dev": "tsc && node dist/main.js"
+    "dev": "tsc && node dist/main.js",
+    "diag:mouse": "tsc && node dist/diagnostics/test-mouse-capture.js",
+    "diag:freq": "tsc && node dist/diagnostics/test-frequency-sweep.js",
+    "diag:audio": "tsc && node dist/diagnostics/test-mouse-audio.js",
+    "diag:main": "tsc && node dist/diagnostics/main-diagnostic.js"
   },
   "keywords": [
     "audio",
