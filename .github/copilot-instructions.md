@@ -230,3 +230,7 @@ This project demonstrates:
 - Audio effects/processing
 - Plugin/VST format
 - Mobile platforms
+
+## userによる指示
+- Windows専用とします。ハルシネーション予防のためです。
+  - LinuxやMac向けの実装やそれに関するドキュメントは積極的に削除してください。
