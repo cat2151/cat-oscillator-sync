@@ -88,11 +88,14 @@ func main() {
 
 	// Initialize oto context with a large initial BufferSize
 	// The actual buffer size will be set via player.SetBufferSize
+	// Note: This large value (9999009) is intentional - the context's BufferSize
+	// doesn't determine the actual buffer in oto v3. The real buffer size is set
+	// later using player.SetBufferSize()
 	op := &oto.NewContextOptions{
 		SampleRate:   sampleRate,
 		ChannelCount: channelCount,
 		Format:       oto.FormatFloat32LE,
-		BufferSize:   9999009, // Large initial value
+		BufferSize:   9999009, // Large initial value (doesn't determine actual buffer)
 	}
 
 	ctx, readyChan, err := oto.NewContext(op)
