@@ -218,7 +218,8 @@ def build_typescript_cli(script_dir: Path) -> None:
         # Verify naudiodon was installed
         if not naudiodon_path.exists():
             log_error("naudiodonのインストールに失敗しました")
-            log_error("Windows環境でnative modulesのビルドが必要です")
+            log_error("このプロジェクトはWindows専用です。Visual Studio Build Toolsが必要です。")
+            log_error("詳細: https://github.com/nodejs/node-gyp#on-windows")
             return
 
         log_success("依存関係のインストール: 完了")
