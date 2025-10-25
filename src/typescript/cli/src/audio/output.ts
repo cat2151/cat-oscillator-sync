@@ -1,7 +1,11 @@
-// Audio output using the speaker package
+// Audio output using the naudiodon package (PortAudio bindings)
 // Provides real-time audio streaming on Windows
+//
+// NOTE: naudiodon has an internal buffer that cannot be reduced below ~170ms.
+// This is currently the smallest buffer size available for Node.js audio output.
+// The bufferSizeMs parameter is kept for API compatibility but has limited effect.
 
-import Speaker from "speaker";
+import { AudioIO } from "naudiodon";
 
 /**
  * Audio configuration
@@ -10,7 +14,7 @@ export interface AudioConfig {
     sampleRate: number;
     channels: number;
     bitDepth: number;
-    bufferSizeMs?: number; // Optional buffer size in milliseconds
+    bufferSizeMs?: number; // Optional buffer size in milliseconds (note: has limited effect with naudiodon)
 }
 
 /**
@@ -20,10 +24,15 @@ export interface AudioConfig {
 export type AudioCallback = (buffer: Int16Array, frameCount: number) => void;
 
 /**
- * Audio output manager using speaker package
+ * Audio output manager using naudiodon package
+ * 
+ * IMPORTANT: naudiodon (PortAudio) has an internal buffer of approximately 170ms
+ * that cannot be reduced further. This is a limitation of the current Node.js
+ * audio libraries. While we specify buffer parameters, the actual latency will
+ * be around 170ms minimum.
  */
 export class AudioOutput {
-    private speaker: Speaker;
+    private audioOutput: any; // AudioIO instance
     private config: AudioConfig;
     private callback: AudioCallback | null = null;
     private running = false;
@@ -32,22 +41,35 @@ export class AudioOutput {
     constructor(config: AudioConfig) {
         this.config = config;
 
-        // Calculate optimal highWaterMark based on buffer size
-        // Default to 8ms if not specified (matches polling interval)
-        const bufferSizeMs = config.bufferSizeMs ?? 8;
-        const bytesPerMs = (config.sampleRate * config.channels * (config.bitDepth / 8)) / 1000;
-        const highWaterMark = Math.floor(bytesPerMs * bufferSizeMs);
+        // Calculate buffer size based on requested buffer duration
+        // Default to 50ms if not specified (matches current implementation)
+        const bufferSizeMs = config.bufferSizeMs ?? 50;
+        const framesPerBuffer = Math.floor((config.sampleRate * bufferSizeMs) / 1000);
 
-        this.speaker = new Speaker({
-            channels: config.channels,
-            bitDepth: config.bitDepth,
-            sampleRate: config.sampleRate,
-            highWaterMark: highWaterMark, // Set internal buffer size
+        // Create naudiodon AudioIO output stream
+        // NOTE: Despite these settings, naudiodon's internal buffer is ~170ms
+        this.audioOutput = new AudioIO({
+            outOptions: {
+                channelCount: config.channels,
+                sampleFormat: config.bitDepth, // 16 or 32
+                sampleRate: config.sampleRate,
+                deviceId: -1, // -1 for default device
+                closeOnError: true,
+                framesPerBuffer: framesPerBuffer,
+            }
         });
 
-        this.speaker.on("error", (err) => {
-            console.error("Speaker error:", err);
+        this.audioOutput.on("error", (err: Error) => {
+            console.error("AudioIO error:", err);
         });
+
+        // Log the effective buffer size
+        console.log(`Audio configuration:`);
+        console.log(`  Sample rate: ${config.sampleRate} Hz`);
+        console.log(`  Channels: ${config.channels}`);
+        console.log(`  Bit depth: ${config.bitDepth}`);
+        console.log(`  Requested buffer: ${bufferSizeMs} ms`);
+        console.log(`  NOTE: naudiodon internal buffer is ~170ms (cannot be reduced further)`);
     }
 
     /**
@@ -62,14 +84,14 @@ export class AudioOutput {
         // Call user callback to generate audio
         this.callback(samples, this.framesPerBuffer);
 
-        // Convert Int16Array to Buffer and write to speaker
+        // Convert Int16Array to Buffer and write to audioOutput
         const buffer = Buffer.from(samples.buffer);
         
         // Use callback-based write for better timing control
         // This ensures the next buffer is generated only after the current one is written
-        this.speaker.write(buffer, (err?: Error | null) => {
+        this.audioOutput.write(buffer, (err?: Error | null) => {
             if (err) {
-                console.error('Error writing to speaker:', err);
+                console.error('Error writing to audio output:', err);
                 return;
             }
             // Schedule next buffer generation using setImmediate to avoid blocking event loop
@@ -85,6 +107,12 @@ export class AudioOutput {
         this.framesPerBuffer = framesPerBuffer;
         this.running = true;
 
+        console.log(`Starting audio stream with ${framesPerBuffer} frames per buffer`);
+        console.log(`This corresponds to ${(framesPerBuffer / this.config.sampleRate * 1000).toFixed(1)} ms per buffer`);
+
+        // Start the audio output stream
+        this.audioOutput.start();
+
         // Start the audio generation loop
         this.writeNextBuffer();
     }
@@ -94,7 +122,9 @@ export class AudioOutput {
      */
     stop(): void {
         this.running = false;
-        this.speaker.end();
+        if (this.audioOutput) {
+            this.audioOutput.quit();
+        }
     }
 
     /**
@@ -107,12 +137,16 @@ export class AudioOutput {
 
 /**
  * Create and initialize an audio output
+ * 
+ * NOTE: The bufferSizeMs parameter is kept for API compatibility, but naudiodon
+ * has an internal buffer of ~170ms that cannot be reduced. This is currently
+ * the best available option for Node.js audio output.
  */
 export function createAudioOutput(
     sampleRate: number = 48000,
     channels: number = 1,
     bitDepth: number = 16,
-    bufferSizeMs: number = 8 // Default to 8ms buffer (matches Go Oto version)
+    bufferSizeMs: number = 50 // Default to 50ms buffer (but effective latency is ~170ms)
 ): AudioOutput {
     return new AudioOutput({
         sampleRate,

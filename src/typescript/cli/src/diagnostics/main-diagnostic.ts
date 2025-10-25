@@ -11,7 +11,7 @@ import { SmoothSynth } from "../synth/smooth.js";
 const SAMPLE_RATE = 48000;
 const POLLING_INTERVAL_MS = 8;
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * POLLING_INTERVAL_MS) / 1000);
-const BUFFER_SIZE_MS = 8; // Audio buffer size (low latency)
+const BUFFER_SIZE_MS = 50; // Audio buffer size (naudiodon internal buffer is ~170ms)
 
 // Frequency ranges
 const MASTER_FREQ_MIN = 40;

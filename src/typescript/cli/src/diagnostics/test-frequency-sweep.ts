@@ -10,7 +10,7 @@ const SAMPLE_RATE = 48000;
 const UPDATE_RATE_HZ = 125; // How often to update frequency
 const UPDATE_INTERVAL_MS = 1000 / UPDATE_RATE_HZ; // 8ms for 125Hz
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * UPDATE_INTERVAL_MS) / 1000);
-const BUFFER_SIZE_MS = 8; // Audio buffer size (low latency)
+const BUFFER_SIZE_MS = 50; // Audio buffer size (naudiodon internal buffer is ~170ms)
 
 // Frequency sweep parameters
 const FREQ_START = 440; // A4
