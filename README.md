@@ -80,7 +80,42 @@ python src/python/sync_smooth.py
 python build_and_run.py
 ```
 
-詳細は [issue-notes/34_BUILD_AND_RUN.md](issue-notes/34_BUILD_AND_RUN.md) を参照してください。
+メニューから「99」を選択すると、全言語版のクリーンビルドを実行できます。
+
+詳細は [BUILD_SCRIPTS.md](BUILD_SCRIPTS.md) を参照してください。
+
+## 各言語版の個別ビルド＆実行
+
+各言語版には専用のビルドスクリプトがあり、環境構築・ビルド・実行を1つのコマンドで行えます：
+
+```bash
+# Python版
+cd src/python
+python build_and_run.py [--clean] [--simple|--smooth]
+
+# Rust版
+cd src/rust
+python build_and_run.py [--clean] [--simple|--smooth]
+
+# Go版（Pure Go - Oto）⭐推奨
+cd src/go
+python build_and_run.py [--clean] [--simple|--smooth]
+
+# Go版（PortAudio + Zig cc）
+cd src/go-portaudio
+python build_and_run.py [--clean] [--simple|--smooth]
+
+# TypeScript CLI版
+cd src/typescript/cli
+python build_and_run.py [--clean] [--simple|--smooth]
+
+# TypeScript Browser版
+cd src/typescript/browser
+python build_and_run.py [--clean] [--build|--dev]
+```
+
+詳細は [BUILD_SCRIPTS.md](BUILD_SCRIPTS.md) を参照してください。
+
 
 ## 技術詳細
 
