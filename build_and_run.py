@@ -198,14 +198,17 @@ def build_typescript_browser(script_dir: Path) -> None:
         log_error("TypeScript Browser版のビルドに失敗しました")
 
 
-def build_all(script_dir: Path) -> None:
+def build_all(script_dir: Path, clean: bool = False) -> None:
     """Build all applications"""
     print("=" * 42)
     print("  Cat Oscillator Sync ビルド＆実行")
     print("=" * 42)
     print()
 
-    log_info("ビルドを開始します...")
+    if clean:
+        log_info("クリーンビルドを開始します...")
+    else:
+        log_info("ビルドを開始します...")
     print()
 
     build_python(script_dir)
@@ -227,11 +230,124 @@ def build_all(script_dir: Path) -> None:
     print()
 
 
+def clean_build_all(script_dir: Path) -> None:
+    """Clean build all applications using language-specific build scripts"""
+    print("=" * 60)
+    print("  Cat Oscillator Sync クリーンビルド")
+    print("=" * 60)
+    print()
+
+    log_info("各言語版のクリーンビルドスクリプトを実行します...")
+    print()
+
+    # Python
+    log_info("[1/6] Python版...")
+    python_script = script_dir / "src" / "python" / "build_and_run.py"
+    if python_script.exists():
+        result = subprocess.run(
+            ["python", str(python_script), "--clean", "--smooth"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("Python版: 完了")
+        else:
+            log_warning("Python版: 一部エラーがありました")
+    else:
+        log_warning(f"Python版ビルドスクリプトが見つかりません: {python_script}")
+    print()
+
+    # Rust
+    log_info("[2/6] Rust版...")
+    rust_script = script_dir / "src" / "rust" / "build_and_run.py"
+    if rust_script.exists():
+        result = subprocess.run(
+            ["python", str(rust_script), "--clean", "--smooth"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("Rust版: 完了")
+        else:
+            log_warning("Rust版: 一部エラーがありました")
+    else:
+        log_warning(f"Rust版ビルドスクリプトが見つかりません: {rust_script}")
+    print()
+
+    # Go (Pure Go - Oto)
+    log_info("[3/6] Go版（Pure Go - Oto）...")
+    go_script = script_dir / "src" / "go" / "build_and_run.py"
+    if go_script.exists():
+        result = subprocess.run(
+            ["python", str(go_script), "--clean", "--smooth"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("Go版（Oto）: 完了")
+        else:
+            log_warning("Go版（Oto）: 一部エラーがありました")
+    else:
+        log_warning(f"Go版ビルドスクリプトが見つかりません: {go_script}")
+    print()
+
+    # Go (PortAudio + Zig cc)
+    log_info("[4/6] Go版（PortAudio + Zig cc）...")
+    go_portaudio_script = script_dir / "src" / "go-portaudio" / "build_and_run.py"
+    if go_portaudio_script.exists():
+        result = subprocess.run(
+            ["python", str(go_portaudio_script), "--clean", "--smooth"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("Go版（PortAudio）: 完了")
+        else:
+            log_warning("Go版（PortAudio）: 一部エラーがありました")
+    else:
+        log_warning(f"Go版（PortAudio）ビルドスクリプトが見つかりません: {go_portaudio_script}")
+    print()
+
+    # TypeScript CLI
+    log_info("[5/6] TypeScript CLI版...")
+    ts_cli_script = script_dir / "src" / "typescript" / "cli" / "build_and_run.py"
+    if ts_cli_script.exists():
+        result = subprocess.run(
+            ["python", str(ts_cli_script), "--clean", "--smooth"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("TypeScript CLI版: 完了")
+        else:
+            log_warning("TypeScript CLI版: 一部エラーがありました")
+    else:
+        log_warning(f"TypeScript CLI版ビルドスクリプトが見つかりません: {ts_cli_script}")
+    print()
+
+    # TypeScript Browser
+    log_info("[6/6] TypeScript Browser版...")
+    ts_browser_script = script_dir / "src" / "typescript" / "browser" / "build_and_run.py"
+    if ts_browser_script.exists():
+        result = subprocess.run(
+            ["python", str(ts_browser_script), "--clean", "--build"],
+            check=False,
+        )
+        if result.returncode == 0:
+            log_success("TypeScript Browser版: 完了")
+        else:
+            log_warning("TypeScript Browser版: 一部エラーがありました")
+    else:
+        log_warning(f"TypeScript Browser版ビルドスクリプトが見つかりません: {ts_browser_script}")
+    print()
+
+    log_success("全てのクリーンビルドが完了しました！")
+    print()
+
+
 def show_menu() -> None:
     """Display the application selection menu"""
     print("=" * 50)
     print("  実行するアプリを選択してください")
     print("=" * 50)
+    print()
+    print("ビルドオプション:")
+    print("  99) クリーンビルド - 全言語版をクリーンビルド")
     print()
     print("Python版:")
     print("  1) sync_simple.py  - シンプル版（8msごとに階段状に周波数変化）")
@@ -261,7 +377,13 @@ def show_menu() -> None:
 def run_application(choice: str, script_dir: Path) -> bool:
     """Run the selected application. Returns False if should exit."""
     try:
-        if choice == "1":
+        if choice == "99":
+            log_info("クリーンビルドを実行します...")
+            print()
+            clean_build_all(script_dir)
+            return True
+
+        elif choice == "1":
             log_info("Python sync_simple.py を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
             subprocess.run(["python", "src/python/sync_simple.py"], cwd=script_dir, check=False)
