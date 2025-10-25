@@ -215,5 +215,5 @@ python build_and_run.py --clean
 
 ## 参考情報
 
-- [プロジェクトルートのREADME](../../README.md)
-- [GitHub Copilot Instructions](../../.github/copilot-instructions.md)
+- [プロジェクトルートのREADME](README.md)
+- [GitHub Copilot Instructions](.github/copilot-instructions.md)
