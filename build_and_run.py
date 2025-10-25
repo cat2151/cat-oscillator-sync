@@ -138,18 +138,59 @@ def build_go(script_dir: Path) -> None:
     else:
         log_success("Go版（Oto - Pure Go）: ビルド済みバイナリが見つかりました")
 
-    # Check for go-portaudio versions (separate directory, Zig cc required)
+    # Build go-portaudio versions (separate directory, Zig cc required)
     go_portaudio_dir = script_dir / "src" / "go-portaudio"
     if go_portaudio_dir.exists():
         portaudio_bin_dir = go_portaudio_dir / "bin"
+        portaudio_bin_dir.mkdir(exist_ok=True)
         simple_pa_exe = portaudio_bin_dir / "sync_simple.exe"
         smooth_pa_exe = portaudio_bin_dir / "sync_smooth.exe"
 
         if simple_pa_exe.exists() and smooth_pa_exe.exists():
             log_success("Go版（PortAudio + Zig cc）: ビルド済みバイナリが見つかりました")
         else:
-            log_info("Go版（PortAudio）のビルドにはZig ccが必要です。")
-            log_info("詳細は src/go-portaudio/README.md を参照してください。")
+            # Try to build go-portaudio versions
+            if command_exists("zig"):
+                log_info("Go版（PortAudio + Zig cc）をビルド中...")
+
+                # First, check and setup PortAudio DLL
+                dll_path = portaudio_bin_dir / "libportaudio64bit.dll"
+                if not dll_path.exists():
+                    log_info("PortAudio DLLをダウンロード中...")
+                    download_script = go_portaudio_dir / "download_portaudio.py"
+                    if download_script.exists():
+                        subprocess.run(["python", str(download_script)], cwd=go_portaudio_dir, check=False)
+
+                # Build simple version
+                log_info("Building sync_simple.exe...")
+                env = os.environ.copy()
+                env["CC"] = "zig cc"
+                env["CXX"] = "zig c++"
+                env["CGO_ENABLED"] = "1"
+
+                result_simple = subprocess.run(
+                    ["go", "build", "-o", str(simple_pa_exe), "./cmd/sync_simple"],
+                    cwd=go_portaudio_dir,
+                    env=env,
+                    check=False,
+                )
+
+                # Build smooth version
+                log_info("Building sync_smooth.exe...")
+                result_smooth = subprocess.run(
+                    ["go", "build", "-o", str(smooth_pa_exe), "./cmd/sync_smooth"],
+                    cwd=go_portaudio_dir,
+                    env=env,
+                    check=False,
+                )
+
+                if result_simple.returncode == 0 and result_smooth.returncode == 0:
+                    log_success("Go版（PortAudio + Zig cc）: ビルド完了")
+                else:
+                    log_warning("Go版（PortAudio）のビルドに失敗しました")
+            else:
+                log_info("Go版（PortAudio）のビルドにはZig ccが必要です。")
+                log_info("詳細は src/go-portaudio/README.md を参照してください。")
 
 
 def build_typescript_cli(script_dir: Path) -> None:
@@ -162,15 +203,39 @@ def build_typescript_cli(script_dir: Path) -> None:
 
     ts_cli_dir = script_dir / "src" / "typescript" / "cli"
     node_modules = ts_cli_dir / "node_modules"
+    naudiodon_path = ts_cli_dir / "node_modules" / "naudiodon"
 
-    if not node_modules.exists():
+    # Check if dependencies need to be installed or rebuilt
+    needs_install = not node_modules.exists() or not naudiodon_path.exists()
+
+    if needs_install:
         log_info("依存関係をインストール中...")
-        subprocess.run("npm install", cwd=ts_cli_dir, shell=True, check=False)
+        result = subprocess.run("npm install", cwd=ts_cli_dir, shell=True, check=False)
+        if result.returncode != 0:
+            log_error("npm installに失敗しました")
+            return
 
+        # Verify naudiodon was installed
+        if not naudiodon_path.exists():
+            log_error("naudiodonのインストールに失敗しました")
+            log_error("このプロジェクトはWindows専用です。Visual Studio Build Toolsが必要です。")
+            log_error("詳細: https://github.com/nodejs/node-gyp#on-windows")
+            return
+
+        log_success("依存関係のインストール: 完了")
+
+    # Always rebuild to ensure TypeScript is compiled
+    log_info("TypeScriptをビルド中...")
     result = subprocess.run("npm run build", cwd=ts_cli_dir, shell=True, check=False)
 
     if result.returncode == 0:
-        log_success("TypeScript CLI版: ビルド完了")
+        # Verify dist directory was created
+        dist_dir = ts_cli_dir / "dist"
+        main_js = dist_dir / "main.js"
+        if main_js.exists():
+            log_success("TypeScript CLI版: ビルド完了")
+        else:
+            log_error("TypeScript CLI版のビルドに失敗しました（dist/main.jsが見つかりません）")
     else:
         log_error("TypeScript CLI版のビルドに失敗しました")
 
