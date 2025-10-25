@@ -17,7 +17,8 @@ const (
 	sampleRate        = 48000
 	pollingIntervalMs = 8
 	channelCount      = 1
-	bufferSizeMs      = 8 // Buffer size in milliseconds (matches polling interval)
+	bufferSizeMs      = 16 // Target buffer size in milliseconds
+	bitDepthInBytes   = 4  // Float32 = 4 bytes
 )
 
 var (
@@ -78,12 +79,22 @@ func main() {
 	}
 	osc.UpdateFrequencies(pos.X, pos.Y)
 
-	// Initialize oto context
+	// Calculate buffer size in bytes from desired latency
+	seconds := float64(bufferSizeMs) / 1000.0
+	bytesPerSecond := float64(sampleRate * channelCount * bitDepthInBytes)
+	bufferSizeInBytes := int(bytesPerSecond * seconds)
+	fmt.Printf("目標とするレイテンシ: %d ms\n", bufferSizeMs)
+	fmt.Printf("計算されたバッファサイズ: %d bytes\n", bufferSizeInBytes)
+
+	// Initialize oto context with the calculated BufferSize
+	// The actual buffer size will be set via player.SetBufferSize
+	// Note: The context's BufferSize doesn't determine the actual buffer in oto v3.
+	// The real buffer size is set later using player.SetBufferSize()
 	op := &oto.NewContextOptions{
 		SampleRate:   sampleRate,
 		ChannelCount: channelCount,
 		Format:       oto.FormatFloat32LE,
-		BufferSize:   time.Duration(bufferSizeMs) * time.Millisecond,
+		BufferSize:   time.Duration(bufferSizeInBytes),
 	}
 
 	ctx, readyChan, err := oto.NewContext(op)
@@ -96,7 +107,6 @@ func main() {
 	<-readyChan
 
 	fmt.Println("Audio context initialized")
-	fmt.Printf("Buffer size: %dms\n", bufferSizeMs)
 	fmt.Println()
 
 	// Create audio reader
@@ -104,6 +114,11 @@ func main() {
 
 	// Create player
 	player := ctx.NewPlayer(reader)
+
+	// Set the actual buffer size using SetBufferSize
+	player.SetBufferSize(bufferSizeInBytes)
+	fmt.Printf("Buffer size set to: %d bytes (%dms)\n", bufferSizeInBytes, bufferSizeMs)
+
 	player.Play()
 
 	fmt.Println("Audio stream started")
