@@ -8,8 +8,8 @@ Python : 音が鳴ります。
 
 Rust : 音が鳴ります。
 
-Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [issue-notes/44_GO_README_OTO.md](issue-notes/44_GO_README_OTO.md) を参照してください。
-     ※PortAudio版も利用可能ですが、C言語コンパイラが必要です。詳細は [issue-notes/22_GO_README.md](issue-notes/22_GO_README.md) を参照してください。
+Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [src/go/README.md](src/go/README.md) を参照してください。
+     ※PortAudio版も利用可能ですが、Zig ccが必要です。詳細は [src/go-portaudio/README.md](src/go-portaudio/README.md) を参照してください。
 
 Go : test_windows_mouse_speed.go は正常動作しています。
   ですが演奏中は0.8秒間隔でしか周波数変化しません。

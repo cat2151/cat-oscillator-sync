@@ -108,7 +108,7 @@ def build_go(script_dir: Path) -> None:
     bin_dir = go_dir / "bin"
     bin_dir.mkdir(exist_ok=True)
 
-    # Try to build Pure Go (Oto) versions first
+    # Build Pure Go (Oto) versions only
     simple_oto_exe = bin_dir / "sync_simple_oto.exe"
     smooth_oto_exe = bin_dir / "sync_smooth_oto.exe"
 
@@ -138,15 +138,18 @@ def build_go(script_dir: Path) -> None:
     else:
         log_success("Go版（Oto - Pure Go）: ビルド済みバイナリが見つかりました")
 
-    # Check for PortAudio versions (CGO required)
-    simple_exe = bin_dir / "sync_simple.exe"
-    smooth_exe = bin_dir / "sync_smooth.exe"
+    # Check for go-portaudio versions (separate directory, Zig cc required)
+    go_portaudio_dir = script_dir / "src" / "go-portaudio"
+    if go_portaudio_dir.exists():
+        portaudio_bin_dir = go_portaudio_dir / "bin"
+        simple_pa_exe = portaudio_bin_dir / "sync_simple.exe"
+        smooth_pa_exe = portaudio_bin_dir / "sync_smooth.exe"
 
-    if simple_exe.exists() and smooth_exe.exists():
-        log_success("Go版（PortAudio）: ビルド済みバイナリが見つかりました")
-    else:
-        log_info("Go版（PortAudio）のビルドにはC言語コンパイラ（GCC/MinGW）が必要です。")
-        log_info("Pure Go版（Oto）を使用することをお勧めします。")
+        if simple_pa_exe.exists() and smooth_pa_exe.exists():
+            log_success("Go版（PortAudio + Zig cc）: ビルド済みバイナリが見つかりました")
+        else:
+            log_info("Go版（PortAudio）のビルドにはZig ccが必要です。")
+            log_info("詳細は src/go-portaudio/README.md を参照してください。")
 
 
 def build_typescript_cli(script_dir: Path) -> None:
@@ -242,9 +245,9 @@ def show_menu() -> None:
     print("  5) sync_simple_oto - シンプル版 ⭐推奨 (CGO不要)")
     print("  6) sync_smooth_oto - スムーズ版 ⭐推奨 (CGO不要)")
     print()
-    print("Go版 (PortAudio - CGO必要):")
-    print("  7) sync_simple     - シンプル版")
-    print("  8) sync_smooth     - スムーズ版")
+    print("Go版 (PortAudio + Zig cc):")
+    print("  7) sync_simple     - シンプル版 (go-portaudioディレクトリ)")
+    print("  8) sync_smooth     - スムーズ版 (go-portaudioディレクトリ)")
     print()
     print("TypeScript版:")
     print("  11) CLI Simple     - CLIシンプル版（Windows専用）")
@@ -297,14 +300,14 @@ def run_application(choice: str, script_dir: Path) -> bool:
             subprocess.run(["src/go/bin/sync_smooth_oto.exe"], cwd=script_dir, check=False)
 
         elif choice == "7":
-            log_info("Go sync_simple (PortAudio版) を起動します...")
+            log_info("Go sync_simple (PortAudio + Zig cc版) を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
-            subprocess.run(["src/go/bin/sync_simple.exe"], cwd=script_dir, check=False)
+            subprocess.run(["src/go-portaudio/bin/sync_simple.exe"], cwd=script_dir, check=False)
 
         elif choice == "8":
-            log_info("Go sync_smooth (PortAudio版) を起動します...")
+            log_info("Go sync_smooth (PortAudio + Zig cc版) を起動します...")
             print("マウスを動かして音を制御してください。Ctrl+Cで終了します。")
-            subprocess.run(["src/go/bin/sync_smooth.exe"], cwd=script_dir, check=False)
+            subprocess.run(["src/go-portaudio/bin/sync_smooth.exe"], cwd=script_dir, check=False)
 
         elif choice == "11":
             log_info("TypeScript CLI Simple を起動します...")

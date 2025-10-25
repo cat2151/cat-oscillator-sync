@@ -7,8 +7,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cat2151/cat-oscillator-sync/go/internal/mouse"
-	"github.com/cat2151/cat-oscillator-sync/go/internal/synth"
+	"github.com/cat2151/cat-oscillator-sync/go-portaudio/internal/mouse"
+	"github.com/cat2151/cat-oscillator-sync/go-portaudio/internal/synth"
 	"github.com/gordonklaus/portaudio"
 )
 

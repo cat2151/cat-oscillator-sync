@@ -1,8 +1,22 @@
 # Go版 クイックスタートガイド (Windows)
 
+## ⚠️ このドキュメントは古くなっています
+
+**このドキュメントはMinGW/GCCを使用する古い手順を含んでいます。**
+
+**最新のクイックスタートガイドはこちら:**
+- **Pure Go版（推奨）**: [src/go/README.md](../src/go/README.md)
+- **PortAudio版（Zig cc使用）**: [src/go-portaudio/QUICKSTART.md](../src/go-portaudio/QUICKSTART.md)
+
+---
+
 このガイドでは、Windows環境でGo版cat-oscillator-syncを動かす方法を説明します。
 
-## ⚠️ 重要: プリコンパイル版の利用を推奨
+## ⚠️ 以下は古い情報です（MinGW/GCC使用）
+
+**このセクション以降の内容は古くなっています。MinGW/GCCの代わりにZig ccを使用してください。**
+
+## ⚠️ 重要: プリコンパイル版の利用を推奨（古い情報）
 
 現在、Go版のビルドにはC言語コンパイラ（GCC/MinGW）のインストールが必要です。
 プリコンパイル済みバイナリの配布を検討中です。実装され次第、こちらのドキュメントを更新します。

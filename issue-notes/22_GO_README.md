@@ -1,5 +1,15 @@
 # Go Implementation - Cat Oscillator Sync (Windows版)
 
+## ⚠️ このドキュメントは古くなっています
+
+**このドキュメントはMinGW/GCCを使用する古い手順を含んでいます。**
+
+**最新のドキュメントはこちら:**
+- **Pure Go版（推奨）**: [src/go/README.md](../src/go/README.md)
+- **PortAudio版（Zig cc使用）**: [src/go-portaudio/README.md](../src/go-portaudio/README.md)
+
+---
+
 🎵 Go版 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
 ## 🎯 2つの実装方法
@@ -8,25 +18,31 @@
 
 **C言語コンパイラ不要！簡単ビルド！**
 
-- ✅ **Pure Go** - CGO不要、MinGW不要
+- ✅ **Pure Go** - CGO不要
 - ✅ **簡単** - `go build`だけでビルド可能
 - ✅ **環境を汚さない** - 追加のツールチェイン不要
 - ✅ モノフォニックシンセには十分な性能
 
-👉 **[README_OTO.md](44_GO_README_OTO.md) を参照してください**
+👉 **[src/go/README.md](../src/go/README.md) を参照してください**
 
 ### PortAudio版 - プロフェッショナル向け
 
 **最高のパフォーマンスが必要な場合**
 
-- ❌ **CGO必須** - C言語コンパイラ必須（MinGW/TDM-GCC等）
+- ❌ **CGO必須** - Zig ccが必要
 - ❌ **複雑** - 環境セットアップが必要
 - ✅ 最高のレイテンシとパフォーマンス
 - ✅ プロフェッショナル向け
 
+👉 **[src/go-portaudio/README.md](../src/go-portaudio/README.md) を参照してください**
+
 ---
 
-## ⚠️ PortAudio版について
+## ⚠️ 以下は古い情報です（MinGW/GCC使用）
+
+**このセクション以降の内容は古くなっています。MinGW/GCCの代わりにZig ccを使用してください。**
+
+## ⚠️ PortAudio版について（古い情報）
 
 このPortAudio版はCGO（C言語バインディング）を使用しているため、ビルドには**C言語コンパイラが必要**です。
 

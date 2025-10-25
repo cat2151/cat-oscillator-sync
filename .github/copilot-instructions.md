@@ -26,7 +26,8 @@ This is a multi-language project implementing a mouse-controlled hard-sync oscil
 
 - `src/python/` - Python source code (2 implementations: simple and smooth)
 - `src/rust/` - Rust source code (2 implementations: simple and smooth)
-- `src/go/` - Go source code (requires CGO and C compiler)
+- `src/go/` - Go source code (Pure Go - Oto, no CGO required)
+- `src/go-portaudio/` - Go + PortAudio source code (requires Zig cc)
 - `src/typescript/` - TypeScript source code
   - `browser/` - Web-based implementation using Web Audio API
   - `cli/` - Node.js CLI implementation (Windows only)
@@ -50,13 +51,27 @@ cargo run --release --bin sync_simple
 cargo run --release --bin sync_smooth
 ```
 
-**Go:**
+**Go (Pure Go - Oto):**
 ```bash
 cd src/go
-set CGO_ENABLED=1  # Windows
-export CGO_ENABLED=1  # Linux/Mac
+# No CGO required - Pure Go implementation
+go build -o bin/sync_simple_oto.exe ./cmd/sync_simple_oto
+go build -o bin/sync_smooth_oto.exe ./cmd/sync_smooth_oto
+```
+
+**Go (PortAudio - Zig cc):**
+```bash
+cd src/go-portaudio
+# Download PortAudio DLL first
+python download_portaudio.py
+# Build with Zig cc
+set CC=zig cc
+set CXX=zig c++
+set CGO_ENABLED=1
 go build -o bin/sync_simple.exe ./cmd/sync_simple
 go build -o bin/sync_smooth.exe ./cmd/sync_smooth
+# Or use the build script
+build.bat
 ```
 
 **TypeScript (Browser):**
@@ -151,11 +166,15 @@ If working in VSCode, install these recommended extensions:
 - **Missing Visual Studio Build Tools**: Install "C++ Desktop Development" from Visual Studio
 - **Audio device errors**: Verify default output device in system settings
 
-### Go Issues
-- **"build constraints exclude all Go files"**: CGO is disabled or C compiler not found
-  - Enable CGO: `set CGO_ENABLED=1` (Windows) or `export CGO_ENABLED=1` (Linux/Mac)
-  - Install C compiler: TDM-GCC or MinGW-w64 on Windows
-- **PortAudio DLL missing**: Run `python download_portaudio.py` in `src/go/`
+### Go Issues (Pure Go - Oto version)
+- **Build fails**: Update Go to 1.24 or later
+- **Audio issues**: Check Windows audio settings
+
+### Go Issues (PortAudio version)
+- **"zig: command not found"**: Zig cc is not installed or not in PATH
+  - Install Zig from https://ziglang.org/download/
+  - Add Zig to system PATH
+- **PortAudio DLL missing**: Run `python download_portaudio.py` in `src/go-portaudio/`
 - **Runtime errors**: Ensure DLL is in same directory as executable
 
 ### TypeScript Issues
@@ -206,7 +225,8 @@ pytest tests/test_example.py
 ### Important Constraints
 - **NO automated GitHub Actions for ruff check** - manual checking is required before creating PRs
 - **No test suite exists** - This is an experimental project focused on demonstrating multi-language implementation
-- **Go requires CGO** - Needs C compiler (MinGW/TDM-GCC on Windows) for PortAudio bindings
+- **Go Pure Go版（推奨）** - src/go/ はCGO不要のPure Go実装です
+- **Go PortAudio版** - src/go-portaudio/ はZig ccを使用します（MinGW/GCCは使用しません）
 - **TypeScript CLI is Windows-only** - Uses native modules that require Windows-specific dependencies
 
 ### Configuration Files
@@ -215,7 +235,7 @@ pytest tests/test_example.py
 - `ruff.toml` - Project-specific linting and formatting rules for Python
 - `pytest.ini` - Pytest configuration (though no tests currently exist)
 - `Cargo.toml` - Rust project configuration in `src/rust/`
-- `go.mod` - Go module configuration in `src/go/`
+- `go.mod` - Go module configuration in `src/go/` and `src/go-portaudio/`
 - `package.json` - TypeScript configurations in `src/typescript/browser/` and `src/typescript/cli/`
 
 ### Project Goals

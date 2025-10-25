@@ -1,0 +1,11 @@
+# Binaries
+bin/
+*.exe
+*.dll
+
+# Go build cache
+*.test
+*.out
+
+# Go sum file (will be generated)
+go.sum
