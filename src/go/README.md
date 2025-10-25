@@ -1,22 +1,16 @@
-# Go Oto版 - Cat Oscillator Sync (Pure Go実装)
-
-## 📍 このドキュメントは移動しました
-
-**最新のドキュメントはこちら:**
-- **[src/go/README.md](../src/go/README.md)**
-
----
+# Go版 (Pure Go - Oto) - Cat Oscillator Sync
 
 🎵 Pure Go版 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
 ## ⭐ 主な特徴
 
-**このOto版は、C言語コンパイラやMinGWが不要です！**
+**Pure Go実装 - C言語コンパイラ不要！**
 
 - ✅ **Pure Go実装** - CGO不要、C言語コンパイラ不要
 - ✅ **簡単ビルド** - `go build`だけでビルド可能
 - ✅ **クロスコンパイル対応** - Linux/macOS上からWindows版をビルド可能
-- ✅ **環境を汚さない** - MinGWなどの大きなツールチェインが不要
+- ✅ **環境を汚さない** - 追加のツールチェインが不要
+- ✅ モノフォニックシンセには十分な性能
 
 ## 📋 必要な環境
 
@@ -91,62 +85,59 @@ sync_smooth_oto.exe
   - Windows上では WASAPI または WinMM を使用
   - `purego` ライブラリを使用してシステムコールを実行（CGO不要）
 
-### PortAudio版との違い
-
-#### Oto版 (このREADME)
-- ✅ **Pure Go** - C言語コンパイラ不要
-- ✅ **簡単ビルド** - `go build`だけ
-- ✅ **環境を汚さない** - 追加のツールチェイン不要
-- ⚠️ レイテンシやパフォーマンスは PortAudio より若干劣る可能性
-- ✅ モノフォニックシンセには十分な性能
-
-#### PortAudio版 (cmd/sync_simple, cmd/sync_smooth)
-- ❌ **CGO必須** - C言語コンパイラ必須（MinGW/TDM-GCC等）
-- ❌ **複雑なビルド** - 環境セットアップが必要
-- ✅ 最高のレイテンシとパフォーマンス
-- ✅ プロフェッショナル向け
-
-### なぜOto版を推奨するのか？
-
-このプロジェクトの`oscsync`はモノフォニックシンセであり、処理負荷が非常に小さいため、
-**Oto版でも十分に目的を達成できます**。
-
-ユーザーにとって:
-- ビルドが簡単
-- 環境を汚さない
-- すぐに試せる
-
-これらの利点は、わずかなレイテンシの差よりも重要です。
-
 ### オーディオ設定
 
 - サンプルレート: 48000 Hz
 - チャンネル数: 1 (モノラル)
 - フォーマット: Float32 Little Endian
-- バッファサイズ: 20ms
+- バッファサイズ: 8ms
 
 ### マウス位置取得
 
 - **Windows**: user32.dllの`GetCursorPos` APIを直接呼び出し (syscall)
 - ポーリング間隔: 8ms (125Hz)
 
+## PortAudio版との比較
+
+このプロジェクトには2つのGo実装があります：
+
+### go版（このディレクトリ）- Oto使用
+- ✅ **Pure Go** - コンパイラ不要
+- ✅ **簡単ビルド** - `go build`だけ
+- ✅ **環境を汚さない** - 追加のツールチェイン不要
+- ✅ モノフォニックシンセには十分な性能
+- ⚠️ レイテンシは若干劣る可能性
+
+### go-portaudio版 ([../go-portaudio/](../go-portaudio/))
+- ✅ 最高のレイテンシとパフォーマンス
+- ✅ プロフェッショナル向け
+- ❌ **Zig ccが必要**（CGO使用）
+- ⚠️ セットアップがやや複雑
+
+**一般ユーザーにはこのgo版（Oto）を推奨します。**
+
 ## プロジェクト構成
 
 ```
 src/go/
+├── go.mod                           # Go モジュール定義
+├── go.sum                           # 依存関係のチェックサム
+├── .gitignore                       # Git除外設定
+├── README.md                        # このファイル
 ├── cmd/
-│   ├── sync_simple_oto/       # Oto版シンプル
+│   ├── sync_simple_oto/            # Oto版シンプル
 │   │   └── main.go
-│   ├── sync_smooth_oto/       # Oto版スムーズ
-│   │   └── main.go
-│   ├── sync_simple/           # PortAudio版シンプル
-│   │   └── main.go
-│   └── sync_smooth/           # PortAudio版スムーズ
+│   └── sync_smooth_oto/            # Oto版スムーズ
 │       └── main.go
 ├── internal/
-│   ├── mouse/                 # マウス位置取得
-│   └── synth/                 # シンセサイザーロジック
-└── bin/                       # ビルド出力
+│   ├── mouse/                      # マウス位置取得
+│   │   ├── position.go             # 共通インターフェース
+│   │   ├── position_stub.go        # スタブ実装
+│   │   └── position_windows.go     # Windows実装
+│   └── synth/                      # シンセサイザーロジック
+│       ├── simple.go               # Simple版
+│       └── smooth.go               # Smooth版
+└── bin/                            # ビルド出力 (gitignore)
     ├── sync_simple_oto.exe
     └── sync_smooth_oto.exe
 ```
@@ -171,19 +162,13 @@ Go 1.24以上が必要です。古いバージョンの場合は[公式サイト
 ### 音が途切れる（グリッチ）
 
 バッファサイズを大きくすることで改善する可能性があります。
-`main.go`の`bufferSizeMs`定数を変更してください（デフォルト: 20ms）
+`cmd/sync_*_oto/main.go`の`bufferSizeMs`定数を変更してください（デフォルト: 8ms）
 
 ```go
 const (
-    bufferSizeMs = 40 // 20ms から 40ms に変更
+    bufferSizeMs = 20 // 8ms から 20ms に変更
 )
 ```
-
-## 関連ドキュメント
-
-- [README.md](README.md) - PortAudio版の詳細
-- [INVESTIGATION_CGO_ALTERNATIVES.md](22_GO_INVESTIGATION_CGO_ALTERNATIVES.md) - CGO要件の調査報告
-- [QUICKSTART.md](44_GO_QUICKSTART_OTO.md) - クイックスタートガイド
 
 ## ライセンス
 
