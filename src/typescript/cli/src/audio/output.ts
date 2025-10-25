@@ -64,17 +64,17 @@ export class AudioOutput {
 
         // Convert Int16Array to Buffer and write to speaker
         const buffer = Buffer.from(samples.buffer);
-        const canContinue = this.speaker.write(buffer);
-
-        // If the write buffer is full, wait for drain event
-        if (!canContinue) {
-            this.speaker.once("drain", () => {
-                this.writeNextBuffer();
-            });
-        } else {
-            // Continue writing immediately if buffer has space
+        
+        // Use callback-based write for better timing control
+        // This ensures the next buffer is generated only after the current one is written
+        this.speaker.write(buffer, (err?: Error | null) => {
+            if (err) {
+                console.error('Error writing to speaker:', err);
+                return;
+            }
+            // Schedule next buffer generation using setImmediate to avoid blocking event loop
             setImmediate(() => this.writeNextBuffer());
-        }
+        });
     }
 
     /**

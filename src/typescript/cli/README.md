@@ -60,13 +60,14 @@ node dist/main.js smooth
 ```
 Mouse Input (robotjs)
     ↓
-Mouse Position Polling (125Hz / 8ms)
+Audio Buffer Callback (every 50ms)
     ↓
-Frequency Mapping
+    1. Poll Mouse Position
+    2. Map to Frequencies  
+    3. Update Synthesizer
+    4. Generate Audio Buffer
     ↓
-Synthesizer (Simple or Smooth)
-    ↓
-Audio Output (speaker package)
+Speaker Output
 ```
 
 ### Key Components
@@ -74,7 +75,7 @@ Audio Output (speaker package)
 - **mouse/position.ts**: Mouse position capture using robotjs
 - **synth/simple.ts**: Simple hard sync synthesizer
 - **synth/smooth.ts**: Smooth hard sync synthesizer with exponential filtering
-- **audio/output.ts**: Audio output using speaker package with backpressure handling
+- **audio/output.ts**: Audio output using speaker package with callback-based buffer generation
 
 ## Troubleshooting
 
@@ -132,10 +133,11 @@ npm install
 
 ### Target Metrics
 
-- **Polling rate**: 125Hz (8ms interval)
+- **Audio buffer duration**: 50ms (20 updates/second)
 - **Audio sample rate**: 48kHz
-- **Buffer size**: 384 frames (8ms @ 48kHz)
-- **Latency**: ~50ms or less
+- **Buffer size**: 2400 frames (50ms @ 48kHz)
+- **Frequency update rate**: 20Hz (every buffer)
+- **Latency**: ~50ms
 - **CPU usage**: 1-5%
 - **Memory usage**: 50-100MB
 
@@ -222,16 +224,23 @@ For each sample:
 
 ### Mouse Polling
 
-Uses `setInterval` with 8ms interval:
+Mouse polling now happens **inside the audio generation callback**, ensuring tight coupling between frequency updates and audio output:
+
 ```typescript
-setInterval(() => {
+audioOutput.start((buffer, frameCount) => {
+    // Poll mouse BEFORE generating each buffer
     const pos = getMousePosition();  // robotjs
     const freqMaster = mapRange(pos.x, ...);
     const freqSlave = mapRange(pos.y, ...);
     synth.setMasterFrequency(freqMaster);
     synth.setSlaveFrequency(freqSlave);
-}, 8);
+    
+    // Generate audio with updated frequencies
+    synth.generateSamples(buffer, frameCount);
+}, FRAMES_PER_BUFFER);
 ```
+
+This ensures frequency changes are reflected in the audio every 50ms (20 times per second).
 
 ### Frequency Smoothing (Smooth Version)
 
@@ -249,7 +258,7 @@ Default time constant: 16ms
 1. **Windows only**: Native modules (robotjs, speaker) are Windows-specific in this implementation
 2. **No MIDI**: Only mouse control is supported
 3. **Single channel**: Mono audio output only
-4. **setInterval precision**: Limited by JavaScript event loop and Windows timer resolution (~10-16ms)
+4. **Buffer-driven updates**: Frequency updates occur at buffer boundaries (every 50ms)
 
 ## Related Documentation
 

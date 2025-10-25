@@ -9,9 +9,8 @@ import { SmoothSynth } from "./synth/smooth.js";
 
 // Audio configuration
 const SAMPLE_RATE = 48000;
-const POLLING_INTERVAL_MS = 8;
-const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * POLLING_INTERVAL_MS) / 1000);
-const BUFFER_SIZE_MS = 8; // Audio output buffer size (matches polling interval and Go Oto version)
+const BUFFER_DURATION_MS = 50; // バッファの長さ（ミリ秒）- 周波数変化が50msごとに発生
+const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * BUFFER_DURATION_MS) / 1000);
 
 // Frequency ranges
 const MASTER_FREQ_MIN = 40;
@@ -55,9 +54,8 @@ async function main(): Promise<void> {
     const screen = getScreenSize();
     console.log(`Screen size: ${screen.width}x${screen.height}`);
     console.log(`Sample rate: ${SAMPLE_RATE} Hz`);
-    console.log(`Buffer size: ${FRAMES_PER_BUFFER} frames (${POLLING_INTERVAL_MS} ms)`);
-    console.log(`Audio buffer: ${BUFFER_SIZE_MS} ms (low latency)`);
-    console.log(`Polling interval: ${POLLING_INTERVAL_MS} ms`);
+    console.log(`Buffer duration: ${BUFFER_DURATION_MS} ms (周波数更新頻度)`);
+    console.log(`Buffer size: ${FRAMES_PER_BUFFER} frames`);
     console.log();
 
     // Create synthesizer
@@ -66,30 +64,25 @@ async function main(): Promise<void> {
             ? new SmoothSynth(SAMPLE_RATE, TIME_CONSTANT_MS)
             : new SimpleSynth(SAMPLE_RATE);
 
-    // Create audio output
-    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_SIZE_MS);
-
-    // Start audio stream
-    audioOutput.start((buffer, frameCount) => {
-        synth.generateSamples(buffer, frameCount);
-    }, FRAMES_PER_BUFFER);
+    // Create audio output with 50ms buffer
+    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_DURATION_MS);
 
     console.log("Audio stream started. Move your mouse to control the sound.");
     console.log();
 
-    let running = true;
-    let statusCounter = 0;
+    let bufferCount = 0;
 
     // Handle Ctrl+C
     process.on("SIGINT", () => {
-        running = false;
         console.log("\n\n終了しました。");
         audioOutput.stop();
         process.exit(0);
     });
 
-    // Mouse polling loop
-    const pollInterval = setInterval(() => {
+    // Start audio stream with frequency updates happening BEFORE each buffer generation
+    audioOutput.start((buffer, frameCount) => {
+        // Poll mouse position and update frequencies BEFORE generating audio
+        // This ensures frequency changes are reflected immediately in the audio
         try {
             const pos = getMousePosition();
 
@@ -103,22 +96,24 @@ async function main(): Promise<void> {
             synth.setMasterFrequency(freqMaster);
             synth.setSlaveFrequency(freqSlave);
 
-            // Display status every ~500ms (every ~62 iterations at 8ms interval)
-            if (++statusCounter >= 62) {
+            // Display status every ~10 buffers (every ~500ms at 50ms per buffer)
+            if (++bufferCount >= 10) {
                 const line = `\rMaster: ${synth.getMasterFrequency().toFixed(1)} Hz | Slave: ${synth
                     .getSlaveFrequency()
-                    .toFixed(1)} Hz`;
+                    .toFixed(1)} Hz | Buffer: ${bufferCount}`;
                 process.stdout.write(line);
-                statusCounter = 0;
+                bufferCount = 0;
             }
         } catch (error) {
-            // Ignore mouse position errors
+            // Ignore mouse position errors but continue audio generation
         }
-    }, POLLING_INTERVAL_MS);
+
+        // Generate audio with the updated frequencies
+        synth.generateSamples(buffer, frameCount);
+    }, FRAMES_PER_BUFFER);
 
     // Cleanup on exit
     process.on("exit", () => {
-        clearInterval(pollInterval);
         audioOutput.stop();
     });
 }
