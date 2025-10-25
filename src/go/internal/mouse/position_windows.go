@@ -24,8 +24,11 @@ type point struct {
 }
 
 // getPositionWindows gets the mouse cursor position on Windows
+// This function is optimized for frequent polling (125 Hz+)
 func getPositionWindows() (Position, error) {
 	var pt point
+	// GetCursorPos is a fast system call that retrieves the cursor position
+	// directly from Windows without any process spawning overhead
 	ret, _, err := procGetCursorPos.Call(uintptr(unsafe.Pointer(&pt)))
 	if ret == 0 {
 		return Position{}, fmt.Errorf("GetCursorPos failed: %v", err)
@@ -38,13 +41,4 @@ func getScreenSizeWindows() (width, height int, err error) {
 	w, _, _ := procGetSystemMetrics.Call(uintptr(SM_CXSCREEN))
 	h, _, _ := procGetSystemMetrics.Call(uintptr(SM_CYSCREEN))
 	return int(w), int(h), nil
-}
-
-// Stubs for Linux functions (not used on Windows)
-func getPositionLinux() (Position, error) {
-	return Position{}, fmt.Errorf("Linux support not available on Windows")
-}
-
-func getScreenSizeLinux() (int, int, error) {
-	return 0, 0, fmt.Errorf("Linux support not available on Windows")
 }
