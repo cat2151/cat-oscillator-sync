@@ -86,16 +86,15 @@ func main() {
 	fmt.Printf("目標とするレイテンシ: %d ms\n", bufferSizeMs)
 	fmt.Printf("計算されたバッファサイズ: %d bytes\n", bufferSizeInBytes)
 
-	// Initialize oto context with a large initial BufferSize
+	// Initialize oto context with the calculated BufferSize
 	// The actual buffer size will be set via player.SetBufferSize
-	// Note: This large value (9999009) is intentional - the context's BufferSize
-	// doesn't determine the actual buffer in oto v3. The real buffer size is set
-	// later using player.SetBufferSize()
+	// Note: The context's BufferSize doesn't determine the actual buffer in oto v3.
+	// The real buffer size is set later using player.SetBufferSize()
 	op := &oto.NewContextOptions{
 		SampleRate:   sampleRate,
 		ChannelCount: channelCount,
 		Format:       oto.FormatFloat32LE,
-		BufferSize:   9999009, // Large initial value (doesn't determine actual buffer)
+		BufferSize:   time.Duration(bufferSizeInBytes),
 	}
 
 	ctx, readyChan, err := oto.NewContext(op)
