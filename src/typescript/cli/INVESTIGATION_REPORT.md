@@ -6,6 +6,44 @@
 
 **目標:** せめて1秒に10回程度（≥10Hz）の周波数変更を実現する。
 
+## ✅ 解決済み - Buffer Size Issue (2025-10-25)
+
+**根本原因が特定され、修正されました！**
+
+### 発見された問題
+
+Go Oto版と同じバッファサイズの問題が TypeScript CLI にもありました：
+
+- `speaker` パッケージは Node.js WritableStream のデフォルト `highWaterMark` **16384バイト (~170ms)** を使用
+- 8ms ごとに音声を生成しているが、内部バッファが170ms分蓄積
+- マウス移動から実際の音声再生まで **170ms の遅延**
+- 結果：マウス制御が鈍く、反応が悪い
+
+### 実装された修正
+
+Go Oto版の修正と同じアプローチ：
+
+1. `AudioConfig` に `bufferSizeMs` パラメータを追加
+2. バッファサイズから最適な `highWaterMark` を計算：
+   ```typescript
+   const highWaterMark = Math.floor(bytesPerMs * bufferSizeMs);
+   // 8ms → 768 bytes (48kHz, mono, 16-bit)
+   ```
+3. デフォルトを8msに設定（ポーリング間隔とGo Oto版に一致）
+4. Speaker コンストラクタに `highWaterMark` を渡す
+
+### 修正の効果
+
+| 項目 | 修正前 | 修正後 |
+|------|--------|--------|
+| highWaterMark | 16384 bytes (デフォルト) | 768 bytes (8ms) |
+| 実効レイテンシ | **~170ms** | **~8ms** |
+| マウス制御 | 鈍い | 反応的 ✅ |
+
+詳細: [BUFFER_SIZE_FIX.md](./BUFFER_SIZE_FIX.md)
+
+---
+
 ## 現状の実装分析
 
 ### ポーリング設定
