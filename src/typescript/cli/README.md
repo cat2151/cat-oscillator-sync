@@ -7,7 +7,9 @@ Node.js CLI implementation of a mouse-controlled hard sync oscillator synthesize
 This is a command-line version of the Cat Oscillator Sync synthesizer that runs on Windows. It uses:
 - **Mouse control**: Your mouse position controls the oscillator frequencies
 - **Hard sync algorithm**: Two oscillators (master and slave) with phase reset synchronization
-- **Real-time audio**: Low-latency audio output using the speaker package
+- **Real-time audio**: Audio output using naudiodon (PortAudio bindings)
+  - **注意**: naudiodonの内部バッファは約170msで、これ以下には減らせません
+  - Node.jsで現在利用可能な最小のバッファサイズです
 
 ## Requirements
 
@@ -75,7 +77,7 @@ Speaker Output
 - **mouse/position.ts**: Mouse position capture using robotjs
 - **synth/simple.ts**: Simple hard sync synthesizer
 - **synth/smooth.ts**: Smooth hard sync synthesizer with exponential filtering
-- **audio/output.ts**: Audio output using speaker package with callback-based buffer generation
+- **audio/output.ts**: Audio output using naudiodon (PortAudio) with callback-based buffer generation
 
 ## Troubleshooting
 
@@ -137,9 +139,11 @@ npm install
 - **Audio sample rate**: 48kHz
 - **Buffer size**: 2400 frames (50ms @ 48kHz)
 - **Frequency update rate**: 20Hz (every buffer)
-- **Latency**: ~50ms
+- **Effective latency**: ~170ms (naudiodon internal buffer limitation)
 - **CPU usage**: 1-5%
 - **Memory usage**: 50-100MB
+
+**注意**: naudiodon (PortAudio) の内部バッファは約170msあり、これはNode.jsで現在利用可能な最小のバッファサイズです。詳細は [NAUDIODON_MIGRATION.md](./NAUDIODON_MIGRATION.md) を参照してください。
 
 ### Measured Metrics (Expected)
 
@@ -255,10 +259,11 @@ Default time constant: 16ms
 
 ## Known Limitations
 
-1. **Windows only**: Native modules (robotjs, speaker) are Windows-specific in this implementation
+1. **Windows only**: Native modules (robotjs, naudiodon) are Windows-specific in this implementation
 2. **No MIDI**: Only mouse control is supported
 3. **Single channel**: Mono audio output only
 4. **Buffer-driven updates**: Frequency updates occur at buffer boundaries (every 50ms)
+5. **~170ms latency**: naudiodon (PortAudio) has an internal buffer of approximately 170ms that cannot be reduced further. This is currently the smallest buffer size available for Node.js audio output. For lower latency, consider using the browser version (Web Audio API ~3ms) or Python/Rust/Go versions (~8ms).
 
 ## Related Documentation
 
@@ -294,4 +299,5 @@ If you encounter issues:
 
 - Hard sync algorithm inspired by classic analog synthesizers
 - Uses robotjs for mouse input
-- Uses speaker package for audio output
+- Uses naudiodon (PortAudio bindings) for audio output
+- Previous versions used node-speaker, migrated to naudiodon for better buffer control (see [NAUDIODON_MIGRATION.md](./NAUDIODON_MIGRATION.md))

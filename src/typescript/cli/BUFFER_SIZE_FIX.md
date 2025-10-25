@@ -1,5 +1,11 @@
 # Buffer Size Fix - Technical Explanation
 
+**注意**: このドキュメントは `node-speaker` を使用していた時期の問題と解決策を説明しています。現在は `naudiodon` に移行しています。詳細は [NAUDIODON_MIGRATION.md](./NAUDIODON_MIGRATION.md) を参照してください。
+
+**naudiodon での制限**: naudiodon (PortAudio) の内部バッファは約170msで、これ以下には減らせません。これはNode.jsで現在利用可能な最小のバッファサイズです。
+
+---
+
 ## Problem
 
 The TypeScript CLI implementation had a hidden latency issue similar to the Go Oto version buffer size problem that was manually discovered.

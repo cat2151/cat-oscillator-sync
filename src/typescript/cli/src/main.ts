@@ -10,6 +10,7 @@ import { SmoothSynth } from "./synth/smooth.js";
 // Audio configuration
 const SAMPLE_RATE = 48000;
 const BUFFER_DURATION_MS = 50; // バッファの長さ（ミリ秒）- 周波数変化が50msごとに発生
+                               // 注意: naudiodonの内部バッファは約170msで、これ以下には減らせません
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * BUFFER_DURATION_MS) / 1000);
 
 // Frequency ranges
@@ -42,11 +43,14 @@ async function main(): Promise<void> {
     const args = process.argv.slice(2);
     const mode = args[0] === "smooth" ? "smooth" : "simple";
 
-    console.log("🎵 Cat Oscillator Sync - TypeScript/Node.js CLI Version");
+    console.log("🎵 Cat Oscillator Sync - TypeScript/Node.js CLI Version (naudiodon)");
     console.log(`モード: ${mode === "smooth" ? "スムーズ版" : "シンプル版"}`);
     console.log("マウスを動かして音を制御してください");
     console.log("X軸: マスター周波数 (40Hz - 600Hz)");
     console.log("Y軸: スレーブ周波数 (100Hz - 2000Hz)");
+    console.log();
+    console.log("注意: naudiodonは内部バッファが約170msあり、これ以下には減らせません。");
+    console.log("      これは現在Node.jsで利用可能な最小のバッファサイズです。");
     console.log("Press Ctrl+C to exit");
     console.log();
 
@@ -65,6 +69,7 @@ async function main(): Promise<void> {
             : new SimpleSynth(SAMPLE_RATE);
 
     // Create audio output with 50ms buffer
+    // 注意: naudiodonの実際の内部バッファは約170msです
     const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_DURATION_MS);
 
     console.log("Audio stream started. Move your mouse to control the sound.");

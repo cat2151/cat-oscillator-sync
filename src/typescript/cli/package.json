@@ -23,8 +23,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "robotjs": "^0.6.0",
-    "speaker": "^0.5.4"
+    "naudiodon": "^2.3.6",
+    "robotjs": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "^20.19.22",
