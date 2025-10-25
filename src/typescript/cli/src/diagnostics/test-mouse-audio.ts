@@ -10,6 +10,7 @@ const SAMPLE_RATE = 48000;
 const UPDATE_RATE_HZ = 125; // How often to check mouse and update frequency
 const UPDATE_INTERVAL_MS = 1000 / UPDATE_RATE_HZ; // 8ms for 125Hz
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * UPDATE_INTERVAL_MS) / 1000);
+const BUFFER_SIZE_MS = 8; // Audio buffer size (low latency)
 const TEST_DURATION_MS = 5000; // 5 seconds
 
 // Frequency ranges for mouse mapping
@@ -95,7 +96,7 @@ async function testMouseAudio(): Promise<void> {
 
     // Create oscillator and audio output
     const oscillator = new SineOscillator(SAMPLE_RATE);
-    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16);
+    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_SIZE_MS);
 
     // Start audio stream
     audioOutput.start((buffer, frameCount) => {

@@ -11,6 +11,7 @@ import { SmoothSynth } from "../synth/smooth.js";
 const SAMPLE_RATE = 48000;
 const POLLING_INTERVAL_MS = 8;
 const FRAMES_PER_BUFFER = Math.floor((SAMPLE_RATE * POLLING_INTERVAL_MS) / 1000);
+const BUFFER_SIZE_MS = 8; // Audio buffer size (low latency)
 
 // Frequency ranges
 const MASTER_FREQ_MIN = 40;
@@ -75,7 +76,7 @@ async function main(): Promise<void> {
             : new SimpleSynth(SAMPLE_RATE);
 
     // Create audio output
-    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16);
+    const audioOutput = createAudioOutput(SAMPLE_RATE, 1, 16, BUFFER_SIZE_MS);
 
     // Start audio stream
     audioOutput.start((buffer, frameCount) => {
