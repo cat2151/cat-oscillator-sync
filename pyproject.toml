@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cat-oscillator-sync"
+version = "0.1.0"
+description = "マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー"
+readme = "README.md"
+authors = [
+    { name = "cat2151" }
+]
+license = { text = "MIT" }
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Sound Synthesis",
+]
+dependencies = [
+    "sounddevice>=0.4.0",
+    "numpy>=1.21.0",
+    "pyautogui>=0.9.50",
+]
+
+[project.scripts]
+cat-oscillator-sync-simple = "cat_oscillator_sync.sync_simple:main"
+cat-oscillator-sync-smooth = "cat_oscillator_sync.sync_smooth:main"
+
+[project.urls]
+Homepage = "https://github.com/cat2151/cat-oscillator-sync"
+Repository = "https://github.com/cat2151/cat-oscillator-sync"
+
+[tool.setuptools]
+packages = ["cat_oscillator_sync"]
+package-dir = { "cat_oscillator_sync" = "src/python" }
+
+[tool.ruff]
+line-length = 120
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
