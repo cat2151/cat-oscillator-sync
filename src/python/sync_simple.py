@@ -11,6 +11,8 @@ screen_width, screen_height = pyautogui.size()
 
 phase_master = 0.0
 phase_slave = 0.0
+freq_master = 100.0
+freq_slave = 100.0
 
 
 def synth_callback(outdata, frames, time_info, status):
