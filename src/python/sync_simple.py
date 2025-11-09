@@ -11,6 +11,8 @@ screen_width, screen_height = pyautogui.size()
 
 phase_master = 0.0
 phase_slave = 0.0
+freq_master = 100.0
+freq_slave = 100.0
 
 
 def synth_callback(outdata, frames, time_info, status):
@@ -36,12 +38,18 @@ def synth_callback(outdata, frames, time_info, status):
     outdata[:] = out.reshape(-1, 1)
 
 
-with sd.OutputStream(channels=1, callback=synth_callback, samplerate=fs, blocksize=blocksize):
-    try:
-        while True:
-            x, y = pyautogui.position()
-            freq_master = np.interp(x, [0, screen_width], [40, 600])
-            freq_slave = np.interp(y, [0, screen_height], [2000, 100])
-            time.sleep(polling_interval_ms / 1000)
-    except KeyboardInterrupt:
-        print("\n終了しました。")
+def main():
+    global freq_master, freq_slave
+    with sd.OutputStream(channels=1, callback=synth_callback, samplerate=fs, blocksize=blocksize):
+        try:
+            while True:
+                x, y = pyautogui.position()
+                freq_master = np.interp(x, [0, screen_width], [40, 600])
+                freq_slave = np.interp(y, [0, screen_height], [2000, 100])
+                time.sleep(polling_interval_ms / 1000)
+        except KeyboardInterrupt:
+            print("\n終了しました。")
+
+
+if __name__ == "__main__":
+    main()

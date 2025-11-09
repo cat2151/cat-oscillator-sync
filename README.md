@@ -41,12 +41,30 @@ TypeScript(Node.js) : 音は鳴ります。
 
 ## インストール
 
-### 必要な環境
+### クイックスタート（pipx推奨）
+
+pipxを使用してGitリポジトリから直接インストールできます：
+
+```bash
+# pipxのインストール（まだインストールしていない場合）
+pip install pipx
+
+# cat-oscillator-syncのインストール
+pipx install git+https://github.com/cat2151/cat-oscillator-sync
+
+# インストール後、以下のコマンドで実行できます
+cat-oscillator-sync-simple  # シンプル版
+cat-oscillator-sync-smooth  # スムーズ版
+```
+
+### 従来の方法（リポジトリをクローン）
+
+#### 必要な環境
 
 - Python 3.8+
 - pip
 
-### Pythonライブラリのインストール
+#### Pythonライブラリのインストール
 
 ```bash
 pip install -r requirements.txt
@@ -54,13 +72,25 @@ pip install -r requirements.txt
 
 ## 使用方法
 
-### シンプル版 (8msごとに階段状に周波数が変化)
+### pipxでインストールした場合
+
+```bash
+# シンプル版 (8msごとに階段状に周波数が変化)
+cat-oscillator-sync-simple
+
+# スムーズ版 (1サンプルごとに滑らかに周波数が変化)
+cat-oscillator-sync-smooth
+```
+
+### リポジトリから直接実行する場合
+
+#### シンプル版 (8msごとに階段状に周波数が変化)
 
 ```bash
 python src/python/sync_simple.py
 ```
 
-### スムーズ版 (1サンプルごとに滑らかに周波数が変化)
+#### スムーズ版 (1サンプルごとに滑らかに周波数が変化)
 
 ```bash
 python src/python/sync_smooth.py
