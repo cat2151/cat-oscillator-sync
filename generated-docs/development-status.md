@@ -1,80 +1,48 @@
-Last updated: 2025-11-10
+Last updated: 2025-12-02
 
 # Development Status
 
 ## 現在のIssues
-- オープン中のIssueはありません。
-- 現在、未解決の課題として記録されているものはありません。
-- プロジェクトは安定した状態にあり、次の開発ステップを検討する段階です。
+現在、オープン中のIssueはありません。
 
 ## 次の一手候補
-1. `daily-project-summary` ワークフローの完全な統合と検証 [Issue #101](../issue-notes/101.md)
-   - 最初の小さな一歩: `call-daily-project-summary.yml`ワークフローを手動で実行し、`generated-docs/development-status.md`が正しく生成されるかを確認する。
-   - Agent実行プロンプ:
+1. [Issueなし] SEO対策の現状評価と追加改善の検討
+   - 最初の小さな一歩: `googled947dc864c270e07.html`の配置と`_config.yml`の設定がGoogle Search Consoleで正しく認識されているか確認する。
+   - Agent実行プロンプト:
      ```
-     対象ファイル:
-     - .github/workflows/call-daily-project-summary.yml
-     - .github/actions-tmp/.github/workflows/daily-project-summary.yml
-     - .github/actions-tmp/.github_automation/project_summary/scripts/generate-project-summary.cjs
-     - .github/actions-tmp/.github_automation/project_summary/prompts/development-status-prompt.md
+     対象ファイル: `googled947dc864c270e07.html`, `_config.yml`, `README.md`
 
-     実行内容: `call-daily-project-summary.yml`ワークフローが正しく実行され、`development-status.md`と`project-overview.md`が`generated-docs`ディレクトリに生成されることを確認するためのテスト計画を立案してください。特に、`development-status-prompt.md`に記載されている要件が満たされているか、生成される出力がガイドラインに準拠しているかを検証するための手順を含めてください。
+     実行内容: プロジェクトのSEO設定（`googled947dc864c270e07.html`によるサイト認証、`_config.yml`でのサイトマップ生成設定、`README.md`のキーワード最適化など）が、一般的に推奨されるSEOプラクティスに則っているかを分析してください。特に、Google検索でのインデックス状況を改善するために追加でできる施策を特定してください。
 
-     確認事項:
-     - 関連する`daily-project-summary`アクションのパスが正しく設定されているか。
-     - 必要な環境変数やシークレット（もしあれば）が適切に設定されているか。
-     - ワークフローのトリガー条件（例: `workflow_dispatch`）がテストに適しているか。
+     確認事項: 現在のGoogle Search Consoleでの認証状況やインデックス状況に関する情報があればそれを参照し、プロジェクトの公開URLとアクセス性を確認してください。
 
-     期待する出力: `daily-project-summary`ワークフローの手動テスト計画をMarkdown形式で記述してください。これには、テスト手順、期待される出力例、および検証チェックリストを含めます。
+     期待する出力: 現在のSEO設定の評価と、改善のための具体的な提案（例: メタディスクリプションの最適化、構造化データの導入、外部リンク戦略など）をMarkdown形式で記述してください。
      ```
 
-2. 各言語実装の`build_and_run.py`スクリプトの統一と改善 [Issue #102](../issue-notes/102.md)
-   - 最初の小さな一歩: `src/go/build_and_run.py`と`src/rust/build_and_run.py`の内容を比較し、共通化できるビルドステップやユーティリティ関数を特定する。
-   - Agent実行プロンプ:
+2. [Issueなし] 自動生成される開発状況ドキュメントの改善
+   - 最初の小さな一歩: `generated-docs/development-status.md` の「現在のIssues」セクションが「オープン中のIssueはありません」と記載されている現状を、より情報価値のある形で表現する方法を検討する。例えば、最近完了したIssueや進行中の非公式タスクに言及する等。
+   - Agent実行プロンプト:
      ```
-     対象ファイル:
-     - build_and_run.py
-     - src/build_utils.py
-     - src/go/build_and_run.py
-     - src/rust/build_and_run.py
-     - src/python/build_and_run.py
-     - src/typescript/cli/build_and_run.py
-     - src/typescript/browser/build_and_run.py
-     - src/go-portaudio/build_and_run.py
+     対象ファイル: `generated-docs/development-status.md`, `generated-docs/development-status-generated-prompt.md`, `.github/actions-tmp/.github_automation/project_summary/scripts/development/DevelopmentStatusGenerator.cjs`, `issue-notes/README.md`
 
-     実行内容: 複数の言語実装に存在する`build_and_run.py`スクリプトの内容を分析し、共通のユーティリティ関数を`src/build_utils.py`に集約する改善提案をMarkdown形式で出力してください。具体的には、ビルドコマンドの実行、依存関係のインストール、出力ファイルの管理といった共通処理を特定し、どのようにリファクタリングできるかを記述します。
+     実行内容: 現在の`development-status.md`が「オープン中のIssueはありません」と表示される現状を踏まえ、このセクションをより有用にするための改善策を提案してください。例えば、過去1週間にクローズされたIssueの要約、進行中の主要な作業フェーズの記述、または`issue-notes/`ディレクトリにあるメモから非公式な作業項目を抽出する可能性を分析してください。
 
-     確認事項:
-     - 各スクリプトが持つ固有のロジック（言語固有のビルドツール、依存ライブラリなど）を維持すること。
-     - 既存のビルドフローを壊さないこと。
-     - 各`build_and_run.py`が引き続き単独で実行可能であること。
+     確認事項: プロジェクトのIssue管理ポリシー（GitHub Issuesのみか、issue-notesも含むか）、および`DevelopmentStatusGenerator.cjs`がアクセスできる情報範囲を確認してください。
 
-     期待する出力: 共通化された`build_and_run.py`スクリプト群のリファクタリング計画と、`src/build_utils.py`に追加または変更すべき関数の擬似コードをMarkdown形式で記述してください。
+     期待する出力: 「現在のIssues」セクションの改善提案をMarkdown形式で記述してください。これには、具体的な情報の種類（例：最近完了した作業のハイライト、次期目標、主要な機能エリアの状況など）と、それを生成するために必要なスクリプトまたはプロンプトの変更の方向性を含めてください。
      ```
 
-3. TypeScript CLIの`naudiodon`移行とオーディオ関連修正の最終確認 [Issue #103](../issue-notes/103.md)
-   - 最初の小さな一歩: `src/typescript/cli/NAUDIODON_MIGRATION_COMPLETION.md`と`src/typescript/cli/NAUDIODON_MIGRATION_SUMMARY.md`を読み込み、移行の現状と文書化された課題を確認する。
-   - Agent実行プロンプ:
+3. [Issueなし] GitHub Actionsワークフローの定期的な健全性チェック導入
+   - 最初の小さな一歩: 最近変更されたGitHub Actionsワークフロー（`call-daily-project-summary.yml`など）の実行ログをレビューし、失敗や警告がないかを確認する手順を文書化する。
+   - Agent実行プロンプト:
      ```
-     対象ファイル:
-     - src/typescript/cli/NAUDIODON_MIGRATION.md
-     - src/typescript/cli/NAUDIODON_MIGRATION_COMPLETION.md
-     - src/typescript/cli/NAUDIODON_MIGRATION_SUMMARY.md
-     - src/typescript/cli/BUFFER_SIZE_FIX.md
-     - src/typescript/cli/FREQUENCY_UPDATE_FIX.md
-     - src/typescript/cli/src/audio/output.ts
-     - src/typescript/cli/src/main.ts
-     - src/typescript/cli/src/types/naudiodon.d.ts
+     対象ファイル: `.github/workflows/call-daily-project-summary.yml`, `.github/workflows/call-issue-note.yml`, `.github/workflows/call-translate-readme.yml`, `.github/actions-tmp/.github/workflows/check-recent-human-commit.yml`
 
-     実行内容: TypeScript CLIにおける`naudiodon`への移行と、それに伴うオーディオ関連の修正（バッファサイズ、周波数更新）について、既存のドキュメントとコードを分析してください。この分析に基づき、移行が完全に完了しているか、潜在的なバグやパフォーマンスボトルネックが残っていないかを確認するためのチェックリストと、必要な追加作業の提案をMarkdown形式で出力してください。特に、クロスプラットフォームでの安定性とパフォーマンスに焦点を当てます。
+     実行内容: プロジェクト内の主要なGitHub Actionsワークフロー（上記3つ）に対して、定期的にその健全性を自動でチェックし、問題があれば通知する仕組みを導入する可能性を分析してください。既存の`check-recent-human-commit.yml`のような監視系ワークフローを参考に、各ワークフローの成功/失敗ステータスを監視し、異常を検知した場合にレポートを生成する（または既存のサマリーに含める）方法を検討してください。
 
-     確認事項:
-     - `naudiodon`の初期化と終了処理が適切に行われているか。
-     - オーディオバッファの管理とデータフローが最適化されているか。
-     - 異なるOS環境（特にWindows, macOS, Linux）での動作確認状況。
-     - 既存の`test-mouse-audio.ts`や`test-frequency-sweep.ts`が最新の修正を反映しているか。
+     確認事項: GitHub ActionsのAPI利用制限、通知メカニズム（例: Slack, GitHub Issuesへのコメント）の実現可能性、および既存のワークフローへの影響を確認してください。
 
-     期待する出力: `naudiodon`移行とオーディオ修正の最終確認レポートをMarkdown形式で生成してください。これには、現在のステータス、確認項目、推奨されるテスト手順、および残された改善点や潜在的な課題についての提案を含めます。
+     期待する出力: GitHub Actionsワークフローの健全性チェック導入のための実現可能性分析レポートをMarkdown形式で記述してください。これには、監視対象、チェック頻度、異常検知時のレポート内容、および提案されるワークフローの変更案を含めてください。
 
 ---
-Generated at: 2025-11-10 07:03:07 JST
+Generated at: 2025-12-02 07:03:23 JST

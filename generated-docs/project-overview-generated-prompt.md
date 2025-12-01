@@ -1,4 +1,4 @@
-Last updated: 2025-11-10
+Last updated: 2025-12-02
 
 
 # プロジェクト概要生成プロンプト（来訪者向け）
@@ -336,6 +336,7 @@ ruff check --fix src/ tests/
 📄 _config.yml
 📄 build_and_run.py
 📁 generated-docs/
+🌐 googled947dc864c270e07.html
 📁 issue-notes/
   📖 20_OBSIDIAN_IMPLEMENTATION_PLAN.md
   📖 22_GO_CGO_EXPLANATION.md
@@ -501,6 +502,10 @@ ruff check --fix src/ tests/
       📊 tsconfig.json
 
 ## ファイル詳細分析
+**googled947dc864c270e07.html** (1行, 53バイト)
+  - 関数: なし
+  - インポート: なし
+
 **src/obsidian/src/audio/simple-worklet.ts** (58行, 1446バイト)
   - 関数: constructor, if, process, for
   - インポート: なし
@@ -620,6 +625,7 @@ ruff check --fix src/ tests/
 .vscode/settings.json
 BUILD_SCRIPTS.md
 README.md
+googled947dc864c270e07.html
 issue-notes/20_OBSIDIAN_IMPLEMENTATION_PLAN.md
 issue-notes/22_GO_CGO_EXPLANATION.md
 issue-notes/22_GO_COMPLETION_REPORT.md
@@ -646,7 +652,6 @@ issue-notes/44_GO_QUICKSTART_OTO.md
 issue-notes/44_GO_README_OTO.md
 issue-notes/4_RUST_COMPLETION_REPORT.md
 issue-notes/4_RUST_QUICKSTART.md
-issue-notes/4_RUST_README.md
 src/go/README.md
 src/go-portaudio/QUICKSTART.md
 src/obsidian/manifest.json
@@ -663,4 +668,4 @@ src/typescript/cli/BUFFER_SIZE_FIX.md
 
 
 ---
-Generated at: 2025-11-10 07:02:46 JST
+Generated at: 2025-12-02 07:02:55 JST

@@ -1,4 +1,4 @@
-Last updated: 2025-11-10
+Last updated: 2025-12-02
 
 # 開発状況生成プロンプト（開発者向け）
 
@@ -159,8 +159,10 @@ Last updated: 2025-11-10
 - .github/actions-tmp/generated-docs/callgraph.js
 - .github/actions-tmp/generated-docs/development-status-generated-prompt.md
 - .github/actions-tmp/generated-docs/development-status.md
+- .github/actions-tmp/generated-docs/project-overview-generated-prompt.md
 - .github/actions-tmp/generated-docs/project-overview.md
 - .github/actions-tmp/generated-docs/style.css
+- .github/actions-tmp/googled947dc864c270e07.html
 - .github/actions-tmp/issue-notes/10.md
 - .github/actions-tmp/issue-notes/11.md
 - .github/actions-tmp/issue-notes/12.md
@@ -183,6 +185,7 @@ Last updated: 2025-11-10
 - .github/actions-tmp/issue-notes/28.md
 - .github/actions-tmp/issue-notes/29.md
 - .github/actions-tmp/issue-notes/3.md
+- .github/actions-tmp/issue-notes/30.md
 - .github/actions-tmp/issue-notes/4.md
 - .github/actions-tmp/issue-notes/7.md
 - .github/actions-tmp/issue-notes/8.md
@@ -202,6 +205,7 @@ Last updated: 2025-11-10
 - _config.yml
 - build_and_run.py
 - generated-docs/project-overview-generated-prompt.md
+- googled947dc864c270e07.html
 - issue-notes/20_OBSIDIAN_IMPLEMENTATION_PLAN.md
 - issue-notes/22_GO_CGO_EXPLANATION.md
 - issue-notes/22_GO_COMPLETION_REPORT.md
@@ -339,45 +343,25 @@ Last updated: 2025-11-10
 
 ## 最近の変更（過去7日間）
 ### コミット履歴:
-f78c366 Merge branch 'main' of github.com:cat2151/cat-oscillator-sync into main
-cab88ce github-actionsリポジトリの共通ワークフローを導入
-03b6ae3 jekyll settings
+b9d2a50 Google検索にindexさせる用
+e8a6396 Google検索にindexさせる用
 
 ### 変更されたファイル:
 .github/workflows/call-daily-project-summary.yml
 .github/workflows/call-issue-note.yml
 .github/workflows/call-translate-readme.yml
-BUILD_SCRIPTS.md
 README.md
 _config.yml
 build_and_run.py
+generated-docs/development-status-generated-prompt.md
+generated-docs/development-status.md
+generated-docs/project-overview-generated-prompt.md
+generated-docs/project-overview.md
+googled947dc864c270e07.html
 pyproject.toml
-src/build_utils.py
-src/go-portaudio/build.bat
-src/go-portaudio/build_and_run.py
-src/go/build_and_run.py
 src/python/__init__.py
-src/python/build_and_run.py
 src/python/sync_simple.py
-src/rust/build_and_run.py
-src/typescript/browser/build_and_run.py
-src/typescript/cli/BUFFER_SIZE_FIX.md
-src/typescript/cli/FREQUENCY_UPDATE_FIX.md
-src/typescript/cli/NAUDIODON_MIGRATION.md
-src/typescript/cli/NAUDIODON_MIGRATION_COMPLETION.md
-src/typescript/cli/NAUDIODON_MIGRATION_SUMMARY.md
-src/typescript/cli/README.md
-src/typescript/cli/USER_GUIDE.md
-src/typescript/cli/build_and_run.py
-src/typescript/cli/package.json
-src/typescript/cli/src/audio/output.ts
-src/typescript/cli/src/diagnostics/main-diagnostic.ts
-src/typescript/cli/src/diagnostics/test-frequency-sweep.ts
-src/typescript/cli/src/diagnostics/test-mouse-audio.ts
-src/typescript/cli/src/main.ts
-src/typescript/cli/src/types/naudiodon.d.ts
-src/typescript/cli/tsconfig.json
 
 
 ---
-Generated at: 2025-11-10 07:02:46 JST
+Generated at: 2025-12-02 07:02:55 JST
