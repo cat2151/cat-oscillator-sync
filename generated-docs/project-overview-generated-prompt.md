@@ -1,4 +1,4 @@
-Last updated: 2025-12-02
+Last updated: 2026-01-28
 
 
 # プロジェクト概要生成プロンプト（来訪者向け）
@@ -67,20 +67,24 @@ Last updated: 2025-12-02
 
 ## 状況
 
-Python : 音が鳴ります。
+- LLMにこのドキュメントとcodeを生成させた状態です。いくつかは作業中です
+- 課題、以下のドキュメントが読みづらい
+  - 対策、まずPython版のZenn scraps 記事 を読んだほうがわかりやすいかもしれません : https://zenn.dev/cat2151/scraps/bc9dca9b75a901
 
-Rust : 音が鳴ります。
+- Python : 音が鳴ります。
 
-Go : ✅ **Pure Go版（Oto）が利用可能です！** C言語コンパイラ不要で簡単にビルドできます。詳細は [src/go/README.md](src/go/README.md) を参照してください。
-     ※PortAudio版も利用可能ですが、Zig ccが必要です。詳細は [src/go-portaudio/README.md](src/go-portaudio/README.md) を参照してください。
+- Rust : 音が鳴ります。
 
-Go : test_windows_mouse_speed.go は正常動作しています。
-  ですが演奏中は0.8秒間隔でしか周波数変化しません。
-  作業中です。
+- Go : Pure Go版（Oto）が利用可能です。C言語コンパイラ不要で簡単にビルドできます。詳細は [src/go/README.md](src/go/README.md) を参照してください。
+  - PortAudio版も利用可能ですが、Zig ccが必要です。詳細は [src/go-portaudio/README.md](src/go-portaudio/README.md) を参照してください。
 
-TypeScript(Node.js) : 音は鳴ります。
-  ですが演奏中は8秒？間隔でしか周波数変化しません。
-  作業中です。
+- Go : test_windows_mouse_speed.go は正常動作しています。
+  - ですが演奏中は0.8秒間隔でしか周波数変化しません。
+  - 作業中です。
+
+- TypeScript(Node.js) : 音は鳴ります。
+  - ですが演奏中は8秒？間隔でしか周波数変化しません。
+  - 作業中です。
 
 ## 概要
 
@@ -668,4 +672,4 @@ src/typescript/cli/BUFFER_SIZE_FIX.md
 
 
 ---
-Generated at: 2025-12-02 07:02:55 JST
+Generated at: 2026-01-28 07:02:57 JST

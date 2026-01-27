@@ -1,4 +1,4 @@
-Last updated: 2025-12-02
+Last updated: 2026-01-28
 
 # 開発状況生成プロンプト（開発者向け）
 
@@ -107,11 +107,13 @@ Last updated: 2025-12-02
 - .github/actions-tmp/.github/workflows/call-callgraph.yml
 - .github/actions-tmp/.github/workflows/call-daily-project-summary.yml
 - .github/actions-tmp/.github/workflows/call-issue-note.yml
+- .github/actions-tmp/.github/workflows/call-rust-windows-check.yml
 - .github/actions-tmp/.github/workflows/call-translate-readme.yml
 - .github/actions-tmp/.github/workflows/callgraph.yml
 - .github/actions-tmp/.github/workflows/check-recent-human-commit.yml
 - .github/actions-tmp/.github/workflows/daily-project-summary.yml
 - .github/actions-tmp/.github/workflows/issue-note.yml
+- .github/actions-tmp/.github/workflows/rust-windows-check.yml
 - .github/actions-tmp/.github/workflows/translate-readme.yml
 - .github/actions-tmp/.github_automation/callgraph/codeql-queries/callgraph.ql
 - .github/actions-tmp/.github_automation/callgraph/codeql-queries/codeql-pack.lock.yml
@@ -343,16 +345,12 @@ Last updated: 2025-12-02
 
 ## 最近の変更（過去7日間）
 ### コミット履歴:
-b9d2a50 Google検索にindexさせる用
-e8a6396 Google検索にindexさせる用
+c8c1f03 Update README.md for improved readability
+ac06124 Update README with project status and sound details
 
 ### 変更されたファイル:
-.github/workflows/call-daily-project-summary.yml
-.github/workflows/call-issue-note.yml
-.github/workflows/call-translate-readme.yml
 README.md
 _config.yml
-build_and_run.py
 generated-docs/development-status-generated-prompt.md
 generated-docs/development-status.md
 generated-docs/project-overview-generated-prompt.md
@@ -364,4 +362,4 @@ src/python/sync_simple.py
 
 
 ---
-Generated at: 2025-12-02 07:02:55 JST
+Generated at: 2026-01-28 07:02:57 JST

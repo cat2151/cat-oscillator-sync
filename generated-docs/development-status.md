@@ -1,48 +1,51 @@
-Last updated: 2025-12-02
+Last updated: 2026-01-28
 
 # Development Status
 
 ## 現在のIssues
-現在、オープン中のIssueはありません。
+オープン中のIssueはありません。
 
 ## 次の一手候補
-1. [Issueなし] SEO対策の現状評価と追加改善の検討
-   - 最初の小さな一歩: `googled947dc864c270e07.html`の配置と`_config.yml`の設定がGoogle Search Consoleで正しく認識されているか確認する。
+1. `development-status.md`生成プロンプトの改善 [Issue #未登録]
+   - 最初の小さな一歩: 現在の`development-status-prompt.md`の内容と、それによって生成された`development-status.md`を比較し、プロンプトの指示が明確で、ハルシネーションを誘発していないかを確認する。特に、本プロンプトの「生成しないもの」のガイドラインに沿っているかを評価する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: `googled947dc864c270e07.html`, `_config.yml`, `README.md`
+     対象ファイル: .github/actions-tmp/.github_automation/project_summary/prompts/development-status-prompt.md
+     .github/actions-tmp/generated-docs/development-status.md
 
-     実行内容: プロジェクトのSEO設定（`googled947dc864c270e07.html`によるサイト認証、`_config.yml`でのサイトマップ生成設定、`README.md`のキーワード最適化など）が、一般的に推奨されるSEOプラクティスに則っているかを分析してください。特に、Google検索でのインデックス状況を改善するために追加でできる施策を特定してください。
+     実行内容: `development-status-prompt.md`の内容が`.github/actions-tmp/generated-docs/development-status.md`の生成にどのように影響しているかを分析し、プロンプトの指示が明確であるか、またハルシネーションを誘発していないかを確認してください。特に、本プロンプトの「生成しないもの」のガイドラインに沿っているかを評価してください。
 
-     確認事項: 現在のGoogle Search Consoleでの認証状況やインデックス状況に関する情報があればそれを参照し、プロジェクトの公開URLとアクセス性を確認してください。
+     確認事項: プロンプトの変更が`development-status.md`の全体的な品質と情報精度に与える影響を考慮してください。既存の「生成ガイドライン」と「出力フォーマット」との整合性を確認してください。
 
-     期待する出力: 現在のSEO設定の評価と、改善のための具体的な提案（例: メタディスクリプションの最適化、構造化データの導入、外部リンク戦略など）をMarkdown形式で記述してください。
+     期待する出力: 現在の`development-status-prompt.md`の改善提案をmarkdown形式で出力してください。提案には、具体的な変更箇所とその理由、および改善によって期待される効果を含めてください。
      ```
 
-2. [Issueなし] 自動生成される開発状況ドキュメントの改善
-   - 最初の小さな一歩: `generated-docs/development-status.md` の「現在のIssues」セクションが「オープン中のIssueはありません」と記載されている現状を、より情報価値のある形で表現する方法を検討する。例えば、最近完了したIssueや進行中の非公式タスクに言及する等。
+2. プロジェクトトップレベルドキュメントの整理と更新 [Issue #未登録]
+   - 最初の小さな一歩: `README.md`、`BUILD_SCRIPTS.md`、および`generated-docs/project-overview.md`をレビューし、情報が重複していないか、または一方が古くなっている箇所がないかを確認する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: `generated-docs/development-status.md`, `generated-docs/development-status-generated-prompt.md`, `.github/actions-tmp/.github_automation/project_summary/scripts/development/DevelopmentStatusGenerator.cjs`, `issue-notes/README.md`
+     対象ファイル: README.md
+     BUILD_SCRIPTS.md
+     generated-docs/project-overview.md
 
-     実行内容: 現在の`development-status.md`が「オープン中のIssueはありません」と表示される現状を踏まえ、このセクションをより有用にするための改善策を提案してください。例えば、過去1週間にクローズされたIssueの要約、進行中の主要な作業フェーズの記述、または`issue-notes/`ディレクトリにあるメモから非公式な作業項目を抽出する可能性を分析してください。
+     実行内容: `README.md`と`BUILD_SCRIPTS.md`の内容を比較し、情報が重複していないか、または一方が古くなっている箇所がないかを確認してください。また、`generated-docs/project-overview.md`がこれらのドキュメントと整合しているか分析してください。
 
-     確認事項: プロジェクトのIssue管理ポリシー（GitHub Issuesのみか、issue-notesも含むか）、および`DevelopmentStatusGenerator.cjs`がアクセスできる情報範囲を確認してください。
+     確認事項: これらのドキュメント間の依存関係と、情報の一貫性を保つための最善の方法を検討してください。ユーザーがプロジェクト全体を理解する上で、どの情報がどこに記載されているべきかを考慮してください。
 
-     期待する出力: 「現在のIssues」セクションの改善提案をMarkdown形式で記述してください。これには、具体的な情報の種類（例：最近完了した作業のハイライト、次期目標、主要な機能エリアの状況など）と、それを生成するために必要なスクリプトまたはプロンプトの変更の方向性を含めてください。
+     期待する出力: `README.md`と`BUILD_SCRIPTS.md`の統合または改善提案をmarkdown形式で出力してください。具体的には、重複の解消、情報の最新化、および`project-overview.md`との整合性確保のためのアクションを含めてください。
      ```
 
-3. [Issueなし] GitHub Actionsワークフローの定期的な健全性チェック導入
-   - 最初の小さな一歩: 最近変更されたGitHub Actionsワークフロー（`call-daily-project-summary.yml`など）の実行ログをレビューし、失敗や警告がないかを確認する手順を文書化する。
+3. 各言語実装 `README.md`の一貫性検証プロセスの構築 [Issue #未登録]
+   - 最初の小さな一歩: プロジェクト内の全ての`src/<language>/README.md`ファイル（例：`src/go/README.md`、`src/typescript/cli/README.md`など）を列挙し、それらのファイルに共通して含まれるべき重要なセクション（例：クイックスタート、ビルド方法、概要など）を特定する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: `.github/workflows/call-daily-project-summary.yml`, `.github/workflows/call-issue-note.yml`, `.github/workflows/call-translate-readme.yml`, `.github/actions-tmp/.github/workflows/check-recent-human-commit.yml`
+     対象ファイル: src/*/README.md (例: src/go/README.md, src/typescript/cli/README.md, src/obsidian/README.md など)
 
-     実行内容: プロジェクト内の主要なGitHub Actionsワークフロー（上記3つ）に対して、定期的にその健全性を自動でチェックし、問題があれば通知する仕組みを導入する可能性を分析してください。既存の`check-recent-human-commit.yml`のような監視系ワークフローを参考に、各ワークフローの成功/失敗ステータスを監視し、異常を検知した場合にレポートを生成する（または既存のサマリーに含める）方法を検討してください。
+     実行内容: プロジェクト内の全ての`src/<language>/README.md`ファイルを列挙し、それらのファイルに共通して含まれるべき重要なセクション（例：クイックスタート、ビルド方法、概要など）を特定してください。
 
-     確認事項: GitHub ActionsのAPI利用制限、通知メカニズム（例: Slack, GitHub Issuesへのコメント）の実現可能性、および既存のワークフローへの影響を確認してください。
+     確認事項: 各言語実装の特性を考慮しつつ、プロジェクト全体で一貫したドキュメント構造を維持することの重要性を検討してください。全ての`README.md`ファイルが最低限の情報を網羅しているかを確認してください。
 
-     期待する出力: GitHub Actionsワークフローの健全性チェック導入のための実現可能性分析レポートをMarkdown形式で記述してください。これには、監視対象、チェック頻度、異常検知時のレポート内容、および提案されるワークフローの変更案を含めてください。
+     期待する出力: 各言語実装の`README.md`に含めるべき共通セクションのリストと、それらのセクションが欠落しているファイルを特定する簡単なチェックリストをmarkdown形式で出力してください。また、将来的にこれらのチェックを自動化するための提案を簡潔に含めてください。
 
 ---
-Generated at: 2025-12-02 07:03:23 JST
+Generated at: 2026-01-28 07:03:14 JST
