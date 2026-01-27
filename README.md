@@ -6,7 +6,7 @@
 
 - LLMにこのドキュメントとcodeを生成させた状態です。いくつかは作業中です
 - 課題、以下のドキュメントが読みづらい
-  - 対策、まずPython版のZenn scraps 記事 を読んだほうがわかりやすいかもしれません : https://zenn.dev/cat2151/scraps/bc9dca9b75a901
+  - 対策、まずPython版のZenn scraps 記事 を読んだほうがわかりやすいかもしれません : [Pythonでシンセサイザーのオシレータシンクのサウンドを50行で鳴らして楽しむ](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
 
 - Python : 音が鳴ります。
 
