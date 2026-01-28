@@ -1,4 +1,4 @@
-Last updated: 2026-01-28
+Last updated: 2026-01-29
 
 
 # プロジェクト概要生成プロンプト（来訪者向け）
@@ -69,7 +69,7 @@ Last updated: 2026-01-28
 
 - LLMにこのドキュメントとcodeを生成させた状態です。いくつかは作業中です
 - 課題、以下のドキュメントが読みづらい
-  - 対策、まずPython版のZenn scraps 記事 を読んだほうがわかりやすいかもしれません : https://zenn.dev/cat2151/scraps/bc9dca9b75a901
+  - 対策、まずPython版のZenn scraps 記事 を読んだほうがわかりやすいかもしれません : [Pythonでシンセサイザーのオシレータシンクのサウンドを50行で鳴らして楽しむ](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
 
 - Python : 音が鳴ります。
 
@@ -672,4 +672,4 @@ src/typescript/cli/BUFFER_SIZE_FIX.md
 
 
 ---
-Generated at: 2026-01-28 07:02:57 JST
+Generated at: 2026-01-29 07:05:03 JST

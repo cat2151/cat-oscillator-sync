@@ -1,51 +1,56 @@
-Last updated: 2026-01-28
+Last updated: 2026-01-29
 
 # Development Status
 
 ## 現在のIssues
-オープン中のIssueはありません。
+- 現在、プロジェクトにはオープン中のIssueはありません。
+- 次の改善サイクルに向けて、既存機能の安定性向上と拡張に焦点を当てた作業候補を検討中です。
+- 主に、過去の課題再検証とビルドプロセスの標準化を進める計画です。
 
 ## 次の一手候補
-1. `development-status.md`生成プロンプトの改善 [Issue #未登録]
-   - 最初の小さな一歩: 現在の`development-status-prompt.md`の内容と、それによって生成された`development-status.md`を比較し、プロンプトの指示が明確で、ハルシネーションを誘発していないかを確認する。特に、本プロンプトの「生成しないもの」のガイドラインに沿っているかを評価する。
+1. TypeScript CLIのオーディオ再生安定性再評価と最適化 [Issue #56](../issue-notes/56_TYPESCRIPT_CLI_AUDIO_FIX_EXPLANATION.md)
+   - 最初の小さな一歩: `src/typescript/cli/src/diagnostics/` 内の既存テストスクリプト (`test-mouse-audio.ts`, `test-frequency-sweep.ts`) を実行し、現状のパフォーマンスと安定性を評価するレポートを生成する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: .github/actions-tmp/.github_automation/project_summary/prompts/development-status-prompt.md
-     .github/actions-tmp/generated-docs/development-status.md
+     対象ファイル: `src/typescript/cli/src/diagnostics/test-mouse-audio.ts`, `src/typescript/cli/src/diagnostics/test-frequency-sweep.ts`, `src/typescript/cli/src/diagnostics/main-diagnostic.ts`, `src/typescript/cli/DELIVERY_SUMMARY.md`, `src/typescript/cli/INVESTIGATION_REPORT.md`
 
-     実行内容: `development-status-prompt.md`の内容が`.github/actions-tmp/generated-docs/development-status.md`の生成にどのように影響しているかを分析し、プロンプトの指示が明確であるか、またハルシネーションを誘発していないかを確認してください。特に、本プロンプトの「生成しないもの」のガイドラインに沿っているかを評価してください。
+     実行内容: 上記ファイル群を分析し、特にオーディオの遅延、グリッチ、CPU使用率の観点から、現在のTypeScript CLIのオーディオ再生性能を評価するための実行計画を立案してください。既存のドキュメントやIssue #56関連のメモ（`56_TYPESCRIPT_CLI_AUDIO_FIX_EXPLANATION.md`, `56_TYPESCRIPT_CLI_AUDIO_FIX_SUMMARY.md`）も参照し、過去の課題が解決されているか検証する視点を含めてください。
 
-     確認事項: プロンプトの変更が`development-status.md`の全体的な品質と情報精度に与える影響を考慮してください。既存の「生成ガイドライン」と「出力フォーマット」との整合性を確認してください。
+     確認事項: 診断スクリプトの実行に必要な依存関係（`naudiodon`など）が正しくインストールされているか確認してください。また、実行環境（OS、Node.jsバージョン）を考慮し、クロスプラットフォームでの結果比較の可能性も検討してください。
 
-     期待する出力: 現在の`development-status-prompt.md`の改善提案をmarkdown形式で出力してください。提案には、具体的な変更箇所とその理由、および改善によって期待される効果を含めてください。
+     期待する出力: 診断スクリプトの実行手順、期待される出力、および潜在的な問題領域を特定するためのガイドラインを含むmarkdown形式のレポートを生成してください。既存の問題を特定し、次の最適化ステップを提案できるように、詳細な評価項目を含めてください。
      ```
 
-2. プロジェクトトップレベルドキュメントの整理と更新 [Issue #未登録]
-   - 最初の小さな一歩: `README.md`、`BUILD_SCRIPTS.md`、および`generated-docs/project-overview.md`をレビューし、情報が重複していないか、または一方が古くなっている箇所がないかを確認する。
+2. Go PortAudio版のWindows環境でのCGO/ビルド問題の再検証と安定化 [Issue #22](../issue-notes/22_GO_CGO_EXPLANATION.md)
+   - 最初の小さな一歩: `src/go-portaudio` ディレクトリの `build_and_run.py` スクリプトがWindows環境でPortAudioライブラリを正しくダウンロードし、Goアプリケーションをビルド・実行できるかを確認する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: README.md
-     BUILD_SCRIPTS.md
-     generated-docs/project-overview.md
+     対象ファイル: `src/go-portaudio/build_and_run.py`, `src/go-portaudio/download_portaudio.py`, `src/go-portaudio/cmd/sync_simple/main.go`, `src/go-portaudio/internal/mouse/position_windows.go`, `issue-notes/22_GO_CGO_EXPLANATION.md`, `issue-notes/22_GO_INVESTIGATION_CGO_ALTERNATIVES.md`, `issue-notes/22_GO_PRECOMPILED_BINARY_SETUP.md`
 
-     実行内容: `README.md`と`BUILD_SCRIPTS.md`の内容を比較し、情報が重複していないか、または一方が古くなっている箇所がないかを確認してください。また、`generated-docs/project-overview.md`がこれらのドキュメントと整合しているか分析してください。
+     実行内容: 上記ファイル群とIssue #22関連のドキュメントを分析し、Go PortAudio版がWindows環境で正しくビルド・実行できるか検証するための計画を策定してください。`build_and_run.py` と `download_portaudio.py` を中心に、PortAudioライブラリの依存関係解決、Goアプリケーションのコンパイル、そしてマウスイベントとの同期再生のテスト手順を具体的に記述してください。特にCGOに関する既存の調査結果も踏まえて検証計画を強化してください。
 
-     確認事項: これらのドキュメント間の依存関係と、情報の一貫性を保つための最善の方法を検討してください。ユーザーがプロジェクト全体を理解する上で、どの情報がどこに記載されているべきかを考慮してください。
+     確認事項: Windows環境におけるGoコンパイラのセットアップ、PortAudioライブラリのパス設定、およびCGO関連の潜在的な問題を事前に確認し、検証計画に含めてください。`src/go-portaudio/QUICKSTART.md`や`src/go-portaudio/README.md`に記載されている情報との整合性も確認してください。
 
-     期待する出力: `README.md`と`BUILD_SCRIPTS.md`の統合または改善提案をmarkdown形式で出力してください。具体的には、重複の解消、情報の最新化、および`project-overview.md`との整合性確保のためのアクションを含めてください。
+     期待する出力: Windows環境でのGo PortAudio版のビルド・実行・動作確認手順を詳細に記述したmarkdown形式のドキュメントを生成してください。手順には、成功/失敗の判断基準、発生しうるエラーとそのトラブルシューティングのヒント、Issue #22で議論された内容を踏まえた追加の考察を含めてください。
      ```
 
-3. 各言語実装 `README.md`の一貫性検証プロセスの構築 [Issue #未登録]
-   - 最初の小さな一歩: プロジェクト内の全ての`src/<language>/README.md`ファイル（例：`src/go/README.md`、`src/typescript/cli/README.md`など）を列挙し、それらのファイルに共通して含まれるべき重要なセクション（例：クイックスタート、ビルド方法、概要など）を特定する。
+3. プロジェクト全体のビルド/実行スクリプトの標準化と一元管理の検討 [Issue #34](../issue-notes/34_BUILD_AND_RUN.md)
+   - 最初の小さな一歩: 各言語ディレクトリ (`src/go`, `src/rust`, `src/typescript/cli`, `src/typescript/browser`, `src/obsidian`, `src/go-portaudio`) 直下の `build_and_run.py` ファイルを収集し、それぞれのスクリプトがどのようにビルド、実行、クリーンアップを行っているか、共通のパターンと差異を特定する。
    - Agent実行プロンプト:
      ```
-     対象ファイル: src/*/README.md (例: src/go/README.md, src/typescript/cli/README.md, src/obsidian/README.md など)
+     対象ファイル: `src/*/build_and_run.py` (例: `src/go/build_and_run.py`, `src/rust/build_and_run.py`, `src/typescript/cli/build_and_run.py`, `src/typescript/browser/build_and_run.py`, `src/obsidian/build_and_run.py`, `src/go-portaudio/build_and_run.py`), `issue-notes/34_BUILD_AND_RUN.md`
 
-     実行内容: プロジェクト内の全ての`src/<language>/README.md`ファイルを列挙し、それらのファイルに共通して含まれるべき重要なセクション（例：クイックスタート、ビルド方法、概要など）を特定してください。
+     実行内容: 上記の`build_and_run.py`スクリプト群とIssue #34のドキュメントを分析し、以下の観点から標準化の可能性を評価してください：
+     1. 共通の機能（ビルド、実行、クリーンアップ、依存関係インストール）
+     2. 各言語特有の処理
+     3. コマンドライン引数（`--build`, `--run`, `--clean`など）の統一性
+     4. エラーハンドリングとロギング
+     5. Issue #34で議論された内容が現在のスクリプトにどう反映されているか、または未解決の課題が残っているか。
 
-     確認事項: 各言語実装の特性を考慮しつつ、プロジェクト全体で一貫したドキュメント構造を維持することの重要性を検討してください。全ての`README.md`ファイルが最低限の情報を網羅しているかを確認してください。
+     確認事項: 各スクリプトが現在どのように動作しているか、また、それぞれの言語エコシステムで推奨されるビルド・実行方法と矛盾しないかを確認してください。将来的な新しい言語やプラットフォームの追加を考慮した拡張性も検討してください。
 
-     期待する出力: 各言語実装の`README.md`に含めるべき共通セクションのリストと、それらのセクションが欠落しているファイルを特定する簡単なチェックリストをmarkdown形式で出力してください。また、将来的にこれらのチェックを自動化するための提案を簡潔に含めてください。
+     期待する出力: `build_and_run.py`スクリプト群の現状の差異をまとめたテーブル、およびスクリプトの標準化に向けた具体的な提案を含むmarkdown形式のレポートを生成してください。提案には、共通のヘルパースクリプトの導入や、`build_and_run.py`自体を抽象化する構造のアイデア、そしてIssue #34で提示された問題への対応策を含めてください。
+     ```
 
 ---
-Generated at: 2026-01-28 07:03:14 JST
+Generated at: 2026-01-29 07:05:43 JST

@@ -1,4 +1,4 @@
-Last updated: 2026-01-28
+Last updated: 2026-01-29
 
 # 開発状況生成プロンプト（開発者向け）
 
@@ -345,6 +345,8 @@ Last updated: 2026-01-28
 
 ## 最近の変更（過去7日間）
 ### コミット履歴:
+c9d5529 Update link text in README.md for clarity
+039ac41 Update project summaries (overview & development status) [auto]
 c8c1f03 Update README.md for improved readability
 ac06124 Update README with project status and sound details
 
@@ -356,10 +358,7 @@ generated-docs/development-status.md
 generated-docs/project-overview-generated-prompt.md
 generated-docs/project-overview.md
 googled947dc864c270e07.html
-pyproject.toml
-src/python/__init__.py
-src/python/sync_simple.py
 
 
 ---
-Generated at: 2026-01-28 07:02:57 JST
+Generated at: 2026-01-29 07:05:03 JST

@@ -1,50 +1,47 @@
-Last updated: 2026-01-28
+Last updated: 2026-01-29
 
 # Project Overview
 
 ## プロジェクト概要
-- マウス操作でリアルタイムに音響合成パラメータを制御するインタラクティブなシンセサイザーです。
-- ハードシンク技術と指数平滑化により、豊かで滑らかな音色を生成します。
-- Python, Rust, Go, TypeScriptなど複数の言語で実装され、それぞれの環境で動作検証されています。
+- マウス操作でリアルタイムに音色を制御できる、インタラクティブなシンセサイザーです。
+- ハードシンク（オシレータ同期）技術を活用し、豊かで表現力豊かなサウンドを生成します。
+- Python, Rust, Go, TypeScriptといった多様な言語で実装された音響合成の実験プロジェクトです。
 
 ## 技術スタック
-- フロントエンド: 
-    - **TypeScript (Browser/Obsidian)**: Webブラウザ版およびObsidianプラグイン版のインタフェースとロジックを実装しています。
-    - **HTML**: Webブラウザ版のユーザーインターフェース構造を定義しています。
-    - **Vite**: TypeScriptブラウザ版の高速な開発サーバーとバンドラーとして使用されています。
-- 音楽・オーディオ: 
-    - **ハードシンク（オシレータ同期）**: 独特の音色を生成する主要な音響合成技術です。
-    - **Python (sounddevice, scipy, numpy)**: Python版でのリアルタイムオーディオ処理と数値計算に利用されています。
-    - **Rust (cpal)**: Rust版でのクロスプラットフォームオーディオ入出力ライブラリです。
-    - **Go (Oto, PortAudio)**: Go版でのピュアGoオーディオライブラリ(Oto)およびC言語コンパイラを必要とするPortAudioライブラリを利用したオーディオ出力に対応しています。
-    - **Web Audio API (TypeScript Browser/Obsidian)**: ブラウザやObsidian環境でのオーディオ処理に利用されており、`AudioWorklet` を活用しています。
-    - **naudiodon (TypeScript CLI)**: Node.js CLI版でのオーディオ入出力ライブラリです。
-- 開発ツール: 
-    - **Git**: ソースコードのバージョン管理に使用されています。
-    - **pipx**: Pythonアプリケーションを分離された環境でインストール・実行するためのツールです。
-    - **pip**: Pythonパッケージの管理ツールです。
-    - **VSCode**: 推奨される統合開発環境（IDE）です。
-    - **robotjs**: TypeScript CLI版でマウス位置を取得するためのライブラリです。
-    - **esbuild**: Obsidianプラグイン版のバンドルツールとして使用されています。
-- テスト: 
-    - **pytest (Python)**: Pythonコードの単体テストフレームワークです。
-- ビルドツール: 
-    - **Cargo (Rust)**: Rustプロジェクトのビルドシステムとパッケージマネージャーです。
-    - **Go Modules (Go)**: Goプロジェクトの依存関係管理とビルドシステムです。
-    - **npm/yarn**: TypeScriptプロジェクトの依存関係管理とスクリプト実行ツールです。
-    - **Vite (TypeScript Browser)**: TypeScriptブラウザ版のビルドツールです。
-    - **esbuild (Obsidian)**: Obsidianプラグインのバンドルツールです。
-- 言語機能: 
-    - **Python 3.8+**: 主要なスクリプト言語として利用されています。
-    - **Rust**: 高性能なシステムプログラミング言語です。
-    - **Go**: 並行処理に強いコンパイル言語です。
-    - **TypeScript**: JavaScriptに型安全性を加えた言語で、Node.js環境やブラウザ環境で使用されています。
-- 自動化・CI/CD: 
-    - **`build_and_run.py` スクリプト**: 各言語版の環境構築、ビルド、実行を自動化するためのPythonスクリプトです。
-- 開発標準: 
-    - **ruff**: Pythonコードのフォーマッター兼リンターで、コード品質の維持に貢献しています。
-    - **EditorConfig**: 複数エディタ・IDE間でのコードスタイル統一設定です。
-    - **Pylance**: VSCode向けPython言語サーバーです。
+- フロントエンド:
+    - **TypeScript (ブラウザ版)**: Webブラウザ上で動作するシンセサイザーの実装に利用。Web Audio APIとWeb Audio Workletを使用。
+    - **Obsidianプラグイン (TypeScript)**: ノートアプリObsidian内でシンセサイザーを動作させるプラグイン開発に利用。
+- 音楽・オーディオ:
+    - **ハードシンク (Oscillator Sync)**: オシレータの位相を強制的にリセットすることで、複雑な倍音を持つ音色を生成する音響合成技術。
+    - **PortAudio (Go, Rust)**: 複数のプラットフォームで動作するオーディオI/Oライブラリ。Go版とRust版で使用。
+    - **Oto (Go)**: Pure Goで書かれたクロスプラットフォームなオーディオライブラリ。Go版（CGO不要版）で使用。
+    - **naudiodon (TypeScript CLI)**: Node.jsでオーディオストリームを扱うためのライブラリ。TypeScript CLI版で使用。
+- 開発ツール:
+    - **pipx**: Pythonアプリケーションを隔離された環境にインストール・実行するためのツール。
+    - **pip**: Pythonパッケージ管理ツール。
+    - **Git**: バージョン管理システム。
+    - **VS Code拡張機能**: Python, Pylance, Ruff, EditorConfigなど、開発効率向上のための推奨拡張機能。
+- テスト:
+    - **pytest**: Pythonコードの単体テストフレームワーク。
+    - (Go, Rust, TypeScript): 各言語の標準テスト機能や診断スクリプトが部分的に利用されています。
+- ビルドツール:
+    - **Cargo**: Rustのビルドシステムおよびパッケージマネージャー。
+    - **Go Modules**: Go言語の依存関係管理システム。
+    - **esbuild (Obsidian)**: TypeScript/JavaScriptコードを高速にバンドル・トランスパイルするツール。
+    - **Vite (TypeScript Browser)**: 高速な開発サーバーとバンドラを提供するフロントエンドビルドツール。
+    - **npm/yarn**: Node.jsプロジェクトのパッケージ管理ツール。
+    - **Zig cc**: Go言語のPortAudio版をビルドする際に利用されるC言語コンパイラ。
+- 言語機能:
+    - **Python 3.8+**: 主要な実装言語の一つ。
+    - **Rust**: 高性能なシステムプログラミング言語。
+    - **Go**: シンプルさと効率性を重視したコンパイル言語。
+    - **TypeScript**: JavaScriptに静的型チェックを追加した言語。
+    - **JavaScript (Node.js)**: TypeScript CLI版の実行環境。
+- 自動化・CI/CD:
+    - **`build_and_run.py`**: マルチ言語版のビルドと実行を統合するカスタムスクリプト。
+- 開発標準:
+    - **ruff**: Pythonコードのリンティングとフォーマットを高速に行うツール。
+    - **EditorConfig**: 異なるエディタやIDE間で一貫したコーディングスタイルを維持するための設定ファイル。
 
 ## ファイル階層ツリー
 ```
@@ -57,81 +54,202 @@ cat-oscillator-sync/
     ├── python/
     │   ├── sync_simple.py  # シンプル版実装
     │   └── sync_smooth.py  # スムーズ版実装
-    ├── go/                # Go実装（予定）
-    ├── rust/              # Rust実装（完了）
+    ├── go/                # Go実装（Oto版）
+    │   ├── cmd/
+    │   │   ├── sync_simple_oto/ # シンプル版Goシンセサイザーのエントリポイント
+    │   │   └── sync_smooth_oto/ # スムーズ版Goシンセサイザーのエントリポイント
+    │   └── internal/
+    │       ├── mouse/      # Go版マウス位置取得モジュール
+    │       └── synth/      # Go版シンセサイザーコアロジック
+    ├── go-portaudio/      # Go実装（PortAudio版）
+    │   ├── cmd/
+    │   │   ├── sync_simple/ # シンプル版Go PortAudioシンセサイザーのエントリポイント
+    │   │   └── sync_smooth/ # スムーズ版Go PortAudioシンセサイザーのエントリポイント
+    │   └── internal/
+    │       ├── mouse/      # Go PortAudio版マウス位置取得モジュール
+    │       └── synth/      # Go PortAudio版シンセサイザーコアロジック
+    ├── obsidian/          # Obsidianプラグイン実装
+    │   ├── src/
+    │   │   ├── audio/      # Obsidian版Web Audio Workletスクリプト
+    │   │   ├── synth/      # Obsidian版シンセサイザーコアロジック
+    │   │   └── main.ts     # Obsidianプラグインのエントリポイント
+    │   │   └── mouse-handler.ts # Obsidian版マウスイベントハンドラ
+    ├── rust/              # Rust実装
+    │   └── src/
+    │       ├── sync_simple.rs # シンプル版Rustシンセサイザー
+    │       └── sync_smooth.rs # スムーズ版Rustシンセサイザー
     └── typescript/        # TypeScript実装
-        ├── browser/       # ブラウザ版（完了）
-        └── cli/           # CLI版（Node.js・Windows専用）
+        ├── browser/       # ブラウザ版
+        │   ├── src/
+        │   │   ├── audio/  # ブラウザ版Web Audio Workletスクリプト
+        │   │   ├── synth/  # ブラウザ版シンセサイザーコアロジック
+        │   │   └── main.ts # ブラウザ版アプリケーションのエントリポイント
+        └── cli/           # CLI版（Node.js）
+            ├── src/
+            │   ├── audio/  # CLI版オーディオ出力処理
+            │   ├── diagnostics/ # CLI版診断ツール
+            │   ├── mouse/  # CLI版マウス位置取得処理
+            │   ├── synth/  # CLI版シンセサイザーコアロジック
+            │   └── main.ts # CLI版アプリケーションのエントリポイント
 ```
 
 ## ファイル詳細説明
-- **`LICENSE`**: このプロジェクトがMITライセンスの下で公開されていることを示すライセンス情報ファイルです。
-- **`README.md`**: プロジェクトの目的、機能、デモ、インストール方法、使用方法、技術詳細、プロジェクト構造などが詳細に記述されたメインドキュメントです。
-- **`build_and_run.py`**: すべての言語版（Python、Rust、Go、TypeScript）を一度にビルドし、メニュー形式で選択・実行できるWindows専用のスクリプトです。
-- **`src/build_utils.py`**: `build_and_run.py`などのスクリプトで共通利用されるユーティリティ関数が定義されています。
-- **`src/python/sync_simple.py`**: Pythonで実装された、シンプル版のシンセサイザーのメインスクリプトです。マウス位置の変化が8msごとに音に反映されます。
-- **`src/python/sync_smooth.py`**: Pythonで実装された、スムーズ版のシンセサイザーのメインスクリプトです。指数平滑化により1サンプルごとの滑らかな周波数変化を実現します。
-- **`src/go/cmd/sync_simple_oto/main.go`**: Go言語 (Otoライブラリ使用) で実装されたシンプル版シンセサイザーのエントリポイントです。
-- **`src/go/cmd/sync_smooth_oto/main.go`**: Go言語 (Otoライブラリ使用) で実装されたスムーズ版シンセサイザーのエントリポイントです。
-- **`src/go/internal/mouse/position_windows.go`**: Windows環境に特化した、Go言語によるマウス位置取得ロジックを実装しています。
-- **`src/go/internal/synth/simple.go`**: Go言語によるシンプル版シンセサイザーのオーディオ合成コアロジックを実装しています。
-- **`src/go/internal/synth/smooth.go`**: Go言語によるスムーズ版シンセサイザーのオーディオ合成コアロジックを実装しています。
-- **`src/rust/src/sync_simple.rs`**: Rustで実装された、シンプル版シンセサイザーのオーディオ合成コアロジックです。
-- **`src/rust/src/sync_smooth.rs`**: Rustで実装された、スムーズ版シンセサイザーのオーディオ合成コアロジックです。
-- **`src/typescript/browser/index.html`**: TypeScriptブラウザ版のHTMLエントリポイントであり、ユーザーインターフェースを提供します。
-- **`src/typescript/browser/src/audio/simple-worklet.ts`**: Web Audio APIの`AudioWorklet`として動作する、シンプル版シンセサイザーのオーディオ処理ロジックです。
-- **`src/typescript/browser/src/audio/smooth-worklet.ts`**: Web Audio APIの`AudioWorklet`として動作する、スムーズ版シンセサイザーのオーディオ処理ロジックです。
-- **`src/typescript/browser/src/main.ts`**: TypeScriptブラウザ版のメインアプリケーションロジックを制御し、シンセサイザーの起動や停止を管理します。
-- **`src/typescript/cli/src/audio/output.ts`**: TypeScript CLI版で、`naudiodon`ライブラリを使用してシステムオーディオへの出力ストリームを管理する機能を提供します。
-- **`src/typescript/cli/src/mouse/position.ts`**: TypeScript CLI版で、`robotjs`ライブラリを介して現在のマウスカーソル位置やスクリーンサイズを取得する機能を提供します。
-- **`src/typescript/cli/src/synth/simple.ts`**: TypeScript CLI版で実装されたシンプル版シンセサイザーのオーディオ合成コアロジックです。
-- **`src/typescript/cli/src/synth/smooth.ts`**: TypeScript CLI版で実装されたスムーズ版シンセサイザーのオーディオ合成コアロジックです。
-- **`src/obsidian/src/main.ts`**: Obsidianプラグインのメインエントリポイントです。プラグインのロード・アンロード処理や、シンセサイザーの有効化・バージョン切り替えロジックを含みます。
-- **`src/obsidian/src/mouse-handler.ts`**: Obsidianプラグイン内でマウスイベントを処理し、シンセサイザーのパラメータ制御に利用するロジックを実装しています。
-- **`issue-notes/`ディレクトリ**: 各言語の実装計画、課題、完了報告、クイックスタートガイドなど、開発に関する詳細なメモやドキュメントが格納されています。
+- **`LICENSE`**: プロジェクトのライセンス情報 (MIT License) を定義しています。
+- **`README.md`**: プロジェクトの概要、インストール方法、使用方法、技術詳細などを説明するメインドキュメントです。
+- **`pytest.ini`**: Pythonのテストフレームワークであるpytestの設定ファイルです。
+- **`ruff.toml`**: Pythonコードのリンター・フォーマッターであるruffの設定ファイルです。
+- **`src/python/sync_simple.py`**: マウス位置に応じて周波数が8ms間隔で階段状に変化する、Python版シンプルシンセサイザーのコアロジックです。
+- **`src/python/sync_smooth.py`**: 指数平滑化により1サンプルごとに滑らかな周波数変化を実現する、Python版スムースシンセサイザーのコアロジックです。
+- **`src/go/cmd/sync_simple_oto/main.go`**: Go言語（Otoライブラリ使用）によるシンプル版シンセサイザーのエントリポイントです。
+- **`src/go/cmd/sync_smooth_oto/main.go`**: Go言語（Otoライブラリ使用）によるスムース版シンセサイザーのエントリポイントです。
+- **`src/go/internal/mouse/position.go`**: Go言語版でマウス位置を取得するための共通インターフェースやヘルパー関数を提供します。
+- **`src/go/internal/mouse/position_windows.go`**: Go言語版において、Windows OSでのマウス位置取得処理を実装しています。
+- **`src/go/internal/synth/simple.go`**: Go言語版シンプルシンセサイザーの音響合成ロジックです。
+- **`src/go/internal/synth/smooth.go`**: Go言語版スムースシンセサイザーの音響合成ロジックです。
+- **`src/go-portaudio/cmd/sync_simple/main.go`**: Go言語（PortAudioライブラリ使用）によるシンプル版シンセサイザーのエントリポイントです。
+- **`src/go-portaudio/cmd/sync_smooth/main.go`**: Go言語（PortAudioライブラリ使用）によるスムース版シンセサイザーのエントリポイントです。
+- **`src/rust/src/sync_simple.rs`**: Rust言語によるシンプル版シンセサイザーのコアロジックです。
+- **`src/rust/src/sync_smooth.rs`**: Rust言語によるスムース版シンセサイザーのコアロジックです。
+- **`src/obsidian/src/audio/simple-worklet.ts`**: Obsidianプラグイン版シンプルシンセのWeb Audio Workletスクリプトで、オーディオ処理のバックグラウンド実行を担います。
+- **`src/obsidian/src/audio/smooth-worklet.ts`**: Obsidianプラグイン版スムースシンセのWeb Audio Workletスクリプトで、滑らかなオーディオ処理を実行します。
+- **`src/obsidian/src/main.ts`**: Obsidianプラグインのメインファイルで、プラグインのロード・アンロード、UIインタラクション、シンセサイザーの制御を扱います。
+- **`src/obsidian/src/mouse-handler.ts`**: Obsidianプラグインにおいて、マウスイベントを捕捉し、シンセサイザーのパラメータにマッピングする処理を担います。
+- **`src/obsidian/src/synth/simple.ts`**: Obsidianプラグイン版シンプルシンセの初期化と制御ロジックを提供します。
+- **`src/obsidian/src/synth/smooth.ts`**: Obsidianプラグイン版スムースシンセの初期化と制御ロジックを提供します。
+- **`src/typescript/browser/index.html`**: ブラウザ版TypeScriptアプリケーションのウェブページ構造を定義するHTMLファイルです。
+- **`src/typescript/browser/src/audio/simple-worklet.ts`**: ブラウザ版TypeScriptシンプルシンセのWeb Audio Workletスクリプトです。
+- **`src/typescript/browser/src/audio/smooth-worklet.ts`**: ブラウザ版TypeScriptスムースシンセのWeb Audio Workletスクリプトです。
+- **`src/typescript/browser/src/main.ts`**: ブラウザ版TypeScriptアプリケーションのメインスクリプトで、DOM操作、イベントハンドリング、シンセサイザー制御を担います。
+- **`src/typescript/browser/src/synth/simple.ts`**: ブラウザ版TypeScriptシンプルシンセの初期化と制御ロジックを提供します。
+- **`src/typescript/browser/src/synth/smooth.ts`**: ブラウザ版TypeScriptスムースシンセの初期化と制御ロジックを提供します。
+- **`src/typescript/cli/src/audio/output.ts`**: TypeScript CLI版で、`naudiodon`ライブラリを使用してオーディオ出力ストリームを管理する機能を提供します。
+- **`src/typescript/cli/src/diagnostics/main-diagnostic.ts`**: CLI診断ツールのメインスクリプトで、マウス入力とオーディオ出力の診断機能を提供します。
+- **`src/typescript/cli/src/diagnostics/test-frequency-sweep.ts`**: CLI診断ツールの一部で、指定された周波数範囲でオーディオをスイープし、出力をテストします。
+- **`src/typescript/cli/src/diagnostics/test-mouse-audio.ts`**: CLI診断ツールの一部で、マウス制御によるオーディオ出力をテストし、応答性を検証します。
+- **`src/typescript/cli/src/diagnostics/test-mouse-capture.ts`**: CLI診断ツールの一部で、マウス位置キャプチャ機能の正確性とパフォーマンスをテストします。
+- **`src/typescript/cli/src/main.ts`**: TypeScript CLIアプリケーションのメインエントリポイントで、シンセサイザーの初期化、マウスイベント処理、オーディオ出力を行います。
+- **`src/typescript/cli/src/mouse/position.ts`**: TypeScript CLI版で、`robotjs`ライブラリを使用してマウスカーソルの現在位置とスクリーンサイズを取得する機能を提供します。
+- **`src/typescript/cli/src/synth/simple.ts`**: TypeScript CLI版シンプルシンセの音響合成ロジックです。
+- **`src/typescript/cli/src/synth/smooth.ts`**: TypeScript CLI版スムースシンセの音響合成ロジックです。
 
 ## 関数詳細説明
-- **`constructor()`**: 各クラス（例: `MouseControlledSynth`, `AudioWorkletProcessor`, `OscillatorModule`, `MouseHandler`）のインスタンスが生成される際に呼び出される初期化関数です。サンプリングレートや時定数、マウスポーリング間隔などの初期設定を行います。
-- **`process(inputs, outputs, parameters)`**: Web Audio APIの`AudioWorkletProcessor`内で実行されるコア関数です。リアルタイムでオーディオデータを処理し、マスターオシレータとスレーブオシレータの波形を合成して出力バッファに書き込みます。
-- **`onload()` (Obsidianプラグイン)**: Obsidianプラグインが起動・ロードされた際に実行される初期化処理です。シンセサイザーのインスタンス化やマウスイベントリスナーの設定などを行います。
-- **`onunload()` (Obsidianプラグイン)**: Obsidianプラグインが停止・アンロードされる際に実行されるクリーンアップ処理です。オーディオリソースの解放やイベントリスナーの解除などを行います。
-- **`enableOscillator(version)` (Obsidianプラグイン)**: 指定されたバージョン（シンプルまたはスムーズ）のオシレータを有効にし、オーディオ処理を開始します。
-- **`switchVersion(newVersion)` (Obsidianプラグイン)**: 現在のシンセサイザーバージョンを切り替える関数です。
-- **`start(version, audioContext)` (Synthクラス)**: 特定のシンセサイザー（シンプル版またはスムーズ版）のオーディオストリームを開始する関数です。
-- **`createAudioOutput(samplerate, channels, bufferSize)` (TypeScript CLI)**: `naudiodon`ライブラリを利用して、指定されたサンプリングレート、チャンネル数、バッファサイズでオーディオ出力ストリームを初期化し、返します。
-- **`getMousePosition()` (TypeScript CLI/Go)**: 現在のマウスカーソルのX座標とY座標をシステムから取得して返します。
-- **`getScreenSize()` (TypeScript CLI)**: 現在のスクリーンの幅と高さを取得して返します。
-- **`mapRange(value, inMin, inMax, outMin, outMax)` (TypeScript CLI)**: ある範囲（`inMin`から`inMax`）の数値を、別の範囲（`outMin`から`outMax`）に線形的にマッピングする汎用関数です。マウス座標を周波数に変換する際などに使用されます。
-- **`main(version, pollingIntervalMs)` (TypeScript CLI)**: TypeScript CLI版アプリケーションのエントリポイントです。マウスイベントの監視、周波数計算、オーディオ出力のループを管理します。
-- **`printDiagnostics(data)` (TypeScript CLI)**: 診断情報を整形してコンソールに出力する関数です。
-- **`testFrequencySweep(output, minFreq, maxFreq, durationMs)` (TypeScript CLI)**: オーディオ出力が正しく機能しているかを確認するため、指定された範囲で周波数をスイープさせるテストを実行します。
-- **`testMouseAudio(output, durationMs)` (TypeScript CLI)**: マウス操作とオーディオ出力の連携をテストし、マウスの動きに応じて音が変化することを確認します。
-- **`testMouseCapture(durationMs)` (TypeScript CLI)**: マウス位置のキャプチャ機能が正確に動作しているかをテストします。
-- **`analyzeResults(results)` (TypeScript CLI)**: 実施されたテストの結果を分析し、サマリーやエラー情報をレポートする関数です。
-- **`getDevices()` (naudiodon.d.ts)**: `naudiodon`ライブラリが提供する、システム上のオーディオデバイス情報を取得する関数です。
+- **`onload()` (src/obsidian/src/main.ts)**:
+    - 役割: Obsidianプラグインがロードされた際に実行される初期化処理です。シンセサイザーのUI要素設定やイベントリスナー登録を行います。
+    - 引数: なし
+    - 戻り値: なし
+- **`onunload()` (src/obsidian/src/main.ts)**:
+    - 役割: Obsidianプラグインがアンロードされる際に実行されるクリーンアップ処理です。オーディオストリームの停止やリソース解放を行います。
+    - 引数: なし
+    - 戻り値: なし
+- **`enableOscillator()` (src/obsidian/src/main.ts)**:
+    - 役割: オシレータを有効化し、シンセサイザーの音響生成を開始します。
+    - 引数: `version: "simple" | "smooth"` (シンセサイザーのバージョン指定)
+    - 戻り値: なし
+- **`switchVersion()` (src/obsidian/src/main.ts)**:
+    - 役割: シンセサイザーのバージョンをシンプル版とスムース版で切り替えます。
+    - 引数: `version: "simple" | "smooth"` (切り替えるシンセサイザーのバージョン)
+    - 戻り値: なし
+- **`process()` (src/obsidian/src/audio/simple-worklet.ts, src/obsidian/src/audio/smooth-worklet.ts)**:
+    - 役割: Web Audio WorkletProcessorのコアメソッド。オーディオデータが生成されるたびに呼び出され、音響合成のロジックを実行します。
+    - 引数: `inputs: Float32Array[][]`, `outputs: Float32Array[][]`, `parameters: Record<string, Float32Array>`
+    - 戻り値: `boolean` (Workletがアクティブかどうか)
+- **`start()` (src/obsidian/src/synth/simple.ts, src/obsidian/src/synth/smooth.ts, src/typescript/browser/src/synth/simple.ts, src/typescript/browser/src/synth/smooth.ts)**:
+    - 役割: シンセサイザーのオーディオコンテキストとWeb Audio Workletを初期化し、音響合成を開始します。
+    - 引数: `container: HTMLElement` (DOM要素 - ブラウザ版のみ), `audioContext: AudioContext` (Web Audioコンテキスト)
+    - 戻り値: なし
+- **`handleStart()` (src/typescript/browser/src/main.ts)**:
+    - 役割: ブラウザ版アプリケーションで、ユーザーがシンセサイザーの開始をトリガーした際のイベントを処理します。
+    - 引数: なし
+    - 戻り値: なし
+- **`createAudioOutput()` (src/typescript/cli/src/audio/output.ts)**:
+    - 役割: Node.js環境でオーディオ出力ストリームを作成し、初期化します。指定されたサンプリングレートとバッファサイズでオーディオデバイスを開きます。
+    - 引数: `samplerate: number`, `bufferSize: number`, `deviceIndex?: number`
+    - 戻り値: `Promise<AudioOutput>` (オーディオ出力オブジェクト)
+- **`mapRange()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts, src/typescript/cli/src/main.ts, src/typescript/cli/src/diagnostics/test-mouse-audio.ts)**:
+    - 役割: ある数値範囲の値を別の数値範囲に線形にマッピングします。例えば、マウスのX座標を周波数範囲に変換する際に使用されます。
+    - 引数: `value: number`, `in_min: number`, `in_max: number`, `out_min: number`, `out_max: number`
+    - 戻り値: `number` (マッピングされた値)
+- **`main()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts, src/typescript/cli/src/main.ts)**:
+    - 役割: CLIアプリケーションまたは診断ツールの主要なエントリポイントです。シンセサイザーのセットアップ、マウスイベントのポーリング、オーディオデータの生成と出力のループを制御します。
+    - 引数: なし
+    - 戻り値: `Promise<void>`
+- **`printDiagnostics()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts)**:
+    - 役割: 診断情報をコンソールに出力します。マウス座標、周波数値、CPU使用率などが含まれます。
+    - 引数: `diagnostics: DiagnosticInfo`
+    - 戻り値: なし
+- **`testFrequencySweep()` (src/typescript/cli/src/diagnostics/test-frequency-sweep.ts)**:
+    - 役割: 特定の周波数範囲を掃引するテストを実行し、オーディオ出力が正しく機能しているか、音の品質に問題がないかを検証します。
+    - 引数: なし
+    - 戻り値: `Promise<void>`
+- **`analyzeResults()` (src/typescript/cli/src/diagnostics/test-frequency-sweep.ts, src/typescript/cli/src/diagnostics/test-mouse-audio.ts, src/typescript/cli/src/diagnostics/test-mouse-capture.ts)**:
+    - 役割: 各種テストの結果を分析し、合格/不合格の判定や、問題点の概要をレポートとして出力します。
+    - 引数: `results: any[]` (テスト結果データ)
+    - 戻り値: なし
+- **`testMouseAudio()` (src/typescript/cli/src/diagnostics/test-mouse-audio.ts)**:
+    - 役割: マウスの動きとオーディオ出力の連動をテストします。マウスを動かした際に音が適切に変化するかを確認します。
+    - 引数: なし
+    - 戻り値: `Promise<void>`
+- **`testMouseCapture()` (src/typescript/cli/src/diagnostics/test-mouse-capture.ts)**:
+    - 役割: マウス位置のキャプチャ機能が正確に動作しているか、またポーリング間隔に応じた応答性があるかをテストします。
+    - 引数: なし
+    - 戻り値: `Promise<void>`
+- **`getMousePosition()` (src/typescript/cli/src/mouse/position.ts)**:
+    - 役割: 現在のマウスカーソルのX, Y座標を取得します。
+    - 引数: なし
+    - 戻り値: `Promise<{ x: number; y: number }>`
+- **`getScreenSize()` (src/typescript/cli/src/mouse/position.ts)**:
+    - 役割: 現在のプライマリディスプレイの幅と高さを取得します。
+    - 引数: なし
+    - 戻り値: `Promise<{ width: number; height: number }>`
+- **`getDevices()` (src/typescript/cli/src/types/naudiodon.d.ts)**:
+    - 役割: システムで利用可能なオーディオデバイスのリストを取得します。
+    - 引数: なし
+    - 戻り値: `AudioDevice[]` (オーディオデバイス情報の配列)
 
 ## 関数呼び出し階層ツリー
 ```
-- if (src/obsidian/src/main.ts)
-  - onload()
-    - onunload()
-    - enableOscillator()
-    - switchVersion()
-    - start()
-  - catch()
-    - createAudioOutput()
-      - constructor()
-    - mapRange()
-      - main()
-      - printDiagnostics()
-      - getMousePosition()
-      - getScreenSize()
-    - analyzeResults()
-      - testMouseCapture()
-- switch()
-- testFrequencySweep()
-- for()
-- getDevices()
+- **Obsidian プラグイン関連**
+  - `onload()` (src/obsidian/src/main.ts)
+    - `enableOscillator()` (src/obsidian/src/main.ts)
+    - `switchVersion()` (src/obsidian/src/main.ts)
+      - `start()` (src/obsidian/src/synth/simple.ts, src/obsidian/src/synth/smooth.ts)
+  - `onunload()` (src/obsidian/src/main.ts)
+  - `process()` (src/obsidian/src/audio/simple-worklet.ts, src/obsidian/src/audio/smooth-worklet.ts) - (Web Audio Workletにより呼び出される)
+
+- **TypeScript CLI アプリケーション関連**
+  - `main()` (src/typescript/cli/src/main.ts)
+    - `createAudioOutput()` (src/typescript/cli/src/audio/output.ts)
+    - `getMousePosition()` (src/typescript/cli/src/mouse/position.ts)
+    - `getScreenSize()` (src/typescript/cli/src/mouse/position.ts)
+    - `mapRange()` (src/typescript/cli/src/main.ts)
+
+- **TypeScript CLI 診断ツール関連**
+  - `main()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts)
+    - `printDiagnostics()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts)
+    - `getMousePosition()` (src/typescript/cli/src/mouse/position.ts)
+    - `getScreenSize()` (src/typescript/cli/src/mouse/position.ts)
+    - `mapRange()` (src/typescript/cli/src/diagnostics/main-diagnostic.ts)
+  - `testFrequencySweep()` (src/typescript/cli/src/diagnostics/test-frequency-sweep.ts)
+    - `createAudioOutput()` (src/typescript/cli/src/audio/output.ts)
+    - `analyzeResults()` (src/typescript/cli/src/diagnostics/test-frequency-sweep.ts)
+  - `testMouseAudio()` (src/typescript/cli/src/diagnostics/test-mouse-audio.ts)
+    - `createAudioOutput()` (src/typescript/cli/src/audio/output.ts)
+    - `getMousePosition()` (src/typescript/cli/src/mouse/position.ts)
+    - `getScreenSize()` (src/typescript/cli/src/mouse/position.ts)
+    - `mapRange()` (src/typescript/cli/src/diagnostics/test-mouse-audio.ts)
+    - `analyzeResults()` (src/typescript/cli/src/diagnostics/test-mouse-audio.ts)
+  - `testMouseCapture()` (src/typescript/cli/src/diagnostics/test-mouse-capture.ts)
+    - `getMousePosition()` (src/typescript/cli/src/mouse/position.ts)
+    - `getScreenSize()` (src/typescript/cli/src/mouse/position.ts)
+    - `analyzeResults()` (src/typescript/cli/src/diagnostics/test-mouse-capture.ts)
+
+- **TypeScript Browser アプリケーション関連**
+  - `handleStart()` (src/typescript/browser/src/main.ts)
+    - `start()` (src/typescript/browser/src/synth/simple.ts, src/typescript/browser/src/synth/smooth.ts)
+  - `handleMessage()` (src/typescript/browser/src/audio/simple-worklet.ts, src/typescript/browser/src/audio/smooth-worklet.ts) - (Web Audio Workletにより呼び出される)
+
+- **その他**
+  - `getDevices()` (src/typescript/cli/src/types/naudiodon.d.ts)
 
 ---
-Generated at: 2026-01-28 07:03:31 JST
+Generated at: 2026-01-29 07:05:49 JST
