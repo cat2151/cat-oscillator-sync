@@ -84,8 +84,13 @@ python src/python/sync_simple.py
 
 ### Rust版
 
+**ワンライナーインストール**:
 ```bash
 cargo install --git https://github.com/cat2151/cat-oscillator-sync --root . cat-oscillator-sync
+```
+
+**実行**:
+```bash
 ./bin/sync_simple
 ./bin/sync_smooth
 ```

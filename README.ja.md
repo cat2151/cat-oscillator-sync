@@ -236,7 +236,7 @@ node dist/main.js smooth  # Smooth版
 2. マウスを画面上で動かして音を制御してください
    - **X軸 (横方向)**: マスター周波数 (40Hz - 600Hz)
    - **Y軸 (縦方向)**: スレーブ周波数 (100Hz - 2000Hz)
-3. `Ctrl+C` で終了
+3. `Ctrl + C` で終了
 
 ---
 
@@ -307,6 +307,6 @@ python build_and_run.py
 
 ## 🔗 関連リンク
 
-- [英語版 README](README.md)
+- [メイン README](README.md)
 - [Zenn scraps記事（Python版解説）](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
 - [GitHub Pages デモ](https://cat2151.github.io/cat-oscillator-sync/)
