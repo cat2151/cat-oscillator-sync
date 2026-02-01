@@ -2,6 +2,11 @@
 
 🎵 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
+<p align="left">
+  <a href="README.ja.md"><img src="https://img.shields.io/badge/🇯🇵-Japanese-red.svg" alt="Japanese"></a>
+  <a href="README.md"><img src="https://img.shields.io/badge/🇺🇸-English-blue.svg" alt="English"></a>
+</p>
+
 ## 🌐 ブラウザで試す
 
 **[→ GitHub Pages でデモを開く](https://cat2151.github.io/cat-oscillator-sync/)**
@@ -310,3 +315,7 @@ python build_and_run.py
 - [メイン README](README.md)
 - [Zenn scraps記事（Python版解説）](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
 - [GitHub Pages デモ](https://cat2151.github.io/cat-oscillator-sync/)
+
+---
+
+※英語版README.mdは、README.ja.mdを元にGeminiの翻訳でGitHub Actionsにより自動生成しています
