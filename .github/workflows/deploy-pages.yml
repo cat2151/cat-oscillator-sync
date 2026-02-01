@@ -14,6 +14,10 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Set explicit permissions for the GITHUB_TOKEN
+permissions:
+  contents: write  # Need write to commit and push to main branch
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
