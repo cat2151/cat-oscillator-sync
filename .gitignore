@@ -71,6 +71,10 @@ instance/
 # Sphinx documentation
 docs/_build/
 
+# GitHub Pages deployment (allow docs/ at root)
+# docs/ directory at root is used for GitHub Pages and should be committed
+# Only ignore Sphinx's _build subdirectory
+
 # PyBuilder
 .pybuilder/
 target/
