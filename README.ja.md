@@ -72,7 +72,10 @@ cargo build --release
 cargo run --release --bin sync_simple
 ```
 
-**詳細**: [issue-notes/4_RUST_README.md](issue-notes/4_RUST_README.md) | [クイックスタート](issue-notes/4_RUST_QUICKSTART.md)
+**特徴**:
+- ✅ 高速でメモリ安全な実装
+- ✅ 低レイテンシ（約8ms）
+- ✅ ワンライナーでインストール可能
 
 ---
 
@@ -182,8 +185,6 @@ npm run build  # 本番ビルド
 - ✅ Simple版とSmooth版の両方を実装
 - ✅ クロスプラットフォーム対応
 
-**詳細**: [issue-notes/6_TYPESCRIPT_BROWSER_README.md](issue-notes/6_TYPESCRIPT_BROWSER_README.md)
-
 ---
 
 ### 💻 TypeScript版（CLI - Windows専用）
@@ -253,7 +254,7 @@ node dist/main.js smooth  # Smooth版
 python build_and_run.py
 ```
 
-詳細は [BUILD_SCRIPTS.md](BUILD_SCRIPTS.md) を参照してください。
+このスクリプトは、各言語のビルドスクリプトを順番に実行し、メニューから選んで実行できるようにします。
 
 ---
 
@@ -292,15 +293,14 @@ python build_and_run.py
 
 ---
 
-## 🎯 今後の予定
+## 🎯 完了した実装
 
+- [x] Python実装
 - [x] Rust実装
-- [x] Go実装
+- [x] Go実装（Pure Go - Oto）
+- [x] Go実装（PortAudio + Zig cc）
 - [x] TypeScript実装（ブラウザ版）
 - [x] TypeScript実装（CLI版・Windows専用）
-- [ ] TypeScript実装（Obsidianプラグイン版）
-
-**実装計画の詳細**: [実装計画書サマリー](issue-notes/2_IMPLEMENTATION_PLAN_SUMMARY.md)
 
 ---
 
