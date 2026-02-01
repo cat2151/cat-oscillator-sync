@@ -2,6 +2,14 @@
 
 🎵 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
+## 🌐 ブラウザで試す
+
+**[→ GitHub Pages でデモを開く](https://cat2151.github.io/cat-oscillator-sync/)**
+
+ブラウザですぐに試せます。インストール不要！
+
+---
+
 ## 状況
 
 - LLMにこのドキュメントとcodeを生成させた状態です。いくつかは作業中です
@@ -18,6 +26,10 @@
 - Go : test_windows_mouse_speed.go は正常動作しています。
   - ですが演奏中は0.8秒間隔でしか周波数変化しません。
   - 作業中です。
+
+- TypeScript(Browser) : GitHub Pages で公開中！ [デモを開く](https://cat2151.github.io/cat-oscillator-sync/)
+  - ブラウザで動作するWeb Audio API実装
+  - Simple版とSmooth版の両方を実装
 
 - TypeScript(Node.js) : 音は鳴ります。
   - ですが演奏中は8秒？間隔でしか周波数変化しません。
