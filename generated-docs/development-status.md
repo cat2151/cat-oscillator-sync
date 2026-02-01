@@ -1,56 +1,50 @@
-Last updated: 2026-01-29
+Last updated: 2026-02-02
 
 # Development Status
 
 ## 現在のIssues
-- 現在、プロジェクトにはオープン中のIssueはありません。
-- 次の改善サイクルに向けて、既存機能の安定性向上と拡張に焦点を当てた作業候補を検討中です。
-- 主に、過去の課題再検証とビルドプロセスの標準化を進める計画です。
+-   [Issue #82](../issue-notes/82.md) と [Issue #81](../issue-notes/81.md) は、README.ja.mdに全ての言語実装のリストと、それぞれの包括的なインストール方法を追記する作業を進行中。
+-   [Issue #81](../issue-notes/81.md) には、各実装のインストール方法をよりワンライナーで簡潔にできるかの改善検討も含まれている。
+-   [Issue #80](../issue-notes/80.md) は、GitHub PagesにデプロイされたWeb版（TypeScript Browser版）がブラウザで正常に動作するかどうかを手動でテストすること。
 
 ## 次の一手候補
-1. TypeScript CLIのオーディオ再生安定性再評価と最適化 [Issue #56](../issue-notes/56_TYPESCRIPT_CLI_AUDIO_FIX_EXPLANATION.md)
-   - 最初の小さな一歩: `src/typescript/cli/src/diagnostics/` 内の既存テストスクリプト (`test-mouse-audio.ts`, `test-frequency-sweep.ts`) を実行し、現状のパフォーマンスと安定性を評価するレポートを生成する。
-   - Agent実行プロンプト:
-     ```
-     対象ファイル: `src/typescript/cli/src/diagnostics/test-mouse-audio.ts`, `src/typescript/cli/src/diagnostics/test-frequency-sweep.ts`, `src/typescript/cli/src/diagnostics/main-diagnostic.ts`, `src/typescript/cli/DELIVERY_SUMMARY.md`, `src/typescript/cli/INVESTIGATION_REPORT.md`
+1.  README.ja.mdに全言語実装のインストール方法を追記し、改善案を検討する [Issue #81](../issue-notes/81.md), [Issue #82](../issue-notes/82.md)
+    -   最初の小さな一歩: `src`ディレクトリ内の各言語（Python, Rust, Go, TypeScript Browser, TypeScript CLI, Obsidian）の`build_and_run.py`や`README.md`ファイルの内容を収集し、それぞれのインストール・実行手順を抽出する。
+    -   Agent実行プロンプト:
+        ```
+        対象ファイル: `src/*/README.md`, `src/*/build_and_run.py`, `.github/actions-tmp/README.ja.md`
 
-     実行内容: 上記ファイル群を分析し、特にオーディオの遅延、グリッチ、CPU使用率の観点から、現在のTypeScript CLIのオーディオ再生性能を評価するための実行計画を立案してください。既存のドキュメントやIssue #56関連のメモ（`56_TYPESCRIPT_CLI_AUDIO_FIX_EXPLANATION.md`, `56_TYPESCRIPT_CLI_AUDIO_FIX_SUMMARY.md`）も参照し、過去の課題が解決されているか検証する視点を含めてください。
+        実行内容: `src/python`, `src/rust`, `src/go`, `src/go-portaudio`, `src/typescript/browser`, `src/typescript/cli`, `src/obsidian` 各ディレクトリ内の `README.md` または `build_and_run.py` を分析し、各言語実装のビルド、インストール、実行に必要な手順を抽出してください。特に、Pythonの`requirements.txt`、Rustの`Cargo.toml`、Goの`go.mod`、TypeScriptの`package.json`を参照し、依存関係のインストール方法も考慮してください。抽出した情報を基に、各言語実装のインストール・実行手順を箇条書きでまとめ、これらの手順がワンライナーで簡潔に記述可能か、または既存の`build_and_run.py`スクリプトでカバーされているかを確認し、改善の可能性があれば提案してください。最後に、`.github/actions-tmp/README.ja.md` に追記するためのMarkdown形式のドラフトを作成してください。
 
-     確認事項: 診断スクリプトの実行に必要な依存関係（`naudiodon`など）が正しくインストールされているか確認してください。また、実行環境（OS、Node.jsバージョン）を考慮し、クロスプラットフォームでの結果比較の可能性も検討してください。
+        確認事項: 各言語実装のディレクトリ構造と、`build_and_run.py`の存在、およびそれに記述されている内容の正確性を確認してください。`.github/actions-tmp/README.ja.md`の既存コンテンツとの整合性を確認してください。
 
-     期待する出力: 診断スクリプトの実行手順、期待される出力、および潜在的な問題領域を特定するためのガイドラインを含むmarkdown形式のレポートを生成してください。既存の問題を特定し、次の最適化ステップを提案できるように、詳細な評価項目を含めてください。
-     ```
+        期待する出力: 各言語実装ごとのインストール・実行手順のリスト（Markdown形式）、それぞれの「ワンライナー化」の可能性または提案（Markdown形式）、および`.github/actions-tmp/README.ja.md` に追記する形で整形されたMarkdownドラフト。
+        ```
 
-2. Go PortAudio版のWindows環境でのCGO/ビルド問題の再検証と安定化 [Issue #22](../issue-notes/22_GO_CGO_EXPLANATION.md)
-   - 最初の小さな一歩: `src/go-portaudio` ディレクトリの `build_and_run.py` スクリプトがWindows環境でPortAudioライブラリを正しくダウンロードし、Goアプリケーションをビルド・実行できるかを確認する。
-   - Agent実行プロンプト:
-     ```
-     対象ファイル: `src/go-portaudio/build_and_run.py`, `src/go-portaudio/download_portaudio.py`, `src/go-portaudio/cmd/sync_simple/main.go`, `src/go-portaudio/internal/mouse/position_windows.go`, `issue-notes/22_GO_CGO_EXPLANATION.md`, `issue-notes/22_GO_INVESTIGATION_CGO_ALTERNATIVES.md`, `issue-notes/22_GO_PRECOMPILED_BINARY_SETUP.md`
+2.  Web版のブラウザ動作を手動テストし、結果を記録する [Issue #80](../issue-notes/80.md)
+    -   最初の小さな一歩: 最新の`docs/index.html`をローカルで開き、Web版（TypeScript Browser版）が正常に音を鳴らすか、マウスイベントに反応するかを確認する。
+    -   Agent実行プロンプト:
+        ```
+        対象ファイル: `docs/index.html`, `src/typescript/browser/vite.config.ts`, `issue-notes/80.md`
 
-     実行内容: 上記ファイル群とIssue #22関連のドキュメントを分析し、Go PortAudio版がWindows環境で正しくビルド・実行できるか検証するための計画を策定してください。`build_and_run.py` と `download_portaudio.py` を中心に、PortAudioライブラリの依存関係解決、Goアプリケーションのコンパイル、そしてマウスイベントとの同期再生のテスト手順を具体的に記述してください。特にCGOに関する既存の調査結果も踏まえて検証計画を強化してください。
+        実行内容: まず、プロジェクトのビルドプロセスを確認し、`docs/index.html`が最新のブラウザ版実装を反映していることを確認してください。具体的には、`src/typescript/browser`プロジェクトが`vite build`によって`docs`ディレクトリに正しくデプロイされていることを確認してください。次に、`docs/index.html`をWebブラウザで開くための手順を提供し、手動テストで確認すべき項目（例: 音が出るか、マウス位置に連動するか、エラーがコンソールに出力されないか）をリストアップしてください。最後に、テスト結果を記録するためのテンプレートを`issue-notes/80.md`に追加するためのMarkdown形式で生成してください。
 
-     確認事項: Windows環境におけるGoコンパイラのセットアップ、PortAudioライブラリのパス設定、およびCGO関連の潜在的な問題を事前に確認し、検証計画に含めてください。`src/go-portaudio/QUICKSTART.md`や`src/go-portaudio/README.md`に記載されている情報との整合性も確認してください。
+        確認事項: `src/typescript/browser`のビルドスクリプトと`deploy-pages.yml`ワークフローが、`docs`ディレクトリに正しいファイルを生成していることを確認してください。テスト環境として最新のWebブラウザが利用可能であることを確認してください。
 
-     期待する出力: Windows環境でのGo PortAudio版のビルド・実行・動作確認手順を詳細に記述したmarkdown形式のドキュメントを生成してください。手順には、成功/失敗の判断基準、発生しうるエラーとそのトラブルシューティングのヒント、Issue #22で議論された内容を踏まえた追加の考察を含めてください。
-     ```
+        期待する出力: `docs/index.html`をテストする具体的な手順、手動テストで確認すべきチェックリスト、および`issue-notes/80.md`に追記するための、テスト結果記録用のMarkdownテンプレート。
+        ```
 
-3. プロジェクト全体のビルド/実行スクリプトの標準化と一元管理の検討 [Issue #34](../issue-notes/34_BUILD_AND_RUN.md)
-   - 最初の小さな一歩: 各言語ディレクトリ (`src/go`, `src/rust`, `src/typescript/cli`, `src/typescript/browser`, `src/obsidian`, `src/go-portaudio`) 直下の `build_and_run.py` ファイルを収集し、それぞれのスクリプトがどのようにビルド、実行、クリーンアップを行っているか、共通のパターンと差異を特定する。
-   - Agent実行プロンプト:
-     ```
-     対象ファイル: `src/*/build_and_run.py` (例: `src/go/build_and_run.py`, `src/rust/build_and_run.py`, `src/typescript/cli/build_and_run.py`, `src/typescript/browser/build_and_run.py`, `src/obsidian/build_and_run.py`, `src/go-portaudio/build_and_run.py`), `issue-notes/34_BUILD_AND_RUN.md`
+3.  GitHub Pagesデプロイワークフローの安定性を確認し、エラーハンドリングを強化する
+    -   最初の小さな一歩: `.github/workflows/deploy-pages.yml`のログを分析し、過去の実行でエラーや警告が出ていないか確認する。
+    -   Agent実行プロンプト:
+        ```
+        対象ファイル: `.github/workflows/deploy-pages.yml`
 
-     実行内容: 上記の`build_and_run.py`スクリプト群とIssue #34のドキュメントを分析し、以下の観点から標準化の可能性を評価してください：
-     1. 共通の機能（ビルド、実行、クリーンアップ、依存関係インストール）
-     2. 各言語特有の処理
-     3. コマンドライン引数（`--build`, `--run`, `--clean`など）の統一性
-     4. エラーハンドリングとロギング
-     5. Issue #34で議論された内容が現在のスクリプトにどう反映されているか、または未解決の課題が残っているか。
+        実行内容: `.github/workflows/deploy-pages.yml`の内容を分析し、既存のエラーハンドリング（例: `if`条件、`continue-on-error`など）の有無と有効性を評価してください。特に、`vite build`ステップやGitHub Pagesへのデプロイステップで発生しうる潜在的なエラーシナリオを特定し、それらに対する適切なエラーハンドリング（例: `try-catch`に相当する条件付きステップ、ビルド失敗時の通知など）を検討してください。もし必要であれば、ワークフローに`timeout-minutes`やより詳細なログ出力、失敗時の通知設定（SlackやIssueコメントなど）を追加することを提案してください。ワークフローが意図した通りに動作し、かつ失敗時に適切な情報が提供されるような改善案をMarkdown形式で記述してください。
 
-     確認事項: 各スクリプトが現在どのように動作しているか、また、それぞれの言語エコシステムで推奨されるビルド・実行方法と矛盾しないかを確認してください。将来的な新しい言語やプラットフォームの追加を考慮した拡張性も検討してください。
+        確認事項: GitHub Actionsのワークフロー実行ログにアクセス可能であることを確認してください。Viteビルドプロセスが失敗する可能性のある条件（依存関係の欠落、コンパイルエラーなど）を考慮してください。
 
-     期待する出力: `build_and_run.py`スクリプト群の現状の差異をまとめたテーブル、およびスクリプトの標準化に向けた具体的な提案を含むmarkdown形式のレポートを生成してください。提案には、共通のヘルパースクリプトの導入や、`build_and_run.py`自体を抽象化する構造のアイデア、そしてIssue #34で提示された問題への対応策を含めてください。
-     ```
+        期待する出力: `deploy-pages.yml`の現状のエラーハンドリング評価（Markdown形式）、改善提案とその理由（Markdown形式）、および提案された改善を含む`.github/workflows/deploy-pages.yml`の修正案（YAML形式のスニペット）。
 
 ---
-Generated at: 2026-01-29 07:05:43 JST
+Generated at: 2026-02-02 07:03:28 JST

@@ -1,4 +1,4 @@
-Last updated: 2026-01-29
+Last updated: 2026-02-02
 
 
 # プロジェクト概要生成プロンプト（来訪者向け）
@@ -65,6 +65,14 @@ Last updated: 2026-01-29
 
 🎵 マウスで鳴らせるオシレータ・ハードシンク・シンセサイザー
 
+## 🌐 ブラウザで試す
+
+**[→ GitHub Pages でデモを開く](https://cat2151.github.io/cat-oscillator-sync/)**
+
+ブラウザですぐに試せます。インストール不要！
+
+---
+
 ## 状況
 
 - LLMにこのドキュメントとcodeを生成させた状態です。いくつかは作業中です
@@ -81,6 +89,10 @@ Last updated: 2026-01-29
 - Go : test_windows_mouse_speed.go は正常動作しています。
   - ですが演奏中は0.8秒間隔でしか周波数変化しません。
   - 作業中です。
+
+- TypeScript(Browser) : GitHub Pages で公開中！ [デモを開く](https://cat2151.github.io/cat-oscillator-sync/)
+  - ブラウザで動作するWeb Audio API実装
+  - Simple版とSmooth版の両方を実装
 
 - TypeScript(Node.js) : 音は鳴ります。
   - ですが演奏中は8秒？間隔でしか周波数変化しません。
@@ -339,6 +351,12 @@ ruff check --fix src/ tests/
 📖 README.md
 📄 _config.yml
 📄 build_and_run.py
+📁 docs/
+  📄 .nojekyll
+  📁 assets/
+    📜 index-CDju8QjF.js
+    📄 index-CDju8QjF.js.map
+  🌐 index.html
 📁 generated-docs/
 🌐 googled947dc864c270e07.html
 📁 issue-notes/
@@ -375,6 +393,12 @@ ruff check --fix src/ tests/
   📖 6_TYPESCRIPT_BROWSER_COMPLETION_REPORT.md
   📖 6_TYPESCRIPT_BROWSER_MANUAL_TEST.md
   📖 6_TYPESCRIPT_BROWSER_README.md
+  📖 78.md
+  📖 78_BROWSER_IMPLEMENTATION_STATUS.md
+  📖 78_FINAL_REPORT.md
+  📖 78_GITHUB_PAGES_IMPLEMENTATION.md
+  📖 80.md
+  📖 81.md
   📖 GO_MIGRATION_ZIG_CC.md
   📖 README.md
 📄 pyproject.toml
@@ -506,6 +530,14 @@ ruff check --fix src/ tests/
       📊 tsconfig.json
 
 ## ファイル詳細分析
+**docs/assets/index-CDju8QjF.js** (3行, 6261バイト)
+  - 関数: s, l, function, constructor, start, catch, stop, updateFrequencies, getIsRunning, if, handleStart, switch, handleStop, handleMouseMove, handleResize, startPolling, stopPolling, mapRange
+  - インポート: なし
+
+**docs/index.html** (176行, 4123バイト)
+  - 関数: なし
+  - インポート: なし
+
 **googled947dc864c270e07.html** (1行, 53バイト)
   - 関数: なし
   - インポート: なし
@@ -558,9 +590,9 @@ ruff check --fix src/ tests/
   - 関数: catch, if, start
   - インポート: なし
 
-**src/typescript/browser/vite.config.ts** (13行, 187バイト)
+**src/typescript/browser/vite.config.ts** (21行, 451バイト)
   - 関数: なし
-  - インポート: vite
+  - インポート: vite, path
 
 **src/typescript/cli/src/audio/output.ts** (158行, 5333バイト)
   - 関数: createAudioOutput, constructor, if
@@ -604,15 +636,21 @@ ruff check --fix src/ tests/
 
 ## 関数呼び出し階層
 - if (src/obsidian/src/main.ts)
+  - start ()
+    - s (docs/assets/index-CDju8QjF.js)
+      - l ()
+      - function ()
+      - constructor (undefined)
+    - stop ()
+    - updateFrequencies ()
+    - getIsRunning ()
   - onload (src/obsidian/src/main.ts)
     - onunload ()
       - enableOscillator ()
       - switchVersion ()
-      - start ()
   - catch (src/obsidian/src/main.ts)
-    - createAudioOutput (src/typescript/cli/src/audio/output.ts)
-      - constructor (undefined)
     - mapRange (src/typescript/cli/src/diagnostics/main-diagnostic.ts)
+      - createAudioOutput (src/typescript/cli/src/audio/output.ts)
       - main ()
       - printDiagnostics ()
       - getMousePosition ()
@@ -629,6 +667,8 @@ ruff check --fix src/ tests/
 .vscode/settings.json
 BUILD_SCRIPTS.md
 README.md
+docs/assets/index-CDju8QjF.js
+docs/index.html
 googled947dc864c270e07.html
 issue-notes/20_OBSIDIAN_IMPLEMENTATION_PLAN.md
 issue-notes/22_GO_CGO_EXPLANATION.md
@@ -654,8 +694,6 @@ issue-notes/34_BUILD_AND_RUN.md
 issue-notes/44_GO_IMPLEMENTATION_REPORT_OTO.md
 issue-notes/44_GO_QUICKSTART_OTO.md
 issue-notes/44_GO_README_OTO.md
-issue-notes/4_RUST_COMPLETION_REPORT.md
-issue-notes/4_RUST_QUICKSTART.md
 src/go/README.md
 src/go-portaudio/QUICKSTART.md
 src/obsidian/manifest.json
@@ -672,4 +710,4 @@ src/typescript/cli/BUFFER_SIZE_FIX.md
 
 
 ---
-Generated at: 2026-01-29 07:05:03 JST
+Generated at: 2026-02-02 07:03:09 JST

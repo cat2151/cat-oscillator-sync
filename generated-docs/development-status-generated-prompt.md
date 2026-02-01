@@ -1,4 +1,4 @@
-Last updated: 2026-01-29
+Last updated: 2026-02-02
 
 # 開発状況生成プロンプト（開発者向け）
 
@@ -199,6 +199,7 @@ Last updated: 2026-01-29
 - .github/workflows/call-daily-project-summary.yml
 - .github/workflows/call-issue-note.yml
 - .github/workflows/call-translate-readme.yml
+- .github/workflows/deploy-pages.yml
 - .gitignore
 - .vscode/settings.json
 - BUILD_SCRIPTS.md
@@ -206,6 +207,10 @@ Last updated: 2026-01-29
 - README.md
 - _config.yml
 - build_and_run.py
+- docs/.nojekyll
+- docs/assets/index-CDju8QjF.js
+- docs/assets/index-CDju8QjF.js.map
+- docs/index.html
 - generated-docs/project-overview-generated-prompt.md
 - googled947dc864c270e07.html
 - issue-notes/20_OBSIDIAN_IMPLEMENTATION_PLAN.md
@@ -241,6 +246,12 @@ Last updated: 2026-01-29
 - issue-notes/6_TYPESCRIPT_BROWSER_COMPLETION_REPORT.md
 - issue-notes/6_TYPESCRIPT_BROWSER_MANUAL_TEST.md
 - issue-notes/6_TYPESCRIPT_BROWSER_README.md
+- issue-notes/78.md
+- issue-notes/78_BROWSER_IMPLEMENTATION_STATUS.md
+- issue-notes/78_FINAL_REPORT.md
+- issue-notes/78_GITHUB_PAGES_IMPLEMENTATION.md
+- issue-notes/80.md
+- issue-notes/81.md
 - issue-notes/GO_MIGRATION_ZIG_CC.md
 - issue-notes/README.md
 - pyproject.toml
@@ -338,27 +349,322 @@ Last updated: 2026-01-29
 - src/typescript/cli/tsconfig.json
 
 ## 現在のオープンIssues
-オープン中のIssueはありません
+## [Issue #82](../issue-notes/82.md): Add README.ja.md with comprehensive installation methods for all language implementations
+## Issue #81: 現在実装されているものをlistしてREADME.ja.mdに追記する ✅
+
+### 完了した作業
+
+- [x] 現在の実装状況を調査
+  - [x] Python実装を確認
+  - [x] Rust実装を確認  
+  - [x] Go実装（Pure Go - Oto版）を確認
+  - [x] Go実装（PortAudio + Zig cc版）を確認
+  - [x] TypeScript実装（Browser版）を確認
+  - [x] TypeScript実装（CLI版 - Windows専用）を確認
+
+- [x] README.ja.mdを作成して実装リストを追記
+...
+ラベル: 
+--- issue-notes/82.md の内容 ---
+
+```markdown
+
+```
+
+## [Issue #81](../issue-notes/81.md): 現在実装されているものをlistしてREADME.ja.mdに追記する。あわせてPRに、それぞれのinstall方法をよりワンライナー的に改善できるか洗い出す
+[issue-notes/81.md](https://github.com/cat2151/cat-oscillator-sync/blob/main/issue-notes/81.md)
+
+...
+ラベル: 
+--- issue-notes/81.md の内容 ---
+
+```markdown
+# issue 現在実装されているものをlistしてREADME.ja.mdに追記する。あわせてPRに、それぞれのinstall方法をよりワンライナー的に改善できるか洗い出す #81
+[issues #81](https://github.com/cat2151/cat-oscillator-sync/issues/81)
+
+
+
+```
+
+## [Issue #80](../issue-notes/80.md): （人力）web版がブラウザで鳴るかどうかtestする
+[issue-notes/80.md](https://github.com/cat2151/cat-oscillator-sync/blob/main/issue-notes/80.md)
+
+...
+ラベル: 
+--- issue-notes/80.md の内容 ---
+
+```markdown
+# issue （人力）web版がブラウザで鳴るかどうかtestする #80
+[issues #80](https://github.com/cat2151/cat-oscillator-sync/issues/80)
+
+
+
+```
 
 ## ドキュメントで言及されているファイルの内容
+### .github/actions-tmp/README.ja.md
+```md
+{% raw %}
+# GitHub Actions 共通ワークフロー集
 
+このリポジトリは、**複数プロジェクトで使い回せるGitHub Actions共通ワークフロー集**です
+
+<p align="left">
+  <a href="README.ja.md"><img src="https://img.shields.io/badge/🇯🇵-Japanese-red.svg" alt="Japanese"></a>
+  <a href="README.md"><img src="https://img.shields.io/badge/🇺🇸-English-blue.svg" alt="English"></a>
+</p>
+
+# 3行で説明
+- 🚀 プロジェクトごとのGitHub Actions管理をもっと楽に
+- 🔗 共通化されたワークフローで、どのプロジェクトからも呼ぶだけでOK
+- ✅ メンテは一括、プロジェクト開発に集中できます
+
+## Quick Links
+| 項目 | リンク |
+|------|--------|
+| 📖 プロジェクト概要 | [generated-docs/project-overview.md](generated-docs/project-overview.md) |
+| 📖 コールグラフ | [generated-docs/callgraph.html](https://cat2151.github.io/github-actions/generated-docs/callgraph.html) |
+| 📊 開発状況 | [generated-docs/development-status.md](generated-docs/development-status.md) |
+
+# notes
+- まだ共通化の作業中です
+- まだワークフロー内容を改善中です
+
+※README.md は README.ja.md を元にGeminiの翻訳でGitHub Actionsで自動生成しています
+
+{% endraw %}
+```
+
+### .github/actions-tmp/issue-notes/2.md
+```md
+{% raw %}
+# issue GitHub Actions「関数コールグラフhtmlビジュアライズ生成」を共通ワークフロー化する #2
+[issues #2](https://github.com/cat2151/github-actions/issues/2)
+
+
+# prompt
+```
+あなたはGitHub Actionsと共通ワークフローのスペシャリストです。
+このymlファイルを、以下の2つのファイルに分割してください。
+1. 共通ワークフロー       cat2151/github-actions/.github/workflows/callgraph_enhanced.yml
+2. 呼び出し元ワークフロー cat2151/github-actions/.github/workflows/call-callgraph_enhanced.yml
+まずplanしてください
+```
+
+# 結果
+- indent
+    - linter？がindentのエラーを出しているがyml内容は見た感じOK
+    - テキストエディタとagentの相性問題と判断する
+    - 別のテキストエディタでsaveしなおし、テキストエディタをreload
+    - indentのエラーは解消した
+- LLMレビュー
+    - agent以外の複数のLLMにレビューさせる
+    - prompt
+```
+あなたはGitHub Actionsと共通ワークフローのスペシャリストです。
+以下の2つのファイルをレビューしてください。最優先で、エラーが発生するかどうかだけレビューしてください。エラー以外の改善事項のチェックをするかわりに、エラー発生有無チェックに最大限注力してください。
+
+--- 共通ワークフロー
+
+# GitHub Actions Reusable Workflow for Call Graph Generation
+name: Generate Call Graph
+
+# TODO Windowsネイティブでのtestをしていた名残が残っているので、今後整理していく。今はWSL act でtestしており、Windowsネイティブ環境依存問題が解決した
+#  ChatGPTにレビューさせるとそこそこ有用そうな提案が得られたので、今後それをやる予定
+#  agentに自己チェックさせる手も、セカンドオピニオンとして選択肢に入れておく
+
+on:
+  workflow_call:
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.check.outputs.should-run }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 50 # 過去のコミットを取得
+
+      - name: Check for user commits in last 24 hours
+        id: check
+        run: |
+          node .github/scripts/callgraph_enhanced/check-commits.cjs
+
+  generate-callgraph:
+    needs: check-commits
+    if: needs.check-commits.outputs.should-run == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Remove old CodeQL packages cache
+        run: rm -rf ~/.codeql/packages
+
+      - name: Check Node.js version
+        run: |
+          node .github/scripts/callgraph_enhanced/check-node-version.cjs
+
+      - name: Install CodeQL CLI
+        run: |
+          wget https://github.com/github/codeql-cli-binaries/releases/download/v2.22.1/codeql-linux64.zip
+          unzip codeql-linux64.zip
+          sudo mv codeql /opt/codeql
+          echo "/opt/codeql" >> $GITHUB_PATH
+
+      - name: Install CodeQL query packs
+        run: |
+          /opt/codeql/codeql pack install .github/codeql-queries
+
+      - name: Check CodeQL exists
+        run: |
+          node .github/scripts/callgraph_enhanced/check-codeql-exists.cjs
+
+      - name: Verify CodeQL Configuration
+        run: |
+          node .github/scripts/callgraph_enhanced/analyze-codeql.cjs verify-config
+
+      - name: Remove existing CodeQL DB (if any)
+        run: |
+          rm -rf codeql-db
+
+      - name: Perform CodeQL Analysis
+        run: |
+          node .github/scripts/callgraph_enhanced/analyze-codeql.cjs analyze
+
+      - name: Check CodeQL Analysis Results
+        run: |
+          node .github/scripts/callgraph_enhanced/analyze-codeql.cjs check-results
+
+      - name: Debug CodeQL execution
+        run: |
+          node .github/scripts/callgraph_enhanced/analyze-codeql.cjs debug
+
+      - name: Wait for CodeQL results
+        run: |
+          node -e "setTimeout(()=>{}, 10000)"
+
+      - name: Find and process CodeQL results
+        run: |
+          node .github/scripts/callgraph_enhanced/find-process-results.cjs
+
+      - name: Generate HTML graph
+        run: |
+          node .github/scripts/callgraph_enhanced/generate-html-graph.cjs
+
+      - name: Copy files to generated-docs and commit results
+        run: |
+          node .github/scripts/callgraph_enhanced/copy-commit-results.cjs
+
+--- 呼び出し元
+# 呼び出し元ワークフロー: call-callgraph_enhanced.yml
+name: Call Call Graph Enhanced
+
+on:
+  schedule:
+    # 毎日午前5時(JST) = UTC 20:00前日
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+
+jobs:
+  call-callgraph-enhanced:
+    # uses: cat2151/github-actions/.github/workflows/callgraph_enhanced.yml
+    uses: ./.github/workflows/callgraph_enhanced.yml # ローカルでのテスト用
+```
+
+# レビュー結果OKと判断する
+- レビュー結果を人力でレビューした形になった
+
+# test
+- #4 同様にローカル WSL + act でtestする
+- エラー。userのtest設計ミス。
+  - scriptの挙動 : src/ がある前提
+  - 今回の共通ワークフローのリポジトリ : src/ がない
+  - 今回testで実現したいこと
+    - 仮のソースでよいので、関数コールグラフを生成させる
+  - 対策
+    - src/ にダミーを配置する
+- test green
+  - ただしcommit pushはしてないので、html内容が0件NG、といったケースの検知はできない
+  - もしそうなったら別issueとしよう
+
+# test green
+
+# commit用に、yml 呼び出し元 uses をlocal用から本番用に書き換える
+
+# closeとする
+- もしhtml内容が0件NG、などになったら、別issueとするつもり
+
+{% endraw %}
+```
+
+### issue-notes/80.md
+```md
+{% raw %}
+# issue （人力）web版がブラウザで鳴るかどうかtestする #80
+[issues #80](https://github.com/cat2151/cat-oscillator-sync/issues/80)
+
+
+
+{% endraw %}
+```
+
+### issue-notes/81.md
+```md
+{% raw %}
+# issue 現在実装されているものをlistしてREADME.ja.mdに追記する。あわせてPRに、それぞれのinstall方法をよりワンライナー的に改善できるか洗い出す #81
+[issues #81](https://github.com/cat2151/cat-oscillator-sync/issues/81)
+
+
+
+{% endraw %}
+```
 
 ## 最近の変更（過去7日間）
 ### コミット履歴:
-c9d5529 Update link text in README.md for clarity
-039ac41 Update project summaries (overview & development status) [auto]
-c8c1f03 Update README.md for improved readability
-ac06124 Update README with project status and sound details
+7802042 Add issue note for #81 [auto]
+be63114 Add issue note for #80 [auto]
+5c54ca8 Deploy: Update GitHub Pages [skip ci]
+a6ac6a7 Merge pull request #79 from cat2151/copilot/implement-web-audio-functionality
+a8abd7a Fix security issue: Add explicit permissions to GitHub Actions workflow
+a3c7549 Update documentation for GitHub Pages deployment
+9753f8f Implement GitHub Pages deployment: Add Vite config, GitHub Actions workflow, and build to /docs
+f3aaf0b Address PR review comments: fix browser auto-open description, update compatibility tables for Windows-only policy, use wildcard for Vite output
+ee01268 Add comprehensive final report for issue #78 browser implementation
+afa469d Document existing browser implementation status for issue #78
 
 ### 変更されたファイル:
+.github/workflows/deploy-pages.yml
+.gitignore
 README.md
-_config.yml
+docs/.nojekyll
+docs/assets/index-CDju8QjF.js
+docs/assets/index-CDju8QjF.js.map
+docs/index.html
 generated-docs/development-status-generated-prompt.md
 generated-docs/development-status.md
 generated-docs/project-overview-generated-prompt.md
 generated-docs/project-overview.md
-googled947dc864c270e07.html
+issue-notes/78.md
+issue-notes/78_BROWSER_IMPLEMENTATION_STATUS.md
+issue-notes/78_FINAL_REPORT.md
+issue-notes/78_GITHUB_PAGES_IMPLEMENTATION.md
+issue-notes/80.md
+issue-notes/81.md
+src/typescript/browser/vite.config.ts
 
 
 ---
-Generated at: 2026-01-29 07:05:03 JST
+Generated at: 2026-02-02 07:03:09 JST
