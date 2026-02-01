@@ -90,7 +90,7 @@ python build_and_run.py
 1. 依存関係をチェック
 2. npm install を実行
 3. 開発サーバーを起動
-4. http://localhost:5173 が開きます
+4. ブラウザで http://localhost:5173 にアクセスしてください
 
 ### 手動での起動
 
@@ -133,23 +133,22 @@ $ python build_and_run.py --build
 
 ```
 dist/
-├── index.html                (4.10 kB)
+├── index.html
 └── assets/
-    └── index-CDju8QjF.js     (6.26 kB)
+    └── index-*.js    # Vite がビルドごとにハッシュ付きファイル名を生成
 ```
 
 全てのファイルが正常に生成されています。
 
 ## 🌐 ブラウザ互換性
 
-AudioWorklet をサポートする以下のブラウザで動作します:
+本プロジェクトは Windows 専用です。Windows 上で AudioWorklet の動作を確認済みのブラウザは次の通りです:
 
 | ブラウザ | 最小バージョン | AudioWorklet対応 | 推奨度 |
 |---------|--------------|-----------------|-------|
 | Chrome  | 66+          | ✅              | ⭐⭐⭐ 推奨 |
 | Firefox | 76+          | ✅              | ⭐⭐   |
 | Edge    | 79+          | ✅              | ⭐⭐   |
-| Safari  | 14.1+        | ✅              | ⭐     |
 
 ## 📖 ドキュメント
 

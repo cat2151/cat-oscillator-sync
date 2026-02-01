@@ -141,7 +141,7 @@ dist/
 | Chrome  | 66+          | ✅              |
 | Firefox | 76+          | ✅              |
 | Edge    | 79+          | ✅              |
-| Safari  | 14.1+        | ✅              |
+| Safari  | 14.1+        | 未検証（Windows専用ポリシーのためサポート対象外） |
 
 ## 📝 メインREADMEへの記載
 
