@@ -57,66 +57,72 @@
 
 ## インストール
 
-### クイックスタート（pipx推奨）
+**[日本語版 README はこちら](README.ja.md)** - 各言語版の詳細なインストール方法と比較表
 
-pipxを使用してGitリポジトリから直接インストールできます：
+### Python版（推奨）
+
+#### ワンライナーインストール（pipx推奨）
 
 ```bash
-# pipxのインストール（まだインストールしていない場合）
-pip install pipx
-
-# cat-oscillator-syncのインストール
 pipx install git+https://github.com/cat2151/cat-oscillator-sync
+```
 
-# インストール後、以下のコマンドで実行できます
+実行:
+```bash
 cat-oscillator-sync-simple  # シンプル版
 cat-oscillator-sync-smooth  # スムーズ版
 ```
 
-### 従来の方法（リポジトリをクローン）
-
-#### 必要な環境
-
-- Python 3.8+
-- pip
-
-#### Pythonライブラリのインストール
+#### 従来の方法
 
 ```bash
+git clone https://github.com/cat2151/cat-oscillator-sync.git
+cd cat-oscillator-sync
 pip install -r requirements.txt
-```
-
-## 使用方法
-
-### pipxでインストールした場合
-
-```bash
-# シンプル版 (8msごとに階段状に周波数が変化)
-cat-oscillator-sync-simple
-
-# スムーズ版 (1サンプルごとに滑らかに周波数が変化)
-cat-oscillator-sync-smooth
-```
-
-### リポジトリから直接実行する場合
-
-#### シンプル版 (8msごとに階段状に周波数が変化)
-
-```bash
 python src/python/sync_simple.py
 ```
 
-#### スムーズ版 (1サンプルごとに滑らかに周波数が変化)
+### Rust版
 
+**ワンライナーインストール**:
 ```bash
-python src/python/sync_smooth.py
+cargo install --git https://github.com/cat2151/cat-oscillator-sync --root . cat-oscillator-sync
 ```
 
-### 操作方法
+**実行**:
+```bash
+./bin/sync_simple
+./bin/sync_smooth
+```
+
+### Go版（Pure Go - Oto）⭐推奨
+
+```bash
+go install github.com/cat2151/cat-oscillator-sync/go/cmd/sync_simple_oto@latest
+go install github.com/cat2151/cat-oscillator-sync/go/cmd/sync_smooth_oto@latest
+sync_simple_oto
+sync_smooth_oto
+```
+
+### TypeScript版（Browser）
+
+最も簡単！ **[GitHub Pages デモ](https://cat2151.github.io/cat-oscillator-sync/)** にアクセス - インストール不要
+
+### その他の実装
+
+Go PortAudio版、TypeScript CLI版の詳細は [README.ja.md](README.ja.md) を参照してください。
+
+## 使用方法
+
+すべての実装で共通の操作方法：
 
 1. プログラムを実行するとオーディオストリームが開始されます
 2. マウスを画面上で動かして音を制御してください
+   - **X軸 (横方向)**: マスター周波数 (40Hz - 600Hz)
+   - **Y軸 (縦方向)**: スレーブ周波数 (100Hz - 2000Hz)
 3. `Ctrl + C` で終了
+
+各言語版の詳細な実行方法は [README.ja.md](README.ja.md) を参照してください。
 
 ## 全アプリケーションの一括ビルド＆実行（Windows専用）
 
