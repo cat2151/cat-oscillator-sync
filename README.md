@@ -295,7 +295,6 @@ This project is released under the [MIT License](LICENSE).
 
 - [Main README](README.md)
 - [Zenn scraps article (Python version explanation)](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
-- [GitHub Pages Demo](https://cat2151.github.io/cat-oscillator-sync/)
 
 ---
 

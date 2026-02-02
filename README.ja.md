@@ -295,7 +295,6 @@ python build_and_run.py
 
 - [メイン README](README.md)
 - [Zenn scraps記事（Python版解説）](https://zenn.dev/cat2151/scraps/bc9dca9b75a901)
-- [GitHub Pages デモ](https://cat2151.github.io/cat-oscillator-sync/)
 
 ---
 
