@@ -7,11 +7,21 @@
   <a href="README.md"><img src="https://img.shields.io/badge/🇺🇸-English-blue.svg" alt="English"></a>
 </p>
 
-## 🌐 ブラウザで試す
+## ⚠️ ブラウザ版について（削除済み）
 
-**[→ GitHub Pages でデモを開く](https://cat2151.github.io/cat-oscillator-sync/)**
+**ブラウザ版は削除されました**
 
-ブラウザですぐに試せます。インストール不要！
+Coding agentが生成したブラウザ版のコードにハルシネーション（幻覚）があり、正常に動作しませんでした。
+具体的には、TypeScript（.ts）ファイルをAudioWorkletモジュールとして直接ロードしようとしており、
+ブラウザはJavaScript（.js）ファイルしか実行できないため、初手でエラーが発生していました。
+
+修正するには適切なビルドプロセスの構築が必要ですが、他の優先すべきタスクに時間を使うため、
+ブラウザ版は削除しました。
+
+**代替案**: より低レイテンシで安定した動作を求める場合は、以下の実装をご利用ください：
+- **Python版** - pipxで1行インストール、レイテンシ約8ms
+- **Rust版** - 高速で低レイテンシ（約8ms）
+- **Go版（Pure Go - Oto）** - CGO不要、セットアップが簡単
 
 ---
 
@@ -159,34 +169,6 @@ sync_smooth.exe  # Smooth版
 
 ---
 
-### 🌐 TypeScript版（Browser）
-
-**状態**: ✅ 完全動作・GitHub Pages公開中
-
-**使用方法**:
-
-**オンラインで試す（最も簡単）**:
-- [GitHub Pages デモ](https://cat2151.github.io/cat-oscillator-sync/)にアクセス
-- インストール不要！
-
-**ローカルで開発する場合**:
-```bash
-git clone https://github.com/cat2151/cat-oscillator-sync.git
-cd cat-oscillator-sync/src/typescript/browser
-npm install
-npm run dev  # 開発サーバー起動
-# または
-npm run build  # 本番ビルド
-```
-
-**特徴**:
-- ✅ インストール不要でブラウザで動作
-- ✅ Web Audio APIによる低レイテンシ（約3ms）
-- ✅ Simple版とSmooth版の両方を実装
-- ✅ クロスプラットフォーム対応
-
----
-
 ### 💻 TypeScript版（CLI - Windows専用）
 
 **状態**: ✅ 動作中・バッファ遅延あり（約170ms）
@@ -215,7 +197,7 @@ node dist/main.js smooth  # Smooth版
 - ✅ Node.jsベースのCLI実装
 - ⚠️ レイテンシは他の実装より高い（約170ms）
 
-**より低レイテンシが必要な場合は、Browser版、Python版、Rust版、Go版を推奨します。**
+**より低レイテンシが必要な場合は、Python版、Rust版、Go版を推奨します。**
 
 **詳細**: [src/typescript/cli/README.md](src/typescript/cli/README.md)
 
@@ -225,7 +207,6 @@ node dist/main.js smooth  # Smooth版
 
 | 言語 | 状態 | インストール難易度 | レイテンシ | 推奨度 |
 |------|------|-------------------|----------|--------|
-| TypeScript (Browser) | ✅ | ⭐⭐⭐⭐⭐（インストール不要） | 約3ms | ⭐⭐⭐⭐⭐ |
 | Python | ✅ | ⭐⭐⭐⭐⭐（pipx 1行） | 約8ms | ⭐⭐⭐⭐⭐ |
 | Go (Pure Go - Oto) | ✅ | ⭐⭐⭐⭐（go install） | 約16ms | ⭐⭐⭐⭐ |
 | Rust | ✅ | ⭐⭐⭐（cargo install） | 約8ms | ⭐⭐⭐⭐ |

@@ -288,9 +288,6 @@ def build_all(script_dir: Path, clean: bool = False) -> None:
     build_typescript_cli(script_dir)
     print()
 
-    build_typescript_browser(script_dir)
-    print()
-
     log_success("全てのビルドが完了しました！")
     print()
 
@@ -370,7 +367,7 @@ def clean_build_all(script_dir: Path) -> None:
     print()
 
     # TypeScript CLI
-    log_info("[5/6] TypeScript CLI版...")
+    log_info("[5/5] TypeScript CLI版...")
     ts_cli_script = script_dir / "src" / "typescript" / "cli" / "build_and_run.py"
     if ts_cli_script.exists():
         result = subprocess.run(
@@ -383,22 +380,6 @@ def clean_build_all(script_dir: Path) -> None:
             log_warning("TypeScript CLI版: 一部エラーがありました")
     else:
         log_warning(f"TypeScript CLI版ビルドスクリプトが見つかりません: {ts_cli_script}")
-    print()
-
-    # TypeScript Browser
-    log_info("[6/6] TypeScript Browser版...")
-    ts_browser_script = script_dir / "src" / "typescript" / "browser" / "build_and_run.py"
-    if ts_browser_script.exists():
-        result = subprocess.run(
-            ["python", str(ts_browser_script), "--clean", "--build"],
-            check=False,
-        )
-        if result.returncode == 0:
-            log_success("TypeScript Browser版: 完了")
-        else:
-            log_warning("TypeScript Browser版: 一部エラーがありました")
-    else:
-        log_warning(f"TypeScript Browser版ビルドスクリプトが見つかりません: {ts_browser_script}")
     print()
 
     log_success("全てのクリーンビルドが完了しました！")
@@ -433,7 +414,6 @@ def show_menu() -> None:
     print("TypeScript版:")
     print("  11) CLI Simple     - CLIシンプル版（Windows専用）")
     print("  12) CLI Smooth     - CLIスムーズ版（Windows専用）")
-    print("  13) Browser        - ブラウザ版開発サーバー起動")
     print()
     print("  0) 終了")
     print()
@@ -508,19 +488,12 @@ def run_application(choice: str, script_dir: Path) -> bool:
             ts_cli_dir = script_dir / "src" / "typescript" / "cli"
             subprocess.run(["node", "dist/main.js", "smooth"], cwd=ts_cli_dir, check=False)
 
-        elif choice == "13":
-            log_info("TypeScript Browser版の開発サーバーを起動します...")
-            log_info("ブラウザで http://localhost:5173 にアクセスしてください。")
-            print("Ctrl+Cで終了します。")
-            ts_browser_dir = script_dir / "src" / "typescript" / "browser"
-            subprocess.run("npm run dev", cwd=ts_browser_dir, shell=True, check=False)
-
         elif choice == "0":
             log_info("終了します。")
             return False
 
         else:
-            log_error("無効な選択です。0-9の数字を入力してください。")
+            log_error("無効な選択です。0-12の数字を入力してください。")
             return True
 
         print()
