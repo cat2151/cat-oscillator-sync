@@ -4,7 +4,7 @@
 
 ## ⚠️ 重要
 
-**MinGW/TDM-GCCは使用しません。代わりにZig ccを使用します。**
+**Zig ccを使用します。**
 
 一般ユーザーにはPure Go版（Oto）の使用を推奨します。詳細は [src/go/README.md](../go/README.md) を参照してください。
 
@@ -152,13 +152,6 @@ go build -v -x -o bin\sync_simple.exe .\cmd\sync_simple
 このコマンドは詳細なビルドログを出力し、問題の特定に役立ちます。
 
 ## なぜZig ccを使うのか？
-
-### MinGW/TDM-GCCの問題点
-
-- サイズが大きい（数GB）
-- インストールが複雑
-- 環境を汚す
-- クロスコンパイルに追加のツールが必要
 
 ### Zig ccの利点
 

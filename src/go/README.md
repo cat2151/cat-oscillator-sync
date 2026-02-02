@@ -8,7 +8,6 @@
 
 - ✅ **Pure Go実装** - CGO不要、C言語コンパイラ不要
 - ✅ **簡単ビルド** - `go build`だけでビルド可能
-- ✅ **クロスコンパイル対応** - Linux/macOS上からWindows版をビルド可能
 - ✅ **環境を汚さない** - 追加のツールチェインが不要
 - ✅ モノフォニックシンセには十分な性能
 
@@ -20,8 +19,6 @@
 
 ## 🚀 ビルド方法
 
-### Windows上でビルド
-
 ```cmd
 cd src\go
 
@@ -30,18 +27,6 @@ go build -o bin\sync_simple_oto.exe .\cmd\sync_simple_oto
 
 REM スムーズ版をビルド
 go build -o bin\sync_smooth_oto.exe .\cmd\sync_smooth_oto
-```
-
-### Linux/macOS上でWindows版をクロスコンパイル
-
-```bash
-cd src/go
-
-# シンプル版をビルド
-GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o bin/sync_simple_oto.exe ./cmd/sync_simple_oto
-
-# スムーズ版をビルド
-GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o bin/sync_smooth_oto.exe ./cmd/sync_smooth_oto
 ```
 
 ## 🎮 実行方法
