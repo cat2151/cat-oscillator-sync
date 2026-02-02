@@ -16,11 +16,17 @@ concurrency:
 
 # Set explicit permissions for the GITHUB_TOKEN
 permissions:
-  contents: write  # Need write to commit and push to main branch
+  contents: read
+  pages: write      # Permission to deploy to Pages
+  id-token: write   # Required for OIDC authentication
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
       - name: Checkout repository
@@ -43,14 +49,14 @@ jobs:
           cd src/typescript/browser
           npm run build
 
-      - name: Create .nojekyll file
-        run: touch docs/.nojekyll
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
 
-      - name: Commit and push to main
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add docs/
-          git diff --staged --quiet || (git commit -m "Deploy: Update GitHub Pages [skip ci]" && git push)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
