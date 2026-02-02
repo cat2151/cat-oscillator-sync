@@ -281,7 +281,7 @@ The library is production-ready and can be used immediately in Obsidian plugins 
 ## Related Links
 
 - [Issue #88](https://github.com/cat2151/cat-oscillator-sync/issues/88)
-- [Library README](../../src/typescript/lib/README.md)
-- [Obsidian Integration Guide](../../src/typescript/lib/OBSIDIAN_INTEGRATION.md)
-- [Build Guide](../../src/typescript/lib/BUILD_GUIDE.md)
+- [Library README](./README.md)
+- [Obsidian Integration Guide](./OBSIDIAN_INTEGRATION.md)
+- [Build Guide](./BUILD_GUIDE.md)
 - [Main Project](https://github.com/cat2151/cat-oscillator-sync)
