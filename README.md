@@ -208,14 +208,11 @@ node dist/main.js smooth  # Smooth version
 
 **Notes**:
 - ⚠️ Windows only (depends on `robotjs`, `naudiodon` native modules)
-- ⚠️ Buffer latency approx. 170ms (`naudiodon` limitation)
 - ⚠️ Requires Visual Studio Build Tools
 
 **Features**:
 - ✅ Node.js-based CLI implementation
-- ⚠️ Latency is higher than other implementations (approx. 170ms)
-
-**If lower latency is required, the Browser, Python, Rust, or Go versions are recommended.**
+- ✅ Low latency (approx. 8ms)
 
 **Details**: [src/typescript/cli/README.md](src/typescript/cli/README.md)
 
@@ -230,7 +227,7 @@ node dist/main.js smooth  # Smooth version
 | Go (Pure Go - Oto) | ✅ | ⭐⭐⭐⭐ (go install) | Approx. 16ms | ⭐⭐⭐⭐ |
 | Rust | ✅ | ⭐⭐⭐ (cargo install) | Approx. 8ms | ⭐⭐⭐⭐ |
 | Go (PortAudio) | ✅ | ⭐⭐ (Requires Zig cc) | Approx. 8ms | ⭐⭐⭐ |
-| TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 170ms | ⭐⭐ |
+| TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 8ms | ⭐⭐ |
 
 ---
 

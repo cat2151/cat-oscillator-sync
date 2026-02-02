@@ -208,14 +208,11 @@ node dist/main.js smooth  # Smooth版
 
 **注意事項**:
 - ⚠️ Windows専用（robotjs、naudiodonのネイティブモジュール依存）
-- ⚠️ バッファ遅延約170ms（naudiodonの制限）
 - ⚠️ Visual Studio Build Toolsが必要
 
 **特徴**:
 - ✅ Node.jsベースのCLI実装
-- ⚠️ レイテンシは他の実装より高い（約170ms）
-
-**より低レイテンシが必要な場合は、Browser版、Python版、Rust版、Go版を推奨します。**
+- ✅ 低レイテンシ（約8ms）
 
 **詳細**: [src/typescript/cli/README.md](src/typescript/cli/README.md)
 
@@ -230,7 +227,7 @@ node dist/main.js smooth  # Smooth版
 | Go (Pure Go - Oto) | ✅ | ⭐⭐⭐⭐（go install） | 約16ms | ⭐⭐⭐⭐ |
 | Rust | ✅ | ⭐⭐⭐（cargo install） | 約8ms | ⭐⭐⭐⭐ |
 | Go (PortAudio) | ✅ | ⭐⭐（Zig cc必要） | 約8ms | ⭐⭐⭐ |
-| TypeScript (CLI) | ✅ | ⭐⭐（ビルドツール必要） | 約170ms | ⭐⭐ |
+| TypeScript (CLI) | ✅ | ⭐⭐（ビルドツール必要） | 約8ms | ⭐⭐ |
 
 ---
 
