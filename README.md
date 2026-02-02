@@ -189,7 +189,7 @@ npm run build  # Production build
 
 ### 💻 TypeScript Version (CLI - Windows Only)
 
-**Status**: ✅ Functional - Buffer latency (approx. 170ms)
+**Status**: ✅ Functional
 
 **Installation**:
 
