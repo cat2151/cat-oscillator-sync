@@ -23,9 +23,6 @@ export { SimpleSynth } from './simple-synth';
 export { SmoothSynth } from './smooth-synth';
 export type { SmoothSynthOptions } from './smooth-synth';
 
-// Re-export types for convenience
-export type { SmoothSynthOptions as SynthOptions } from './smooth-synth';
-
 /**
  * Utility function to map mouse position to frequency
  * 

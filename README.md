@@ -268,7 +268,6 @@ node dist/main.js smooth  # Smooth version
 | Rust | ✅ | ⭐⭐⭐ (cargo install) | Approx. 8ms | ⭐⭐⭐⭐ |
 | Go (PortAudio) | ✅ | ⭐⭐ (Requires Zig cc) | Approx. 8ms | ⭐⭐⭐ |
 | TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 170ms | ⭐⭐ |
-| TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 170ms | ⭐⭐ |
 
 ---
 

@@ -22,7 +22,7 @@ export class SmoothSynth {
 
   constructor(options: SmoothSynthOptions = {}) {
     // Store the worklet code as a string to be registered as a blob URL
-    this.workletCode = SmoothWorkletProcessor.toString();
+    this.workletCode = SmoothWorkletProcessor;
     this.options = {
       timeConstantMs: options.timeConstantMs || 16,
       sampleRate: options.sampleRate || 48000,

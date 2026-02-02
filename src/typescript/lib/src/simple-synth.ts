@@ -16,7 +16,7 @@ export class SimpleSynth {
 
   constructor() {
     // Store the worklet code as a string to be registered as a blob URL
-    this.workletCode = SimpleWorkletProcessor.toString();
+    this.workletCode = SimpleWorkletProcessor;
   }
 
   async start(): Promise<void> {
