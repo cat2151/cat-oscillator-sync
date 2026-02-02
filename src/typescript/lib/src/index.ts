@@ -40,6 +40,10 @@ export function mapToFrequency(
   outMin: number,
   outMax: number
 ): number {
+  // Handle edge case where input range is zero
+  if (inMin === inMax) {
+    return outMin;
+  }
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
 
