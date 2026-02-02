@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cat-oscillator-sync-lib Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: white;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+    }
+    .controls {
+      margin: 2em 0;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      margin: 0 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: white;
+      color: #667eea;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .info {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 2em 0;
+      backdrop-filter: blur(10px);
+    }
+    .frequency-display {
+      font-size: 1.5em;
+      margin: 1em 0;
+    }
+    .instructions {
+      margin: 2em 0;
+      line-height: 1.8;
+    }
+    .status {
+      font-size: 1.2em;
+      margin: 1em 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 cat-oscillator-sync-lib Test</h1>
+    
+    <div class="controls">
+      <button id="startSimple">Start Simple</button>
+      <button id="startSmooth">Start Smooth</button>
+      <button id="stop" disabled>Stop</button>
+    </div>
+
+    <div class="info">
+      <div class="status" id="status">Ready to start</div>
+      <div class="frequency-display">
+        <div>Master: <span id="masterFreq">---</span> Hz</div>
+        <div>Slave: <span id="slaveFreq">---</span> Hz</div>
+        <div>Mouse: <span id="mousePos">---</span></div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h2>Instructions</h2>
+      <p>1. Click "Start Simple" or "Start Smooth" to begin</p>
+      <p>2. Move your mouse to control the sound:</p>
+      <p>   • Horizontal (X) = Master Frequency (40-600 Hz)</p>
+      <p>   • Vertical (Y) = Slave Frequency (100-2000 Hz)</p>
+      <p>3. Click "Stop" when finished</p>
+      <p><strong>Note:</strong> This is a test of the library version that can be bundled for Obsidian plugins</p>
+    </div>
+  </div>
+
+  <script type="module">
+    // Import from the built library
+    import { SimpleSynth, SmoothSynth, mapToFrequency, DEFAULT_FREQUENCY_RANGES } from './dist/index.js';
+
+    let synth = null;
+    let updateInterval = null;
+
+    const startSimpleBtn = document.getElementById('startSimple');
+    const startSmoothBtn = document.getElementById('startSmooth');
+    const stopBtn = document.getElementById('stop');
+    const statusEl = document.getElementById('status');
+    const masterFreqEl = document.getElementById('masterFreq');
+    const slaveFreqEl = document.getElementById('slaveFreq');
+    const mousePosEl = document.getElementById('mousePos');
+
+    let mouseX = 0;
+    let mouseY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    async function startSynth(type) {
+      try {
+        if (type === 'simple') {
+          synth = new SimpleSynth();
+          statusEl.textContent = '▶️ Running (Simple Version)';
+        } else {
+          synth = new SmoothSynth({
+            timeConstantMs: 16,
+            sampleRate: 48000
+          });
+          statusEl.textContent = '▶️ Running (Smooth Version)';
+        }
+
+        await synth.start();
+
+        startSimpleBtn.disabled = true;
+        startSmoothBtn.disabled = true;
+        stopBtn.disabled = false;
+
+        // Start updating frequencies
+        updateInterval = setInterval(() => {
+          if (!synth) return;
+
+          const freqMaster = mapToFrequency(
+            mouseX,
+            0,
+            window.innerWidth,
+            DEFAULT_FREQUENCY_RANGES.master.min,
+            DEFAULT_FREQUENCY_RANGES.master.max
+          );
+
+          const freqSlave = mapToFrequency(
+            mouseY,
+            0,
+            window.innerHeight,
+            DEFAULT_FREQUENCY_RANGES.slave.max,
+            DEFAULT_FREQUENCY_RANGES.slave.min
+          );
+
+          synth.updateFrequencies(freqMaster, freqSlave);
+
+          // Update display
+          masterFreqEl.textContent = freqMaster.toFixed(1);
+          slaveFreqEl.textContent = freqSlave.toFixed(1);
+          mousePosEl.textContent = `${mouseX}, ${mouseY}`;
+        }, 8);
+
+      } catch (error) {
+        console.error('Failed to start synth:', error);
+        statusEl.textContent = '❌ Failed to start: ' + error.message;
+        stopSynth();
+      }
+    }
+
+    function stopSynth() {
+      if (synth) {
+        synth.stop();
+        synth = null;
+      }
+
+      if (updateInterval) {
+        clearInterval(updateInterval);
+        updateInterval = null;
+      }
+
+      startSimpleBtn.disabled = false;
+      startSmoothBtn.disabled = false;
+      stopBtn.disabled = true;
+      statusEl.textContent = '⏹️ Stopped';
+    }
+
+    startSimpleBtn.addEventListener('click', () => startSynth('simple'));
+    startSmoothBtn.addEventListener('click', () => startSynth('smooth'));
+    stopBtn.addEventListener('click', stopSynth);
+  </script>
+</body>
+</html>

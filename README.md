@@ -187,6 +187,42 @@ npm run build  # Production build
 
 ---
 
+### 📚 TypeScript Version (Library - for Obsidian Plugins)
+
+**Status**: ✅ Fully functional - Bundleable with npm
+
+**How to Use**:
+
+This library version can be imported and bundled into other projects, such as Obsidian community plugins.
+
+**Installation**:
+```bash
+npm install cat-oscillator-sync-lib
+```
+
+**Quick Example**:
+```typescript
+import { SimpleSynth } from 'cat-oscillator-sync-lib';
+
+const synth = new SimpleSynth();
+await synth.start();
+synth.updateFrequencies(freqMaster, freqSlave);
+synth.stop();
+```
+
+**Features**:
+- ✅ Bundleable with npm (webpack, rollup, esbuild)
+- ✅ TypeScript type definitions included
+- ✅ Works in Obsidian plugins (Electron environment)
+- ✅ Both Simple and Smooth versions
+- ✅ Zero dependencies (Web Audio API only)
+
+**Documentation**:
+- [Library README](src/typescript/lib/README.md)
+- [Obsidian Integration Guide](src/typescript/lib/OBSIDIAN_INTEGRATION.md)
+
+---
+
 ### 💻 TypeScript Version (CLI - Windows Only)
 
 **Status**: ✅ Functional - Buffer latency (approx. 170ms)
@@ -226,10 +262,12 @@ node dist/main.js smooth  # Smooth version
 | Language | Status | Installation Difficulty | Latency | Recommendation |
 |--------------------------|----------|-------------------------|-----------|----------------|
 | TypeScript (Browser) | ✅ | ⭐⭐⭐⭐⭐ (No installation) | Approx. 3ms | ⭐⭐⭐⭐⭐ |
+| TypeScript (Library) | ✅ | ⭐⭐⭐⭐⭐ (npm install) | Approx. 3ms | ⭐⭐⭐⭐⭐ |
 | Python | ✅ | ⭐⭐⭐⭐⭐ (pipx 1-liner) | Approx. 8ms | ⭐⭐⭐⭐⭐ |
 | Go (Pure Go - Oto) | ✅ | ⭐⭐⭐⭐ (go install) | Approx. 16ms | ⭐⭐⭐⭐ |
 | Rust | ✅ | ⭐⭐⭐ (cargo install) | Approx. 8ms | ⭐⭐⭐⭐ |
 | Go (PortAudio) | ✅ | ⭐⭐ (Requires Zig cc) | Approx. 8ms | ⭐⭐⭐ |
+| TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 170ms | ⭐⭐ |
 | TypeScript (CLI) | ✅ | ⭐⭐ (Requires build tools) | Approx. 170ms | ⭐⭐ |
 
 ---
@@ -300,6 +338,7 @@ Hard sync is an audio synthesis technique where one oscillator (the master) forc
 - [x] Go implementation (Pure Go - Oto)
 - [x] Go implementation (PortAudio + Zig cc)
 - [x] TypeScript implementation (Browser version)
+- [x] TypeScript implementation (Library version - for Obsidian plugins)
 - [x] TypeScript implementation (CLI version - Windows only)
 
 ---
