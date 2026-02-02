@@ -102,7 +102,8 @@ https://cat2151.github.io/cat-oscillator-sync/
 - **PR #91**: Was trying to remove the browser version entirely due to this issue
 - **Issue #90**: Original error report that led to PR #91
 
-## Security Summary
+## Security Notes
 
-✅ No security vulnerabilities detected by CodeQL analysis.
-✅ No code review issues found.
+- This change updates how AudioWorklet modules are loaded and does not intentionally alter any security-related behavior.
+- Automated security analysis tools (such as CodeQL) are not currently configured for this repository; please run your own security and quality checks before using this in production.
+- A separate security-focused code review is recommended if you plan to deploy this project more broadly.
