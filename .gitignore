@@ -71,9 +71,11 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-# GitHub Pages deployment (allow docs/ at root)
-# docs/ directory at root is used for GitHub Pages and should be committed
-# Only ignore Sphinx's _build subdirectory
+# GitHub Pages deployment (GitHub Actions)
+# The docs/ directory is now generated as a build artifact and uploaded via GitHub Actions.
+# It should NOT be committed to the repository.
+# The workflow generates it fresh on each deployment.
+docs/
 
 # PyBuilder
 .pybuilder/
