@@ -3,6 +3,9 @@
  * Uses AudioWorklet with exponential smoothing per sample
  */
 
+// Import worklet as URL using Vite's worker import syntax
+import smoothWorkletUrl from '../audio/smooth-worklet.ts?worker&url';
+
 export class SmoothSynth {
   private audioContext: AudioContext | null = null;
   private workletNode: AudioWorkletNode | null = null;
@@ -16,7 +19,7 @@ export class SmoothSynth {
 
     // Load and add AudioWorklet module
     try {
-      await this.audioContext.audioWorklet.addModule('/src/audio/smooth-worklet.ts');
+      await this.audioContext.audioWorklet.addModule(smoothWorkletUrl);
       console.log('Smooth worklet module loaded successfully');
     } catch (error) {
       console.error('Failed to load worklet module:', error);

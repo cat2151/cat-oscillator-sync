@@ -3,6 +3,9 @@
  * Uses AudioWorklet with step-wise frequency updates
  */
 
+// Import worklet as URL using Vite's worker import syntax
+import simpleWorkletUrl from '../audio/simple-worklet.ts?worker&url';
+
 export class SimpleSynth {
   private audioContext: AudioContext | null = null;
   private workletNode: AudioWorkletNode | null = null;
@@ -20,9 +23,8 @@ export class SimpleSynth {
     // Load and add AudioWorklet module
     try {
       console.log('[SimpleSynth] Loading worklet module...');
-      const workletUrl = new URL('/src/audio/simple-worklet.ts', window.location.href).href;
-      console.log('[SimpleSynth] Worklet URL:', workletUrl);
-      await this.audioContext.audioWorklet.addModule(workletUrl);
+      console.log('[SimpleSynth] Worklet URL:', simpleWorkletUrl);
+      await this.audioContext.audioWorklet.addModule(simpleWorkletUrl);
       console.log('[SimpleSynth] Worklet module loaded successfully');
     } catch (error) {
       console.error('[SimpleSynth] Failed to load worklet module:', error);
