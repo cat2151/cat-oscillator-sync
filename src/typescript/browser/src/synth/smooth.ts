@@ -5,10 +5,12 @@
 
 // Import worklet as URL using Vite's worker import syntax
 import smoothWorkletUrl from '../audio/smooth-worklet.ts?worker&url';
+import { DEFAULT_VOLUME_DB } from '../constants';
 
 export class SmoothSynth {
   private audioContext: AudioContext | null = null;
   private workletNode: AudioWorkletNode | null = null;
+  private gainNode: GainNode | null = null;
   private isRunning: boolean = false;
 
   async start(): Promise<void> {
@@ -34,8 +36,13 @@ export class SmoothSynth {
       },
     });
 
-    // Connect to output
-    this.workletNode.connect(this.audioContext.destination);
+    // Create gain node for volume control (default: -12 dB)
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.gain.value = Math.pow(10, DEFAULT_VOLUME_DB / 20);
+
+    // Connect: worklet -> gain -> output
+    this.workletNode.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination);
 
     this.isRunning = true;
     console.log('Smooth synth started');
@@ -49,10 +56,23 @@ export class SmoothSynth {
       this.workletNode = null;
     }
 
+    if (this.gainNode) {
+      this.gainNode.disconnect();
+      this.gainNode = null;
+    }
+
     this.audioContext.close();
     this.audioContext = null;
     this.isRunning = false;
     console.log('Smooth synth stopped');
+  }
+
+  setVolume(db: number): void {
+    if (this.gainNode && this.audioContext) {
+      const targetGain = Math.pow(10, db / 20);
+      const timeConstant = 0.01;
+      this.gainNode.gain.setTargetAtTime(targetGain, this.audioContext.currentTime, timeConstant);
+    }
   }
 
   updateFrequencies(freqMaster: number, freqSlave: number): void {

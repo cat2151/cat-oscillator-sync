@@ -127,6 +127,36 @@
       cursor: pointer;
       margin-right: 0.3rem;
     }
+
+    .volume-control {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+    }
+
+    .volume-control label {
+      font-size: 1rem;
+      white-space: nowrap;
+    }
+
+    .volume-control input[type="range"] {
+      width: 160px;
+      cursor: pointer;
+      accent-color: #4ade80;
+    }
+
+    .volume-control .volume-value {
+      font-family: 'Courier New', monospace;
+      font-size: 1rem;
+      color: #4ade80;
+      min-width: 4.5rem;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -143,6 +173,12 @@
         <input type="radio" name="version" value="smooth">
         Smooth版 (滑らかな周波数変化)
       </label>
+    </div>
+
+    <div class="volume-control">
+      <label for="volumeSlider">🔊 音量:</label>
+      <input type="range" id="volumeSlider" min="-30" max="0" step="1" value="-12" aria-label="音量 (dB)">
+      <span class="volume-value" id="volumeValue">-12 dB</span>
     </div>
 
     <div class="controls">
