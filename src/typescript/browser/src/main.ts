@@ -29,7 +29,7 @@ class App {
   private volumeSlider: HTMLInputElement;
   private volumeValueEl: HTMLElement;
 
-  private volumeDb: number = -12;
+  private volumeDb: number = 0; // will be set from slider in constructor
 
   constructor() {
     // Get UI elements
@@ -43,13 +43,17 @@ class App {
     this.volumeSlider = document.getElementById('volumeSlider') as HTMLInputElement;
     this.volumeValueEl = document.getElementById('volumeValue') as HTMLElement;
 
+    // Initialize volume from slider (DOM is the single source of truth)
+    this.volumeDb = Number(this.volumeSlider.value);
+    this.volumeValueEl.textContent = `${this.volumeDb} dB`;
+
     // Set up event listeners
     this.startBtn.addEventListener('click', () => this.handleStart());
     this.stopBtn.addEventListener('click', () => this.handleStop());
     document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
     window.addEventListener('resize', () => this.handleResize());
     this.volumeSlider.addEventListener('input', () => this.handleVolumeChange());
-    
+
     this.versionRadios.forEach(radio => {
       radio.addEventListener('change', (e) => {
         const target = e.target as HTMLInputElement;

@@ -5,9 +5,7 @@
 
 // Import worklet as URL using Vite's worker import syntax
 import smoothWorkletUrl from '../audio/smooth-worklet.ts?worker&url';
-
-// Default volume: -12 dB (linear: 10^(-12/20))
-const DEFAULT_VOLUME_DB = -12;
+import { DEFAULT_VOLUME_DB } from '../constants';
 
 export class SmoothSynth {
   private audioContext: AudioContext | null = null;
@@ -70,8 +68,10 @@ export class SmoothSynth {
   }
 
   setVolume(db: number): void {
-    if (this.gainNode) {
-      this.gainNode.gain.value = Math.pow(10, db / 20);
+    if (this.gainNode && this.audioContext) {
+      const targetGain = Math.pow(10, db / 20);
+      const timeConstant = 0.01;
+      this.gainNode.gain.setTargetAtTime(targetGain, this.audioContext.currentTime, timeConstant);
     }
   }
 
