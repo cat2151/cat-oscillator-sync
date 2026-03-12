@@ -26,6 +26,10 @@ class App {
   private slaveFreqEl: HTMLElement;
   private mousePosEl: HTMLElement;
   private versionRadios: NodeListOf<HTMLInputElement>;
+  private volumeSlider: HTMLInputElement;
+  private volumeValueEl: HTMLElement;
+
+  private volumeDb: number = -12;
 
   constructor() {
     // Get UI elements
@@ -36,12 +40,15 @@ class App {
     this.slaveFreqEl = document.getElementById('slaveFreq') as HTMLElement;
     this.mousePosEl = document.getElementById('mousePos') as HTMLElement;
     this.versionRadios = document.querySelectorAll('input[name="version"]');
+    this.volumeSlider = document.getElementById('volumeSlider') as HTMLInputElement;
+    this.volumeValueEl = document.getElementById('volumeValue') as HTMLElement;
 
     // Set up event listeners
     this.startBtn.addEventListener('click', () => this.handleStart());
     this.stopBtn.addEventListener('click', () => this.handleStop());
     document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
     window.addEventListener('resize', () => this.handleResize());
+    this.volumeSlider.addEventListener('input', () => this.handleVolumeChange());
     
     this.versionRadios.forEach(radio => {
       radio.addEventListener('change', (e) => {
@@ -52,6 +59,14 @@ class App {
         }
       });
     });
+  }
+
+  private handleVolumeChange(): void {
+    this.volumeDb = Number(this.volumeSlider.value);
+    this.volumeValueEl.textContent = `${this.volumeDb} dB`;
+    if (this.synth) {
+      this.synth.setVolume(this.volumeDb);
+    }
   }
 
   private async handleStart(): Promise<void> {
@@ -69,6 +84,9 @@ class App {
       }
 
       await this.synth.start();
+      
+      // Apply current volume setting
+      this.synth.setVolume(this.volumeDb);
       
       // Start polling mouse position and updating frequencies
       this.startPolling();

@@ -6,9 +6,13 @@
 // Import worklet as URL using Vite's worker import syntax
 import simpleWorkletUrl from '../audio/simple-worklet.ts?worker&url';
 
+// Default volume: -12 dB (linear: 10^(-12/20))
+const DEFAULT_VOLUME_DB = -12;
+
 export class SimpleSynth {
   private audioContext: AudioContext | null = null;
   private workletNode: AudioWorkletNode | null = null;
+  private gainNode: GainNode | null = null;
   private isRunning: boolean = false;
 
   async start(): Promise<void> {
@@ -36,8 +40,13 @@ export class SimpleSynth {
     this.workletNode = new AudioWorkletNode(this.audioContext, 'simple-worklet-processor');
     console.log('[SimpleSynth] AudioWorkletNode created');
 
-    // Connect to output
-    this.workletNode.connect(this.audioContext.destination);
+    // Create gain node for volume control (default: -12 dB)
+    this.gainNode = this.audioContext.createGain();
+    this.gainNode.gain.value = Math.pow(10, DEFAULT_VOLUME_DB / 20);
+
+    // Connect: worklet -> gain -> output
+    this.workletNode.connect(this.gainNode);
+    this.gainNode.connect(this.audioContext.destination);
     console.log('[SimpleSynth] Connected to destination');
 
     this.isRunning = true;
@@ -52,10 +61,21 @@ export class SimpleSynth {
       this.workletNode = null;
     }
 
+    if (this.gainNode) {
+      this.gainNode.disconnect();
+      this.gainNode = null;
+    }
+
     this.audioContext.close();
     this.audioContext = null;
     this.isRunning = false;
     console.log('Simple synth stopped');
+  }
+
+  setVolume(db: number): void {
+    if (this.gainNode) {
+      this.gainNode.gain.value = Math.pow(10, db / 20);
+    }
   }
 
   updateFrequencies(freqMaster: number, freqSlave: number): void {
